@@ -3,343 +3,975 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pomelli | Aristocratic Confections</title>
-    
-    <!-- FONTS -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
-    
-    <!-- SUPABASE LIBRARY -->
+    <title>Pomelli | Estate Provisions</title>
+    <!-- SUPABASE -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Monsieur+La+Doulaise&display=swap" rel="stylesheet">
+    <!-- ICONS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* --- 1. LUXURY PALETTE & ANIMATIONS --- */
+        /* --- 1920s LUXURY BASE STYLES --- */
         :root {
-            --walnut: #2a1b18;
+            --walnut: #1A0F0D;
+            --cherry: #721121; /* THE DEEP RED YOU REQUESTED */
             --cream: #F5F1E6;
-            --gold: #C5A059;
-            --silver: #A9A9A9;
-            --forest: #1e3b26;
+            --gold: #D4AF37;
+            --paper: #FAF8F0;
+            --text-dark: #2C2C2C;
         }
 
         * { box-sizing: border-box; }
 
         body {
             margin: 0;
-            background-color: var(--walnut);
-            color: var(--cream);
+            background-color: var(--paper);
+            color: var(--text-dark);
             font-family: 'Cormorant Garamond', serif;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
+            padding-top: 80px; /* Space for fixed nav */
         }
 
-        h1, h2, h3, button {
+        h1, h2, h3, .nav-link, .btn {
             font-family: 'Cinzel', serif;
             text-transform: uppercase;
-            letter-spacing: 0.2em;
+            letter-spacing: 2px;
         }
 
-        .script-font {
-            font-family: 'Pinyon Script', cursive;
+        .script {
+            font-family: 'Monsieur La Doulaise', cursive;
+            color: var(--cherry);
             font-size: 2.5rem;
-            color: var(--gold);
-            display: block;
-            margin-bottom: 10px;
-            text-transform: none;
-            letter-spacing: 0;
+            line-height: 0.5;
         }
 
-        /* --- 2. CINEMATIC VIDEO HERO --- */
-        header {
-            position: relative;
-            height: 100vh;
+        /* --- NAVIGATION BAR --- */
+        nav {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            height: 80px;
+            background: var(--walnut);
+            border-bottom: 3px solid var(--gold);
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            overflow: hidden;
-            border-bottom: 5px solid var(--gold);
+            padding: 0 40px;
+            z-index: 1000;
         }
 
-        .video-bg {
+        .nav-logo { color: var(--gold); font-size: 1.5rem; text-decoration: none; font-weight: bold; }
+        
+        .nav-links { display: flex; gap: 30px; }
+        .nav-link { 
+            color: var(--cream); text-decoration: none; font-size: 0.9rem; transition: 0.3s; 
+        }
+        .nav-link:hover { color: var(--gold); }
+
+        .cart-icon-container {
+            position: relative;
+            cursor: pointer;
+            color: var(--gold);
+        }
+        
+        .cart-badge {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: -1;
-            transform: translate(-50%, -50%);
-            object-fit: cover;
-            filter: brightness(0.5) sepia(0.3); /* Adds a vintage movie look */
-        }
-
-        .hero-content {
-            z-index: 1;
-            padding: 40px;
-            border: 1px solid rgba(197, 160, 89, 0.5); /* Faint gold border */
-            backdrop-filter: blur(2px);
-            background: rgba(0, 0, 0, 0.3);
-            max-width: 800px;
-        }
-
-        h1 {
-            font-size: 4rem;
-            margin: 10px 0;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+            top: -10px; right: -10px;
+            background: var(--cherry);
             color: white;
+            border-radius: 50%;
+            width: 20px; height: 20px;
+            font-size: 0.8rem;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold;
         }
 
-        /* --- 3. SECTIONS --- */
-        .section-padding {
-            padding: 120px 20px;
-        }
-
-        .intro-text {
+        /* --- HERO --- */
+        .hero {
+            height: 60vh;
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/butler-service-caramel-drip.jpg');
+            background-size: cover;
+            background-position: center 20%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            max-width: 700px;
-            margin: 0 auto;
-            font-size: 1.4rem;
-            line-height: 1.8;
-            color: var(--silver);
+            color: white;
+            border-bottom: 10px solid var(--cherry);
         }
 
-        /* --- 4. THE PRODUCT SHOWCASE --- */
-        #menu-container {
-            max-width: 1200px;
-            margin: 0 auto;
+        /* --- SHOP LAYOUT --- */
+        .shop-container {
+            max-width: 1400px;
+            margin: 60px auto;
+            display: flex;
+            gap: 40px;
+            padding: 0 20px;
+        }
+
+        /* SIDEBAR FILTERS */
+        .sidebar {
+            flex: 0 0 250px;
+            padding: 20px;
+            border-right: 1px solid var(--gold);
+        }
+
+        .filter-btn {
+            display: block;
+            width: 100%;
+            padding: 15px 0;
+            text-align: left;
+            background: none;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            font-family: 'Cinzel', serif;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .filter-btn:hover, .filter-btn.active { color: var(--cherry); border-bottom-color: var(--cherry); padding-left: 10px; }
+
+        /* PRODUCT GRID */
+        .product-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 40px;
         }
 
         .product-card {
-            display: flex;
-            align-items: center;
-            gap: 5vw;
-            margin-bottom: 150px;
-            opacity: 0;
-            transform: translateY(50px);
-            transition: 1s all ease-out;
-        }
-
-        .product-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .product-card:nth-child(even) {
-            flex-direction: row-reverse;
-        }
-
-        .img-frame {
-            flex: 1;
+            background: white;
+            border: 1px solid #eee;
+            transition: 0.3s;
             position: relative;
         }
 
-        .img-frame::after {
-            content: '';
-            position: absolute;
-            top: 20px;
-            left: 20px;
+        .product-card:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+            border-color: var(--gold);
+        }
+
+        .card-img-container {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-img-container img {
             width: 100%;
             height: 100%;
-            border: 2px solid var(--gold);
-            z-index: -1;
+            object-fit: cover;
             transition: 0.5s;
         }
 
-        .img-frame:hover::after {
-            top: 10px;
-            left: 10px;
-        }
+        /* Image hover effect for slice vs cake */
+        .product-card:hover img { transform: scale(1.05); }
 
-        .img-frame img {
+        .card-details { padding: 25px; text-align: center; }
+
+        .p-cat { color: var(--cherry); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; display: block;}
+        .p-title { font-size: 1.4rem; color: var(--walnut); margin: 5px 0; }
+        .p-price { font-family: 'Cormorant Garamond'; font-size: 1.5rem; font-style: italic; color: #666; }
+
+        .add-btn {
             width: 100%;
-            display: block;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            border: 8px solid white;
-        }
-
-        .details {
-            flex: 1;
-        }
-
-        .price {
-            font-size: 1.8rem;
+            padding: 15px;
+            background: var(--walnut);
             color: var(--gold);
-            margin-bottom: 20px;
-            display: inline-block;
-            border-bottom: 1px solid var(--gold);
-            padding-bottom: 10px;
-        }
-
-        button {
-            background: transparent;
-            color: var(--cream);
-            border: 1px solid var(--cream);
-            padding: 15px 30px;
+            border: none;
             cursor: pointer;
+            font-family: 'Cinzel', serif;
+            margin-top: 15px;
             transition: 0.3s;
-            margin-top: 20px;
         }
 
-        button:hover {
+        .add-btn:hover { background: var(--cherry); color: white; }
+
+        /* --- SHOPPING CART SIDEBAR (THE "TRUNK") --- */
+        .cart-sidebar {
+            position: fixed;
+            top: 0; right: -400px;
+            width: 400px;
+            height: 100vh;
             background: var(--cream);
-            color: var(--walnut);
-        }
-
-        /* --- 5. THE MANOR / FOOTER --- */
-        .manor-bg {
-            background-image: linear-gradient(to top, rgba(42, 27, 24, 1), rgba(42, 27, 24, 0.4)), url('https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/carrot-cake-manor-interior.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed; /* Parallax effect */
-            height: 60vh;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.3);
+            transition: 0.4s ease;
+            z-index: 2000;
             display: flex;
+            flex-direction: column;
+            border-left: 5px solid var(--cherry);
+        }
+
+        .cart-sidebar.open { right: 0; }
+
+        .cart-header {
+            background: var(--walnut);
+            color: var(--gold);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
         }
 
-        footer {
-            text-align: center;
+        .cart-items {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 20px;
+        }
+
+        .cart-item img { width: 60px; height: 60px; object-fit: cover; margin-right: 15px; border: 1px solid var(--gold); }
+        .item-details h4 { margin: 0; font-size: 1rem; color: var(--walnut); }
+        .item-details p { margin: 5px 0 0 0; color: var(--cherry); }
+
+        .cart-footer {
+            padding: 30px;
+            background: white;
+            border-top: 1px solid #ccc;
+        }
+
+        .total-row { display: flex; justify-content: space-between; font-size: 1.5rem; margin-bottom: 20px; font-family: 'Cinzel'; }
+        
+        .checkout-btn {
+            width: 100%;
+            background: var(--cherry);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1rem;
+            font-family: 'Cinzel';
+            cursor: pointer;
+        }
+
+        .close-cart { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+
+        /* FOOTER DETAILS */
+        .shipping-banner {
+            background: var(--walnut);
+            color: #888;
             padding: 40px;
-            border-top: 1px solid #444;
-            font-size: 0.8rem;
-            color: #666;
+            text-align: center;
+            margin-top: 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
         }
 
-        /* Mobile Adjustments */
-        @media (max-width: 768px) {
-            .product-card, .product-card:nth-child(even) {
-                flex-direction: column;
-                text-align: center;
-            }
-            h1 { font-size: 2.5rem; }
-            .img-frame::after { display: none; }
+        .feature i { color: var(--gold); font-size: 2rem; margin-bottom: 10px; }
+
+        @media(max-width: 800px) {
+            .shop-container { flex-direction: column; }
+            .cart-sidebar { width: 100%; right: -100%; }
         }
     </style>
 </head>
 <body>
 
-    <!-- HERO SECTION WITH VIDEO BACKGROUND -->
-    <header>
-        <video class="video-bg" autoplay muted loop playsinline>
-            <source src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/asembeling%20carrot%20cake%20video.mp4" type="video/mp4">
-        </video>
-        <div class="hero-content">
-            <span class="script-font">Est. 1922</span>
-            <h1>Pomelli</h1>
-            <p style="text-transform: uppercase; letter-spacing: 3px;">The Estate Confectionery</p>
+    <!-- NAVIGATION -->
+    <nav>
+        <a href="#" class="nav-logo">POMELLI <span style="font-size:0.8rem; color: #fff;">EST 1922</span></a>
+        <div class="nav-links">
+            <a href="#" class="nav-link">Pâtisserie</a>
+            <a href="#" class="nav-link">Gifting</a>
+            <a href="#" class="nav-link">Our Heritage</a>
         </div>
-    </header>
+        <div class="cart-icon-container" onclick="toggleCart()">
+            <i class="fa-solid fa-basket-shopping fa-lg"></i>
+            <span class="cart-badge" id="cart-count">0</span>
+        </div>
+    </nav>
 
-    <!-- INTRO -->
-    <section class="section-padding">
-        <div class="intro-text">
-            <span class="script-font">Welcome Home</span>
-            <p>We invite you to taste the breathles elegance of a bygone era. Where the distinct rumble of a vintage white roadster announces an evening of opulence, and dessert is served with the reverence of a rare jewel.</p>
+    <!-- SHOPPING CART DRAWER -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Estate Trunk</h3>
+            <button class="close-cart" onclick="toggleCart()">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items-container">
+            <!-- JS Will Inject Items Here -->
+            <p style="text-align: center; margin-top: 20px;">Your trunk is empty.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="total-row">
+                <span>Total</span>
+                <span id="cart-total">$0.00</span>
+            </div>
+            <button class="checkout-btn" onclick="alert('Proceeding to Secure Checkout...')">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero">
+        <span class="script">High Society</span>
+        <h1>The Winter Collection</h1>
+        <p style="letter-spacing: 2px;">Purveyors of fine confections to the nobility.</p>
+    </section>
+
+    <!-- SHOP SECTION -->
+    <div class="shop-container">
+        
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <h3 style="margin-bottom: 20px; color: var(--cherry);">Collections</h3>
+            <button class="filter-btn active" onclick="filterItems('all')">View All</button>
+            <button class="filter-btn" onclick="filterItems('cake')">Whole Gâteaux</button>
+            <button class="filter-btn" onclick="filterItems('slice')">By The Slice</button>
+            <button class="filter-btn" onclick="filterItems('service')">Experiences</button>
+        </aside>
+
+        <!-- GRID -->
+        <div class="product-grid" id="product-grid">
+            <!-- JS renders this -->
+        </div>
+
+    </div>
+
+    <!-- FEATURES -->
+    <section class="shipping-banner">
+        <div class="feature">
+            <i class="fa-solid fa-truck-fast"></i>
+            <h4>White Glove Delivery</h4>
+            <p>Hand-delivered in temperature-controlled vans.</p>
+        </div>
+        <div class="feature">
+            <i class="fa-solid fa-box-open"></i>
+            <h4>Storybook Packaging</h4>
+            <p>Signature Beatrix Potter woodland boxes.</p>
+        </div>
+        <div class="feature">
+            <i class="fa-solid fa-leaf"></i>
+            <h4>Heirloom Ingredients</h4>
+            <p>Sourced from private estates.</p>
         </div>
     </section>
 
-    <!-- DYNAMIC PRODUCT MENU (FROM SUPABASE) -->
-    <section class="section-padding" style="background: var(--cream); color: var(--walnut);">
-        <div id="menu-container">
-            <!-- Loading Indicator -->
-            <p id="loading" style="text-align: center;">Summoning the butler...</p>
-        </div>
-    </section>
-
-    <!-- MANOR SECTION -->
-    <section class="manor-bg">
-        <div class="intro-text">
-            <h2 style="color: white; text-shadow: 0 4px 10px black;">High-Society Folklore</h2>
-            <button onclick="window.scrollTo(0,0)">View the Menu</button>
-        </div>
-    </section>
-
-    <footer>
-        <p>Pomelli © 2024 | London & New York | Private Estate Service</p>
-    </footer>
-
-    <!-- SUPABASE LOGIC -->
     <script>
-        // --- CONFIGURATION ---
-        const supabaseUrl = 'https://rfwlaucrlfohxrrspxmx.supabase.co';
-        const supabaseKey = 'sb_publishable_oQxEVFe-_8xtlBEWiq0Y9Q_JrvwvHAc'; 
-        const client = window.supabase.createClient(supabaseUrl, supabaseKey);
+        // --- DATA SIMULATION ---
+        // Creating a full store catalog using your images for demo purposes
+        const catalog = [
+            {
+                id: 1,
+                category: 'cake',
+                name: "The Sovereign Gâteau",
+                price: 125.00,
+                image: "https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sovereign-carrot-cake-whole.jpg"
+            },
+            {
+                id: 2,
+                category: 'slice',
+                name: "Afternoon Slice",
+                price: 18.00,
+                image: "https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/carrot-cake-slice-art-deco-plate.jpg"
+            },
+            {
+                id: 3,
+                category: 'cake',
+                name: "Royal Walnut Tier",
+                price: 145.00,
+                // Using whole cake img but with filter logic later maybe
+                image: "https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sovereign-carrot-cake-whole.jpg" 
+            },
+            {
+                id: 4,
+                category: 'service',
+                name: "Butler Service à la Russe",
+                price: 250.00,
+                image: "https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/butler-service-caramel-drip.jpg"
+            },
+            {
+                id: 5,
+                category: 'service',
+                name: "Manor Interior Setup",
+                price: 500.00,
+                image: "https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/carrot-cake-manor-interior.jpg"
+            },
+            {
+                id: 6,
+                category: 'slice',
+                name: "The Midnight Snack",
+                price: 22.00,
+                image: "https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/carrot-cake-slice-art-deco-plate.jpg"
+            }
+        ];
 
-        const container = document.getElementById('menu-container');
-        const loadingMsg = document.getElementById('loading');
+        let cart = [];
 
-        // --- FETCH ---
-        async function getMenu() {
-            // This pulls the data from your "products" table
-            const { data, error } = await client
-                .from('products')
-                .select('*');
+        // --- FUNCTIONS ---
 
-            if (error) {
-                loadingMsg.innerHTML = "Error retrieving the menu. The butler is embarrassed.";
-                console.error(error);
+        // 1. Render Products
+        function renderGrid(filter) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = ''; // Clear existing
+
+            const filteredItems = filter === 'all' 
+                ? catalog 
+                : catalog.filter(item => item.category === filter);
+
+            filteredItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="card-img-container">
+                        <img src="${item.image}" alt="${item.name}">
+                    </div>
+                    <div class="card-details">
+                        <span class="p-cat">${item.category === 'cake' ? 'Whole Gâteau' : item.category}</span>
+                        <h3 class="p-title">${item.name}</h3>
+                        <p class="p-price">$${item.price.toFixed(2)}</p>
+                        <button class="add-btn" onclick="addToCart(${item.id})">Add to Trunk</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // 2. Filter Logic
+        function filterItems(category) {
+            renderGrid(category);
+            // Visual toggle of buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // 3. Cart Logic
+        function addToCart(id) {
+            const item = catalog.find(p => p.id === id);
+            cart.push(item);
+            updateCartUI();
+            toggleCart(); // Open cart to show user
+        }
+
+        function updateCartUI() {
+            const cartContainer = document.getElementById('cart-items-container');
+            const badge = document.getElementById('cart-count');
+            const totalEl = document.getElementById('cart-total');
+
+            // Update badge
+            badge.innerText = cart.length;
+
+            // Calculate Total
+            const total = cart.reduce((acc, item) => acc + item.price, 0);
+            totalEl.innerText = '$' + total.toFixed(2);
+
+            // Render Items in Drawer
+            if (cart.length === 0) {
+                cartContainer.innerHTML = '<p style="text-align: center; margin-top: 20px;">Your trunk is empty.</p>';
             } else {
-                loadingMsg.style.display = 'none';
-                
-                // If table is empty (you haven't filled it yet), render a backup using your provided images
-                if(data.length === 0) renderBackup();
-                else renderData(data);
+                cartContainer.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <img src="${item.image}">
+                        <div class="item-details">
+                            <h4>${item.name}</h4>
+                            <p>$${item.price.toFixed(2)}</p>
+                        </div>
+                    </div>
+                `).join('');
             }
         }
 
-        // --- RENDER FUNCTION ---
-        function renderData(items) {
-            items.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'product-card';
-                div.innerHTML = `
-                    <div class="img-frame">
-                        <img src="${item.image_url}" alt="Cake">
+        function toggleCart() {
+            document.getElementById('cart-sidebar').classList.toggle('open');
+        }
+
+        // INITIAL LOAD
+        renderGrid('all');
+
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomelli | Estate Provisions</title>
+    <!-- SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Monsieur+La+Doulaise&display=swap" rel="stylesheet">
+    <!-- ICONS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- 1920s LUXURY BASE STYLES --- */
+        :root {
+            --walnut: #1A0F0D;
+            --cherry: #721121; /* THE DEEP RED YOU REQUESTED */
+            --cream: #F5F1E6;
+            --gold: #D4AF37;
+            --paper: #FAF8F0;
+            --text-dark: #2C2C2C;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background-color: var(--paper);
+            color: var(--text-dark);
+            font-family: 'Cormorant Garamond', serif;
+            padding-top: 80px; /* Space for fixed nav */
+        }
+
+        h1, h2, h3, .nav-link, .btn {
+            font-family: 'Cinzel', serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .script {
+            font-family: 'Monsieur La Doulaise', cursive;
+            color: var(--cherry);
+            font-size: 2.5rem;
+            line-height: 0.5;
+        }
+
+        /* --- NAVIGATION BAR --- */
+        nav {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            height: 80px;
+            background: var(--walnut);
+            border-bottom: 3px solid var(--gold);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            z-index: 1000;
+        }
+
+        .nav-logo { color: var(--gold); font-size: 1.5rem; text-decoration: none; font-weight: bold; }
+        
+        .nav-links { display: flex; gap: 30px; }
+        .nav-link { 
+            color: var(--cream); text-decoration: none; font-size: 0.9rem; transition: 0.3s; 
+        }
+        .nav-link:hover { color: var(--gold); }
+
+        .cart-icon-container {
+            position: relative;
+            cursor: pointer;
+            color: var(--gold);
+        }
+        
+        .cart-badge {
+            position: absolute;
+            top: -10px; right: -10px;
+            background: var(--cherry);
+            color: white;
+            border-radius: 50%;
+            width: 20px; height: 20px;
+            font-size: 0.8rem;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold;
+        }
+
+        /* --- HERO --- */
+        .hero {
+            height: 60vh;
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/butler-service-caramel-drip.jpg');
+            background-size: cover;
+            background-position: center 20%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            border-bottom: 10px solid var(--cherry);
+        }
+
+        /* --- SHOP LAYOUT --- */
+        .shop-container {
+            max-width: 1400px;
+            margin: 60px auto;
+            display: flex;
+            gap: 40px;
+            padding: 0 20px;
+        }
+
+        /* SIDEBAR FILTERS */
+        .sidebar {
+            flex: 0 0 250px;
+            padding: 20px;
+            border-right: 1px solid var(--gold);
+        }
+
+        .filter-btn {
+            display: block;
+            width: 100%;
+            padding: 15px 0;
+            text-align: left;
+            background: none;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            font-family: 'Cinzel', serif;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .filter-btn:hover, .filter-btn.active { color: var(--cherry); border-bottom-color: var(--cherry); padding-left: 10px; }
+
+        /* PRODUCT GRID */
+        .product-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .product-card {
+            background: white;
+            border: 1px solid #eee;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+            border-color: var(--gold);
+        }
+
+        .card-img-container {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        /* Image hover effect for slice vs cake */
+        .product-card:hover img { transform: scale(1.05); }
+
+        .card-details { padding: 25px; text-align: center; }
+
+        .p-cat { color: var(--cherry); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; display: block;}
+        .p-title { font-size: 1.4rem; color: var(--walnut); margin: 5px 0; }
+        .p-price { font-family: 'Cormorant Garamond'; font-size: 1.5rem; font-style: italic; color: #666; }
+
+        .add-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--walnut);
+            color: var(--gold);
+            border: none;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+
+        .add-btn:hover { background: var(--cherry); color: white; }
+
+        /* --- SHOPPING CART SIDEBAR (THE "TRUNK") --- */
+        .cart-sidebar {
+            position: fixed;
+            top: 0; right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: var(--cream);
+            box-shadow: -5px 0 20px rgba(0,0,0,0.3);
+            transition: 0.4s ease;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            border-left: 5px solid var(--cherry);
+        }
+
+        .cart-sidebar.open { right: 0; }
+
+        .cart-header {
+            background: var(--walnut);
+            color: var(--gold);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-items {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 20px;
+        }
+
+        .cart-item img { width: 60px; height: 60px; object-fit: cover; margin-right: 15px; border: 1px solid var(--gold); }
+        .item-details h4 { margin: 0; font-size: 1rem; color: var(--walnut); }
+        .item-details p { margin: 5px 0 0 0; color: var(--cherry); }
+
+        .cart-footer {
+            padding: 30px;
+            background: white;
+            border-top: 1px solid #ccc;
+        }
+
+        .total-row { display: flex; justify-content: space-between; font-size: 1.5rem; margin-bottom: 20px; font-family: 'Cinzel'; }
+        
+        .checkout-btn {
+            width: 100%;
+            background: var(--cherry);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1rem;
+            font-family: 'Cinzel';
+            cursor: pointer;
+        }
+
+        .close-cart { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+
+        /* FOOTER DETAILS */
+        .shipping-banner {
+            background: var(--walnut);
+            color: #888;
+            padding: 40px;
+            text-align: center;
+            margin-top: 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .feature i { color: var(--gold); font-size: 2rem; margin-bottom: 10px; }
+
+        @media(max-width: 800px) {
+            .shop-container { flex-direction: column; }
+            .cart-sidebar { width: 100%; right: -100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <a href="#" class="nav-logo">POMELLI <span style="font-size:0.8rem; color: #fff;">EST 1922</span></a>
+        <div class="nav-links">
+            <a href="#" class="nav-link">Pâtisserie</a>
+            <a href="#" class="nav-link">Gifting</a>
+            <a href="#" class="nav-link">Our Heritage</a>
+        </div>
+        <div class="cart-icon-container" onclick="toggleCart()">
+            <i class="fa-solid fa-basket-shopping fa-lg"></i>
+            <span class="cart-badge" id="cart-count">0</span>
+        </div>
+    </nav>
+
+    <!-- SHOPPING CART DRAWER -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Estate Trunk</h3>
+            <button class="close-cart" onclick="toggleCart()">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items-container">
+            <!-- JS Will Inject Items Here -->
+            <p style="text-align: center; margin-top: 20px;">Your trunk is empty.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="total-row">
+                <span>Total</span>
+                <span id="cart-total">$0.00</span>
+            </div>
+            <button class="checkout-btn" onclick="alert('Proceeding to Secure Checkout...')">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero">
+        <span class="script">High Society</span>
+        <h1>The Winter Collection</h1>
+        <p style="letter-spacing: 2px;">Purveyors of fine confections to the nobility.</p>
+    </section>
+
+    <!-- SHOP SECTION -->
+    <div class="shop-container">
+        
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <h3 style="margin-bottom: 20px; color: var(--cherry);">Collections</h3>
+            <button class="filter-btn active" onclick="filterItems('all')">View All</button>
+            <button class="filter-btn" onclick="filterItems('cake')">Whole Gâteaux</button>
+            <button class="filter-btn" onclick="filterItems('slice')">By The Slice</button>
+            <button class="filter-btn" onclick="filterItems('service')">Experiences</button>
+        </aside>
+
+        <!-- GRID -->
+        <div class="product-grid" id="product-grid">
+            <!-- JS renders this -->
+        </div>
+
+    </div>
+
+    <!-- FEATURES -->
+    <section class="shipping-banner">
+        <div class="feature">
+            <i class="fa-solid fa-truck-fast"></i>
+            <h4>White Glove Delivery</h4>
+            <p>Hand-delivered in temperature-controlled vans.</p>
+        </div>
+        <div class="feature">
+            <i class="fa-solid fa-box-open"></i>
+            <h4>Storybook Packaging</h4>
+            <p>Signature Beatrix Potter woodland boxes.</p>
+        </div>
+        <div class="feature">
+            <i class="fa-solid fa-leaf"></i>
+            <h4>Heirloom Ingredients</h4>
+            <p>Sourced from private estates.</p>
+        </div>
+    </section>
+
+    <script>
+        // --- DATA SIMULATION ---
+        // Creating a full store catalog using your images for demo purposes
+        const catalog = [
+            {
+                id: 1,
+                category: 'cake',
+                name: "The Sovereign Gâteau",
+                price: 125.00,
+                image: "https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sovereign-carrot-cake-whole.jpg"
+            },
+            {
+                id: 2,
+                category: 'slice',
+                name: "Afternoon Slice",
+                price: 18.00,
+                image: "https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/carrot-cake-slice-art-deco-plate.jpg"
+            },
+            {
+                id: 3,
+                category: 'cake',
+                name: "Royal Walnut Tier",
+                price: 145.00,
+                // Using whole cake img but with filter logic later maybe
+                image: "https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sovereign-carrot-cake-whole.jpg" 
+            },
+            {
+                id: 4,
+                category: 'service',
+                name: "Butler Service à la Russe",
+                price: 250.00,
+                image: "https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/butler-service-caramel-drip.jpg"
+            },
+            {
+                id: 5,
+                category: 'service',
+                name: "Manor Interior Setup",
+                price: 500.00,
+                image: "https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/carrot-cake-manor-interior.jpg"
+            },
+            {
+                id: 6,
+                category: 'slice',
+                name: "The Midnight Snack",
+                price: 22.00,
+                image: "https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/carrot-cake-slice-art-deco-plate.jpg"
+            }
+        ];
+
+        let cart = [];
+
+        // --- FUNCTIONS ---
+
+        // 1. Render Products
+        function renderGrid(filter) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = ''; // Clear existing
+
+            const filteredItems = filter === 'all' 
+                ? catalog 
+                : catalog.filter(item => item.category === filter);
+
+            filteredItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="card-img-container">
+                        <img src="${item.image}" alt="${item.name}">
                     </div>
-                    <div class="details">
-                        <span class="script-font">Signature Creation</span>
-                        <h2>${item.name}</h2>
-                        <div class="price">${item.price}</div>
-                        <p>${item.description}</p>
-                        <button>Request Allocation</button>
+                    <div class="card-details">
+                        <span class="p-cat">${item.category === 'cake' ? 'Whole Gâteau' : item.category}</span>
+                        <h3 class="p-title">${item.name}</h3>
+                        <p class="p-price">$${item.price.toFixed(2)}</p>
+                        <button class="add-btn" onclick="addToCart(${item.id})">Add to Trunk</button>
                     </div>
                 `;
-                container.appendChild(div);
-                observer.observe(div); // Add animation
+                grid.appendChild(card);
             });
         }
 
-        // --- BACKUP RENDER (In case Supabase Table is empty) ---
-        function renderBackup() {
-            // Using your file URLs if the database is empty
-            const manualData = [
-                {
-                    name: "The Sovereign Carrot Gâteau",
-                    price: "$125.00",
-                    description: "Four layers of spiced sponge, studded with roasted pecans and sultanas. Draped in a salted caramel glaze.",
-                    image_url: "https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sovereign-carrot-cake-whole.jpg"
-                },
-                {
-                    name: "Service à la Russe",
-                    price: "Upon Request",
-                    description: "Our signature white-glove plating service. We bring the silver, the linen, and the opulence to your estate.",
-                    image_url: "https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/butler-service-caramel-drip.jpg"
-                }
-            ];
-            renderData(manualData);
+        // 2. Filter Logic
+        function filterItems(category) {
+            renderGrid(category);
+            // Visual toggle of buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
         }
 
-        // --- ANIMATIONS ---
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting) entry.target.classList.add('visible');
-            });
-        });
+        // 3. Cart Logic
+        function addToCart(id) {
+            const item = catalog.find(p => p.id === id);
+            cart.push(item);
+            updateCartUI();
+            toggleCart(); // Open cart to show user
+        }
 
-        // Run the script
-        getMenu();
+        function updateCartUI() {
+            const cartContainer = document.getElementById('cart-items-container');
+            const badge = document.getElementById('cart-count');
+            const totalEl = document.getElementById('cart-total');
+
+            // Update badge
+            badge.innerText = cart.length;
+
+            // Calculate Total
+            const total = cart.reduce((acc, item) => acc + item.price, 0);
+            totalEl.innerText = '$' + total.toFixed(2);
+
+            // Render Items in Drawer
+            if (cart.length === 0) {
+                cartContainer.innerHTML = '<p style="text-align: center; margin-top: 20px;">Your trunk is empty.</p>';
+            } else {
+                cartContainer.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <img src="${item.image}">
+                        <div class="item-details">
+                            <h4>${item.name}</h4>
+                            <p>$${item.price.toFixed(2)}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function toggleCart() {
+            document.getElementById('cart-sidebar').classList.toggle('open');
+        }
+
+        // INITIAL LOAD
+        renderGrid('all');
+
     </script>
 </body>
 </html>
