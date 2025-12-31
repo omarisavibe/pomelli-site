@@ -3,25 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#F9F8F4">
     <title>Pomelli | Estate Provisions</title>
     
-    <!-- FONTS -->
+    <!-- HIGH END FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Monsieur+La+Doulaise&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Monsieur+La+Doulaise&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+    
+    <!-- ICONS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <style>
-        /* === MOBILE-FIRST LUXURY FOUNDATION === */
+        /* ==========================================================================
+           1. CORE LUXURY FOUNDATION
+           ========================================================================== */
         :root {
+            /* Brand Identity Palette */
             --brand-cherry: #721121;
             --brand-cream: #F9F8F4;
+            --brand-paper: #F2EFE9;
             --brand-walnut: #221a19;
-            --brand-gold: #cfaa6e;
+            --brand-gold: #D4AF37;
+            
+            /* Typography System */
             --font-display: 'Cinzel', serif;
             --font-body: 'Cormorant Garamond', serif;
+            --font-script: 'Monsieur La Doulaise', cursive;
+            --font-header: 'Playfair Display', serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        html {
+            scroll-behavior: smooth;
+        }
 
         body {
             background-color: var(--brand-cream);
@@ -29,383 +44,751 @@
             font-family: var(--font-body);
             overflow-x: hidden;
             font-size: 18px;
-            padding-bottom: 90px;
+            padding-bottom: 90px; /* Space for sticky footer */
+            opacity: 0;
+            animation: fadeInPage 1.2s ease-out forwards;
         }
+
+        @keyframes fadeInPage { to { opacity: 1; } }
 
         img { width: 100%; display: block; object-fit: cover; }
 
-        /* === 1. HEADER (Perfect Logo Size) === */
+        /* ==========================================================================
+           2. NAVIGATION & LOGO FIXES
+           ========================================================================== */
         .app-nav {
-            position: fixed; top: 0; left: 0; width: 100%; height: 65px;
-            background: rgba(249, 248, 244, 0.95);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0 20px; z-index: 1000;
-        }
-        
-        .logo { 
-            height: 200px; 
-            width: auto; 
-            mix-blend-mode: multiply; 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; 
+            height: 80px; /* Increased height for better mobile tap targets */
+            background: rgba(249, 248, 244, 0.96);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            padding: 0 25px; 
+            z-index: 5000;
+            transition: all 0.3s ease;
         }
 
-        .cart-trigger {
-            position: relative; font-size: 1.4rem; color: var(--brand-walnut); cursor: pointer;
+        /* 
+           LOGO FIX: Uses max-height object-contain logic.
+           This ensures it is never cut off, maintaining aspect ratio.
+        */
+        .logo-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            overflow: visible; /* Prevents clipping */
         }
+
+        .logo { 
+            height: auto; 
+            max-height: 55px; /* Maximum height constraint */
+            max-width: 200px;
+            object-fit: contain; /* Ensures entire logo is visible */
+            mix-blend-mode: multiply; /* Perfect blending with cream background */
+        }
+
+        .nav-icon {
+            flex: 0 0 40px;
+            display: flex; justify-content: center;
+            font-size: 1.4rem; color: var(--brand-walnut); cursor: pointer;
+        }
+
         .badge {
             position: absolute; top: -5px; right: -5px;
             background: var(--brand-cherry); color: white;
-            font-size: 0.7rem; font-family: sans-serif;
+            font-size: 0.6rem; font-family: var(--font-display);
             width: 18px; height: 18px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            opacity: 0; transition: 0.3s;
+            opacity: 0; transform: scale(0); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        .badge.active { opacity: 1; transform: scale(1); }
 
-        /* === 2. CINEMATIC HERO (Video) === */
+
+        /* ==========================================================================
+           3. CINEMATIC VIDEO HERO (Mobile Optimization)
+           ========================================================================== */
         .cinematic-hero {
-            position: relative; height: 55vh; width: 100%;
-            overflow: hidden; border-radius: 0 0 24px 24px;
+            position: relative; 
+            height: 60dvh; /* dvh ensures functionality on mobile browsers with URL bars */
+            width: 100%;
+            overflow: hidden; 
+            border-radius: 0 0 24px 24px;
             box-shadow: 0 10px 40px rgba(44, 30, 28, 0.15);
-        }
-        .hero-video { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.85); }
-        .hero-overlay {
-            position: absolute; bottom: 30px; left: 20px; color: white;
-        }
-        .hero-title {
-            font-family: var(--font-display); font-size: 2.2rem; line-height: 1; text-transform: uppercase; margin-bottom: 5px;
-        }
-        .hero-script {
-            font-family: 'Monsieur La Doulaise'; color: #f0e6d2; font-size: 2rem; line-height: 0.5; margin-bottom: 15px; display: block;
+            margin-top: 80px; /* Offset for nav */
+            background: #2a1b18; /* Fallback color */
         }
 
-        /* === 3. MENU TABS (Horizontal Scroll) === */
+        .hero-video { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            filter: brightness(0.85); 
+            transform: scale(1.05); /* Slight zoom prevents edge gaps */
+        }
+
+        .hero-overlay {
+            position: absolute; 
+            bottom: 40px; 
+            left: 25px; 
+            color: white;
+            z-index: 10;
+        }
+
+        .hero-title {
+            font-family: var(--font-display); 
+            font-size: 2.5rem; 
+            line-height: 0.95; 
+            text-transform: uppercase; 
+            margin-bottom: 8px;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .hero-script {
+            font-family: var(--font-script); 
+            color: var(--brand-gold); 
+            font-size: 2.5rem; 
+            line-height: 0.5; 
+            margin-bottom: 15px; 
+            display: block;
+        }
+
+        /* ==========================================================================
+           4. MENU ARCHITECTURE (Tabs & Grid)
+           ========================================================================== */
         .menu-tabs {
-            position: sticky; top: 65px; background: var(--brand-cream);
-            display: flex; gap: 15px; padding: 15px 20px;
+            position: sticky; top: 80px; background: var(--brand-cream);
+            display: flex; gap: 12px; padding: 20px 25px;
             overflow-x: auto; z-index: 900;
             border-bottom: 1px solid rgba(0,0,0,0.05);
+            /* Scroll Hiding */
             -ms-overflow-style: none; scrollbar-width: none;
         }
         .menu-tabs::-webkit-scrollbar { display: none; }
 
         .tab-pill {
-            padding: 10px 22px; border-radius: 30px;
-            background: #EDEAE0; color: #666;
-            font-family: var(--font-display); font-size: 0.85rem;
-            white-space: nowrap; border: none; cursor: pointer; transition: 0.3s;
+            padding: 12px 24px; border-radius: 50px;
+            background: #EFEBE0; color: #555;
+            font-family: var(--font-display); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em;
+            white-space: nowrap; border: 1px solid transparent; 
+            cursor: pointer; transition: all 0.3s ease;
         }
+
         .tab-pill.active {
             background: var(--brand-walnut); color: var(--brand-gold);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            border-color: var(--brand-walnut);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
 
-        /* === 4. PRODUCT CARDS & GRID CONTAINER === */
+        /* GRID ANIMATION */
         .grid-container {
-            padding: 20px 15px; display: none;
+            padding: 10px 20px; 
+            display: none; /* Hidden state */
         }
-        .grid-container.active { display: block; animation: slideUp 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); }
+        .grid-container.active { 
+            display: block; 
+            animation: slideUpContent 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); 
+        }
 
-        @keyframes slideUp { from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);} }
+        @keyframes slideUpContent { from {opacity: 0; transform: translateY(30px);} to {opacity: 1; transform: translateY(0);} }
 
+        /* PRODUCT CARDS */
         .product-card {
             background: white; border-radius: 16px; overflow: hidden;
-            margin-bottom: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.06);
-            position: relative;
+            margin-bottom: 30px; box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+            position: relative; transition: transform 0.2s;
+            border: 1px solid rgba(0,0,0,0.03);
         }
-        .p-image { height: 280px; width: 100%; }
+        .product-card:active { transform: scale(0.98); }
+
+        .p-image { height: 320px; width: 100%; object-fit: cover; }
         
-        .p-content { padding: 20px; }
-        .p-title { font-family: var(--font-display); font-size: 1.3rem; color: var(--brand-walnut); }
-        .p-price { 
-            position: absolute; top: 15px; right: 15px;
-            background: rgba(255,255,255,0.95); padding: 8px 16px;
-            border-radius: 20px; font-family: var(--font-display); font-weight: bold; color: var(--brand-cherry);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        .p-content { padding: 25px; position: relative; }
+
+        .p-title { 
+            font-family: var(--font-display); font-size: 1.4rem; color: var(--brand-walnut); 
+            line-height: 1.2; margin-bottom: 8px;
         }
+
+        .p-tag {
+            position: absolute; top: 15px; right: 15px;
+            background: rgba(255,255,255,0.9); backdrop-filter: blur(5px);
+            padding: 8px 14px;
+            border-radius: 8px; 
+            font-family: var(--font-display); font-weight: 700; color: var(--brand-cherry);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            font-size: 0.9rem;
+        }
+
         .p-desc-short { 
-            color: #666; font-size: 1rem; margin-top: 5px; 
+            color: #555; font-size: 1.05rem; line-height: 1.5; 
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
         }
+
         .btn-view {
             display: block; width: 100%; text-align: center;
-            margin-top: 15px; padding: 14px; 
-            border: 1px solid #ddd; background: transparent;
-            font-family: var(--font-display); font-size: 0.9rem; 
-            border-radius: 8px; cursor: pointer; color: var(--brand-walnut);
+            margin-top: 20px; padding: 16px; 
+            background: transparent; border: 1px solid var(--brand-gold); 
+            font-family: var(--font-display); font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase;
+            border-radius: 6px; cursor: pointer; color: var(--brand-walnut);
+            transition: 0.2s;
         }
+        .btn-view:active { background: var(--brand-gold); color: white; }
 
-        /* === 5. SPECIAL SECTIONS & FORM STYLES === */
+        /* ==========================================================================
+           5. VISUAL BREAKERS & FORM STYLE
+           ========================================================================== */
         .folklore-divider {
-            margin: 40px 15px;
-            background-image: url('https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/packaging-watercolor-woodland-art.jpg');
+            margin: 50px 0;
+            background-image: url('packaging-watercolor-woodland-art.jpg'); /* Supabase or Local Fallback */
             background-size: cover; background-position: center;
-            border-radius: 12px; padding: 40px 20px;
-            text-align: center; border: 4px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.08);
-        }
-        .folk-text {
-            background: rgba(255,255,255,0.9); padding: 20px;
-            border-radius: 8px; font-family: var(--font-body); font-size: 1.2rem;
+            border-radius: 12px; padding: 60px 25px;
+            text-align: center; border: 4px solid white; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
         }
 
-        /* SERVICE INQUIRY FORM */
+        .folk-text {
+            background: rgba(255,255,255,0.95); padding: 30px;
+            border-radius: 4px; border: 1px solid var(--brand-gold);
+        }
+
+        /* INQUIRY FORM STYLE */
         .inquiry-form {
-            background: white; border-radius: 16px; padding: 30px 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            background: white; border-radius: 16px; padding: 30px; 
+            box-shadow: 0 5px 30px rgba(0,0,0,0.06); margin-top: -30px;
+            position: relative; z-index: 10; width: 95%; margin-left: auto; margin-right: auto;
         }
-        .form-group { margin-bottom: 20px; }
-        .form-label { display: block; font-family: var(--font-display); color: var(--brand-cherry); margin-bottom: 5px; font-size: 0.8rem; letter-spacing: 1px; }
-        .form-input, .form-textarea {
-            width: 100%; padding: 15px; border-radius: 8px;
-            border: 1px solid #ddd; font-family: var(--font-body); font-size: 1rem;
-        }
-        .form-textarea { resize: vertical; min-height: 100px; }
-        .btn-submit {
-             width: 100%; padding: 16px; border: none; border-radius: 8px;
-            background: var(--brand-walnut); color: var(--brand-gold);
-            font-family: var(--font-display); text-transform: uppercase; font-size: 1rem;
+
+        .form-group { margin-bottom: 24px; }
+        
+        .form-label { 
+            display: block; font-family: var(--font-display); 
+            color: var(--brand-cherry); margin-bottom: 8px; 
+            font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase;
         }
         
-        /* === 6. SUPER MODAL (The Detailed View) === */
+        .form-input, .form-textarea {
+            width: 100%; padding: 18px; border-radius: 8px;
+            border: 1px solid #e0e0e0; font-family: var(--font-body); font-size: 1.1rem;
+            background: #FAFAFA; transition: 0.3s;
+        }
+        
+        .form-input:focus, .form-textarea:focus {
+            outline: none; border-color: var(--brand-gold); background: white;
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+        }
+
+        .form-textarea { resize: vertical; min-height: 120px; }
+        
+        .btn-submit {
+            width: 100%; padding: 18px; border: none; border-radius: 8px;
+            background: var(--brand-walnut); color: var(--brand-gold);
+            font-family: var(--font-display); text-transform: uppercase; font-size: 1rem;
+            cursor: pointer; letter-spacing: 0.1em;
+            box-shadow: 0 5px 20px rgba(34, 26, 25, 0.4);
+        }
+
+        /* ==========================================================================
+           6. THE "SUPER MODAL" (Detail View & Recipe Archive)
+           ========================================================================== */
         .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000;
-            display: none; opacity: 0; transition: 0.3s;
+            position: fixed; inset: 0; background: rgba(34, 26, 25, 0.6); backdrop-filter: blur(4px);
+            z-index: 5500; display: none; opacity: 0; transition: 0.4s;
         }
         .modal-overlay.open { display: block; opacity: 1; }
 
         .super-modal {
-            position: fixed; bottom: -100%; left: 0; width: 100%; height: 90vh;
-            background: white; border-radius: 24px 24px 0 0; z-index: 2100;
-            overflow-y: scroll; padding-bottom: 120px;
+            position: fixed; bottom: -100%; left: 0; width: 100%; height: 92vh;
+            background: #FFFFFF; 
+            border-radius: 24px 24px 0 0; 
+            z-index: 6000;
+            overflow-y: scroll; padding-bottom: 140px;
             transition: bottom 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            /* Textured Background for Paper Feel */
+            background-image: url("https://www.transparenttextures.com/patterns/cream-paper.png");
         }
         .super-modal.open { bottom: 0; }
 
-        .modal-hero-img { height: 350px; position: relative; }
-        .close-btn {
-            position: absolute; top: 20px; right: 20px; width: 40px; height: 40px;
-            background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1); cursor: pointer; font-size: 1.2rem; z-index: 10;
+        .modal-hero-container {
+            height: 380px; position: relative; width: 100%;
         }
+        .modal-hero-img { height: 100%; width: 100%; object-fit: cover; }
+        .close-btn {
+            position: absolute; top: 25px; right: 25px; width: 45px; height: 45px;
+            background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15); cursor: pointer; font-size: 1.2rem; z-index: 20;
+            color: var(--brand-walnut); transition: 0.3s;
+        }
+        .close-btn:hover { transform: rotate(90deg); }
 
-        .modal-body { padding: 30px 25px; }
+        .modal-body { padding: 40px 30px; }
 
+        /* Detail Data Points */
         .data-grid {
-            display: flex; gap: 10px; margin: 20px 0;
-            border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; padding: 15px 0;
+            display: flex; gap: 15px; margin: 30px 0;
+            background: white; border: 1px solid #eee; border-radius: 12px; padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
         }
         .data-point {
             flex: 1; text-align: center; border-right: 1px solid #f0f0f0;
         }
         .data-point:last-child { border: none; }
-        .dp-icon { font-size: 1.2rem; color: var(--brand-gold); margin-bottom: 5px; }
+        .dp-icon { font-size: 1.3rem; color: var(--brand-gold); margin-bottom: 8px; }
         .dp-label { font-size: 0.7rem; text-transform: uppercase; color: #999; font-family: sans-serif; letter-spacing: 1px; }
-        .dp-value { font-weight: bold; color: var(--brand-walnut); }
+        .dp-value { font-weight: 600; color: var(--brand-walnut); margin-top: 4px;}
 
-        .story-text { line-height: 1.8; color: #444; margin-bottom: 20px; font-size: 1.1rem; }
-        .recipe-block { background: #FAF9F6; padding: 20px; border-radius: 12px; margin-top: 20px; }
+        /* Narrative Text */
+        .story-text { 
+            line-height: 1.8; color: #444; margin-bottom: 30px; 
+            font-size: 1.15rem; font-family: var(--font-body);
+        }
+
+        /* --- THE ARCHIVE (RECIPE STYLE) --- */
+        .archive-paper {
+            background: #fffef8; border: 1px solid #e0dccc; 
+            padding: 30px 20px; margin: 20px -10px;
+            box-shadow: inset 0 0 60px rgba(0,0,0,0.02);
+            position: relative;
+        }
+        .archive-paper::before {
+            content: "From The Archives";
+            position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+            background: var(--brand-cherry); color: white;
+            font-family: var(--font-display); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+            padding: 4px 15px;
+        }
+
+        .archive-header {
+            font-family: var(--font-display); 
+            text-align: center; 
+            font-size: 1.5rem; 
+            border-bottom: 2px solid var(--brand-gold);
+            padding-bottom: 15px; margin-bottom: 25px;
+        }
+
+        .archive-section-title {
+            font-family: var(--font-display); font-size: 0.9rem; color: var(--brand-cherry);
+            text-transform: uppercase; letter-spacing: 0.1em; border-bottom: 1px solid #ddd;
+            padding-bottom: 5px; margin: 25px 0 15px;
+        }
+
+        /* Recipe Lists */
+        .ingredient-list { list-style: none; display: grid; grid-template-columns: 1fr; gap: 10px; }
+        .ingredient-list li { 
+            padding-bottom: 8px; border-bottom: 1px dotted #e6e6e6;
+            font-size: 1rem; color: #555;
+        }
         
+        .method-step { margin-bottom: 20px; display: flex; gap: 15px; }
+        .step-num { 
+            flex: 0 0 25px; height: 25px; background: var(--brand-walnut); color: white;
+            border-radius: 50%; font-family: var(--font-display); font-size: 0.8rem;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .step-text { font-size: 1.05rem; line-height: 1.6; color: #333; }
+
+        /* Floating Cart CTA */
         .floating-bar {
             position: fixed; bottom: 0; left: 0; width: 100%;
-            padding: 15px 20px; background: white; border-top: 1px solid #eee;
-            z-index: 2200; display: none; box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+            padding: 20px 25px 30px; 
+            background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(0,0,0,0.1);
+            z-index: 6200; display: none; box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
+            animation: slideUpBtn 0.4s ease forwards;
         }
-        .floating-bar.active { display: block; animation: fadeUp 0.3s; }
-        
-        @keyframes fadeUp { from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);} }
+        .floating-bar.active { display: block; }
+
+        @keyframes slideUpBtn { from{transform:translateY(100%)} to{transform:translateY(0)} }
         
         .btn-cta {
-            width: 100%; padding: 16px; border: none; border-radius: 50px;
+            width: 100%; padding: 18px; border: none; border-radius: 50px;
             background: var(--brand-cherry); color: white;
-            font-family: var(--font-display); text-transform: uppercase; font-size: 1rem; cursor: pointer;
+            font-family: var(--font-display); text-transform: uppercase; 
+            font-size: 1rem; letter-spacing: 0.1em; cursor: pointer;
+            box-shadow: 0 5px 20px rgba(114, 17, 33, 0.4);
+            display: flex; justify-content: space-between; align-items: center; padding: 18px 30px;
         }
+        .btn-price { opacity: 0.8; font-family: var(--font-body); }
 
         .watercolor-embed {
-            width: 100%; border-radius: 12px; margin: 25px 0;
-            border: 1px solid #ddd; padding: 10px; background: white;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            width: 100%; border-radius: 4px; margin: 30px 0;
+            border: 8px solid white; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transform: rotate(-1deg);
         }
 
-        /* === 7. CART/CHECKOUT SLIDEOVER === */
+        /* ==========================================================================
+           7. CHECKOUT SLIDEOVER
+           ========================================================================== */
         .checkout-drawer {
             position: fixed; top:0; right: -100%; width: 100%; height: 100%;
-            background: var(--brand-cream); z-index: 5000; transition: right 0.4s ease;
-            display: flex; flex-direction: column;
+            background: var(--brand-paper); z-index: 7000; transition: right 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex; flex-direction: column; box-shadow: -20px 0 50px rgba(0,0,0,0.2);
         }
         .checkout-drawer.open { right: 0; }
         
         .checkout-header {
-            display: flex; align-items: center; padding: 18px 20px;
-            border-bottom: 1px solid rgba(0,0,0,0.1); font-family: var(--font-display);
+            display: flex; align-items: center; padding: 25px; background: white;
+            border-bottom: 1px solid rgba(0,0,0,0.06); 
         }
-        .checkout-body { padding: 20px; flex: 1; overflow-y: scroll; }
-        .checkout-footer { padding: 20px; border-top: 1px solid #ddd; background: white; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); }
+        
+        .checkout-body { 
+            padding: 30px 25px; flex: 1; overflow-y: auto; 
+        }
+
+        .checkout-footer { 
+            padding: 30px 25px 40px; border-top: 1px solid #e0e0e0; background: white; 
+            box-shadow: 0 -5px 30px rgba(0,0,0,0.04); 
+        }
 
     </style>
 </head>
 <body>
 
-    <!-- NAV -->
+    <!-- NAVIGATION BAR -->
     <nav class="app-nav">
-        <div style="width:40px;"></div> <!-- Spacer -->
-        <img src="pomelli-vintage-logo-script.jpg" class="logo" alt="Pomelli Estate">
-        <div class="cart-trigger" onclick="openCheckout()">
-            <i class="fa-solid fa-suitcase"></i>
+        <!-- Menu Icon -->
+        <div class="nav-icon" onclick="scrollToTop()">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+        
+        <!-- Logo Container with Aspect Ratio Fix -->
+        <div class="logo-container">
+            <!-- Ensure local file exists or uses backup -->
+            <img src="pomelli-vintage-logo-script.jpg" class="logo" alt="Pomelli Estate" onerror="this.src='https://placehold.co/200x50?text=Pomelli';">
+        </div>
+
+        <!-- Cart Icon -->
+        <div class="nav-icon" style="position:relative; justify-content:flex-end;" onclick="openCheckout()">
+            <i class="fa-solid fa-suitcase-rolling"></i>
             <div class="badge" id="cart-badge">0</div>
         </div>
     </nav>
 
-    <!-- HERO -->
+
+    <!-- HERO VIDEO SECTION -->
+    <!-- Logic included to handle Mobile Autoplay Issues -->
     <div class="cinematic-hero">
-        <video autoplay muted loop playsinline class="hero-video">
+        <video id="hero-vid" autoplay muted loop playsinline webkit-playsinline class="hero-video" poster="butler-service-caramel-drip.jpg">
+            <!-- Priority Local Video if downloadable -->
             <source src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/asembeling%20carrot%20cake%20video.mp4" type="video/mp4">
         </video>
         <div class="hero-overlay">
-            <span class="hero-script">High Society</span>
-            <h1 class="hero-title">The Winter<br>Provisions</h1>
+            <span class="hero-script">Private Provisions</span>
+            <h1 class="hero-title">The Winter<br>Archive</h1>
+            <p style="font-size:0.9rem; letter-spacing:1px; opacity:0.9;">CAIRO ESTATE • EST 1922</p>
         </div>
     </div>
 
-    <!-- TABS -->
+
+    <!-- HORIZONTAL TABS -->
     <div class="menu-tabs">
         <button class="tab-pill active" onclick="filterMenu('cakes', this)">Grand Gâteaux</button>
         <button class="tab-pill" onclick="filterMenu('buns', this)">Morning Goods</button>
-        <button class="tab-pill" onclick="filterMenu('services', this)">Estate Services</button>
+        <button class="tab-pill" onclick="filterMenu('services', this)">Concierge</button>
     </div>
 
-    <!-- === GRID: CAKES === -->
-    <section id="cakes" class="grid-container active">
-        <div class="product-card">
-            <span class="p-price">1250 EGP</span>
-            <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sovereign-carrot-cake-whole.jpg" class="p-image">
-            <div class="p-content">
-                <h2 class="p-title">The Sovereign Carrot Gâteau</h2>
-                <p class="p-desc-short">Inspired by Truluck's iconic recipe. Layers of moist carrot sponge, candied pecans, and brown butter butterscotch.</p>
-                <button class="btn-view" onclick="openCarrotCakeModal()">View The Recipe Story</button>
-            </div>
-        </div>
-    </section>
 
-    <!-- === GRID: BUNS === -->
-    <section id="buns" class="grid-container">
+    <!-- ========================== 
+         CONTENT GRIDS 
+    ========================== -->
+
+    <!-- 1. CAKES GRID -->
+    <section id="cakes" class="grid-container active">
+        <!-- Sovereign Cake -->
         <div class="product-card">
-            <span class="p-price">850 EGP</span>
-            <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/Flow%20Dec%2031%202025.jpeg" class="p-image">
+            <span class="p-tag">1250 EGP</span>
+            <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sovereign-carrot-cake-whole.jpg" class="p-image" loading="lazy">
             <div class="p-content">
-                <h2 class="p-title">Caramel Pecan Sticky Buns</h2>
-                <p class="p-desc-short">Tray of 12 brioche spirals bathing in a bed of salted brown butter pecan caramel.</p>
-                <button class="btn-view" onclick="openBunsModal()">View The Sticky Details</button>
+                <h2 class="p-title">The Sovereign Gâteau</h2>
+                <p class="p-desc-short">A breathless tower inspired by Truluck's. Heirloom carrot sponge, candied pecans, and brown-butter butterscotch.</p>
+                <button class="btn-view" onclick="openCarrotCakeModal()">Open Archive Entry</button>
             </div>
         </div>
         
-        <div class="folklore-divider">
-            <div class="folk-text">
-                <h3 style="font-family:'Cinzel'; margin-bottom:5px;">Packaging Folklore</h3>
-                <p style="font-size: 0.9rem;">Plastic-free. Every tray arrives in woodland-illustrated boxes.</p>
+        <!-- Slice -->
+         <div class="product-card">
+            <span class="p-tag">140 EGP</span>
+            <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/carrot-cake-slice-art-deco-plate.jpg" class="p-image" loading="lazy">
+            <div class="p-content">
+                <h2 class="p-title">The Salon Slice</h2>
+                <p class="p-desc-short">A single gold-standard portion for the private study.</p>
+                <button class="btn-view" onclick="addToCart('Salon Slice', 140)">Add Single Portion</button>
             </div>
         </div>
     </section>
 
-    <!-- === GRID: SERVICES (INQUIRY FORM) === -->
+    <!-- 2. BUNS GRID -->
+    <section id="buns" class="grid-container">
+        <div class="product-card">
+            <span class="p-tag">850 EGP</span>
+            <!-- Fallback to placeholder if local image fails -->
+            <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/Flow%20Dec%2031%202025.jpeg" class="p-image" loading="lazy">
+            <div class="p-content">
+                <h2 class="p-title">Caramel Pecan Sticky Buns</h2>
+                <p class="p-desc-short">"The Ultimate Holiday Breakfast." Brioche spirals bathing in a bed of salted brown butter pecan caramel.</p>
+                <button class="btn-view" onclick="openBunsModal()">View Archive & Order</button>
+            </div>
+        </div>
+        
+        <!-- Story Breaker -->
+        <div class="folklore-divider">
+            <div class="folk-text">
+                <h3 style="font-family:var(--font-display); margin-bottom:5px; color:var(--brand-walnut);">Beatrix Potter Packaging</h3>
+                <p style="font-size: 1rem; color:#555;">No plastic. Every order arrives in boxes adorned with vintage watercolor woodland scenes.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. SERVICES FORM -->
     <section id="services" class="grid-container">
-        <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/butler-service-caramel-drip.jpg" style="border-radius:16px;">
-        <div class="inquiry-form" style="margin-top:25px;">
-             <h2 class="p-title" style="text-align:center;">Service Concierge</h2>
-             <p style="text-align:center; color:#666; margin-bottom:30px; font-size:1rem;">Request a custom dessert commission or our signature plating service for your Cairo event.</p>
+        <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/butler-service-caramel-drip.jpg" style="border-radius:16px; width:100%; height:250px; object-fit:cover;">
+        
+        <div class="inquiry-form">
+             <h2 class="p-title" style="text-align:center;">Estate Butler Service</h2>
+             <div style="width:50px; height:2px; background:var(--brand-cherry); margin:10px auto 30px;"></div>
+             
+             <p style="text-align:center; color:#666; margin-bottom:30px; font-size:1rem; line-height:1.6;">
+                Request Service à la Russe (tableside plating) or custom commissions for your Cairo residence.
+             </p>
              
              <div class="form-group">
-                 <label class="form-label">Your Name</label>
+                 <label class="form-label">Client Name</label>
                  <input type="text" class="form-input" id="service-name">
              </div>
              <div class="form-group">
-                 <label class="form-label">Event Date</label>
+                 <label class="form-label">Proposed Date</label>
                  <input type="date" class="form-input" id="service-date">
              </div>
              <div class="form-group">
-                 <label class="form-label">Number of Guests (Approx.)</label>
-                 <input type="number" class="form-input" id="service-guests" placeholder="e.g., 20">
+                 <label class="form-label">Guest Count</label>
+                 <input type="number" class="form-input" id="service-guests" placeholder="Approximate number">
              </div>
              <div class="form-group">
-                 <label class="form-label">Your Request</label>
-                 <textarea class="form-textarea" id="service-request" placeholder="Please describe the nature of your event and your desired confections..."></textarea>
+                 <label class="form-label">Requirements</label>
+                 <textarea class="form-textarea" id="service-request" placeholder="E.g. A plated dessert service for a dinner party in Zamalek..."></textarea>
              </div>
-             <button class="btn-submit" onclick="inquireService()">Dispatch Inquiry to Butler</button>
+             <button class="btn-submit" onclick="inquireService()">Dispatch Inquiry</button>
+             <p style="text-align:center; margin-top:15px; font-size:0.8rem; color:#999;">Replies typically within 2 hours.</p>
         </div>
-        <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/carrot-cake-manor-interior.jpg" style="border-radius:16px; margin-top:25px;">
     </section>
 
-    <!-- === THE SUPER MODAL (DETAIL VIEW) === -->
+
+    <!-- ========================== 
+         THE "SUPER MODAL" 
+    ========================== -->
     <div class="modal-overlay" id="overlay" onclick="closeModal()"></div>
     
     <div class="super-modal" id="modal">
         <div class="close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></div>
-        <div id="modal-dynamic-content"></div>
+        <div id="modal-dynamic-content">
+            <!-- JAVASCRIPT WILL INJECT THE GIANT CONTENT HERE -->
+        </div>
     </div>
 
-    <!-- STICKY ACTION BUTTON -->
+    <!-- Sticky Floating Action Button (Shows when Modal Open) -->
     <div class="floating-bar" id="floating-bar">
-        <button class="btn-cta" id="floating-btn" onclick="">Add to Trunk</button>
+        <button class="btn-cta" id="floating-btn" onclick="">
+            <span id="f-text">Add to Trunk</span>
+            <span id="f-price" class="btn-price">00 EGP</span>
+        </button>
     </div>
 
-    <!-- === CHECKOUT DRAWER === -->
+
+    <!-- ========================== 
+         CHECKOUT DRAWER 
+    ========================== -->
     <div class="checkout-drawer" id="checkout">
         <div class="checkout-header">
-            <i class="fa-solid fa-arrow-left" onclick="closeCheckout()" style="font-size:1.5rem; margin-right:15px; cursor:pointer;"></i>
-            <h2>Your Trunk</h2>
+            <i class="fa-solid fa-arrow-left" onclick="closeCheckout()" style="font-size:1.3rem; margin-right:15px; cursor:pointer; padding:10px;"></i>
+            <h2 style="font-family:var(--font-display); font-size:1.2rem; letter-spacing:1px;">The Trunk</h2>
         </div>
+        
         <div class="checkout-body" id="cart-contents">
-            <p style="color:#999; text-align:center; margin-top:40px;">The trunk is empty.</p>
+            <!-- Items -->
         </div>
+
         <div class="checkout-footer">
-            <p style="margin-bottom:10px;">Send order to our Butler via WhatsApp:</p>
-            <input type="text" id="cust-name" class="form-input" placeholder="Your Name">
-            <input type="text" id="cust-addr" class="form-input" style="margin-top:10px;" placeholder="Address (Building/Street/City)">
-            <button class="btn-cta" style="margin-top:15px;" onclick="confirmOrder()">Confirm via WhatsApp</button>
+            <p style="margin-bottom:15px; color:var(--brand-cherry); font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; font-weight:600;">Dispatch to Address</p>
+            
+            <div class="form-group" style="margin-bottom:15px;">
+                <input type="text" id="cust-name" class="form-input" placeholder="Full Name">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+                <input type="text" id="cust-addr" class="form-input" placeholder="Address (Building/Street/City)">
+            </div>
+            
+            <button class="btn-cta" style="margin-top:20px; box-shadow:none; border-radius:8px;" onclick="confirmOrder()">
+                <span>Request via WhatsApp</span>
+                <i class="fa-brands fa-whatsapp"></i>
+            </button>
         </div>
     </div>
 
 
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- ==========================================================================
+       LOGIC ENGINE
+    ========================================================================== -->
     <script>
-        // --- 1. DATA (Modules) ---
-        const carrotCakeHTML = `
-            <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sovereign-carrot-cake-whole.jpg" class="modal-hero-img">
+        
+        /* 1. CONTENT MODULES (HTML Variables for massive text) */
+
+        // THE BUNS ARCHIVE (MASSIVE CONTENT)
+        const bunsHTML = `
+            <div class="modal-hero-container">
+                <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/Flow%20Dec%2031%202025.jpeg" class="modal-hero-img">
+            </div>
+            
+            <div class="modal-body">
+                <span style="color:var(--brand-cherry); font-weight:bold; letter-spacing:1px; text-transform:uppercase;">The Bakery Archive</span>
+                <h1 style="font-family:var(--font-display); font-size:2rem; line-height:1.2; margin: 10px 0;">Estate Sticky Pecan Buns</h1>
+                
+                <!-- GLOVE IMAGE INTERACTION -->
+                <p style="font-family:var(--font-script); font-size:1.8rem; color:#aaa; margin-top:20px;">The Pull-Apart...</p>
+                <img src="sticky_glove.jpg" style="border-radius:12px; margin-bottom:20px; box-shadow:0 10px 20px rgba(0,0,0,0.1); width:100%;">
+                
+                <!-- SUMMARY METRICS -->
+                <div class="data-grid">
+                     <div class="data-point"><div class="dp-icon"><i class="fa-regular fa-clock"></i></div><div class="dp-label">Time</div><div class="dp-value">3 Hours</div></div>
+                     <div class="data-point"><div class="dp-icon"><i class="fa-solid fa-cubes"></i></div><div class="dp-label">Yield</div><div class="dp-value">12 Buns</div></div>
+                     <div class="data-point"><div class="dp-icon"><i class="fa-solid fa-star"></i></div><div class="dp-label">Rating</div><div class="dp-value">4.8/5</div></div>
+                </div>
+
+                <p class="story-text">
+                    These soft and buttery brioche rolls, finished with an ooey-gooey caramel pecan praline topping, are the ultimate holiday breakfast treat. I mean… you can’t have a bad day when it starts with caramel pecan sticky buns. The secret lies in the double proofing and the generous brown sugar bath.
+                </p>
+
+                <!-- THE ARCHIVE PAPER RECIPE -->
+                <div class="archive-paper">
+                    <div class="archive-header">Recipe Specifications</div>
+
+                    <div class="archive-section-title">The Ingredients</div>
+                    <ul class="ingredient-list">
+                        <li><strong>4 1/2 cups</strong> All-Purpose Flour (High Gluten)</li>
+                        <li><strong>1 packet</strong> Rapid Yeast (Alive and foaming)</li>
+                        <li><strong>6 tbsp</strong> Unsalted Butter (Browned slightly)</li>
+                        <li><strong>1 large egg</strong> Room temperature</li>
+                        <li><strong>Topping:</strong> 1 cup brown sugar, 2 cups pecan pralines</li>
+                        <li><strong>Filling:</strong> Cinnamon, sugar, melted butter</li>
+                    </ul>
+
+                    <div class="archive-section-title">The Method</div>
+                    
+                    <div class="method-step">
+                        <div class="step-num">1</div>
+                        <div class="step-text"><strong>The Alchemy:</strong> In a microwave-safe bowl, warm the milk and butter until melted but not hot. Combine with yeast, salt, sugar, and flour. Beat until a dough forms.</div>
+                    </div>
+                    <div class="method-step">
+                        <div class="step-num">2</div>
+                        <div class="step-text"><strong>The Development:</strong> Knead on a floured surface for 10 minutes. The dough must stretch without breaking—this ensures pillowy softness. Let rise for 1 hour.</div>
+                    </div>
+                    <div class="method-step">
+                        <div class="step-num">3</div>
+                        <div class="step-text"><strong>The Caramel Bed:</strong> While rising, combine corn syrup, brown sugar, and butter over medium heat. Pour this boiling caramel over pecans in the bottom of your 9x13 pan.</div>
+                    </div>
+                    <div class="method-step">
+                        <div class="step-num">4</div>
+                        <div class="step-text"><strong>The Scroll:</strong> Roll dough into an 18x12 rectangle. Slather with butter and cinnamon sugar. Roll tightly. Cut into 12 even spirals using dental floss for a clean cut.</div>
+                    </div>
+                    <div class="method-step">
+                        <div class="step-num">5</div>
+                        <div class="step-text"><strong>The Bake:</strong> Place rolls into the caramel bed. Rise again until puffy. Bake at 350°F (175°C) for 30 minutes until golden. Invert immediately while hot.</div>
+                    </div>
+
+                    <div style="background:#f4f4f4; padding:15px; margin-top:20px; font-style:italic; font-size:0.9rem;">
+                        <strong>Note from the Kitchen:</strong> "Once cool, the caramel creates a glass-like shell over the pecans. Do not touch while hot."
+                    </div>
+                </div>
+
+                <div style="height:100px;"></div>
+            </div>
+        `;
+
+        // THE CARROT CAKE ARCHIVE
+        const carrotHTML = `
+            <div class="modal-hero-container">
+                <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sovereign-carrot-cake-whole.jpg" class="modal-hero-img">
+            </div>
+            
             <div class="modal-body">
                 <span style="color:var(--brand-cherry); font-weight:bold; letter-spacing:1px; text-transform:uppercase;">Grand Provisioning</span>
                 <h1 style="font-family:var(--font-display); font-size:2rem; line-height:1.2; margin: 10px 0;">The Sovereign Gâteau</h1>
+                
                 <div class="data-grid">
                     <div class="data-point"><div class="dp-icon"><i class="fa-regular fa-clock"></i></div><div class="dp-label">Prep</div><div class="dp-value">2 Days</div></div>
                     <div class="data-point"><div class="dp-icon"><i class="fa-solid fa-users"></i></div><div class="dp-label">Serves</div><div class="dp-value">16 Ppl</div></div>
-                    <div class="data-point"><div class="dp-icon"><i class="fa-solid fa-utensils"></i></div><div class="dp-label">Style</div><div class="dp-value">Grand Tier</div></div>
+                    <div class="data-point"><div class="dp-icon"><i class="fa-solid fa-utensils"></i></div><div class="dp-label">Style</div><div class="dp-value">Grand</div></div>
                 </div>
-                <p class="story-text">Inspired by the iconic recipe from Truluck's. A breathless tower featuring layers of moist carrot sponge with pineapple and coconut, oven-candied pecans, a rich brown-butter butterscotch, and tangy cream cheese frosting.</p>
+                
+                <p class="story-text">
+                    Inspired by the iconic recipe from Truluck's. A breathless tower featuring layers of moist carrot sponge with pineapple and coconut, oven-candied pecans, a rich brown-butter butterscotch, and tangy cream cheese frosting. 
+                </p>
+
+                <!-- Watercolor Image Insert -->
                 <img src="watercolored carrot cake.jpg" class="watercolor-embed" alt="Illustration">
-                <div class="recipe-block"><h3 style="font-family:var(--font-display); margin-bottom:10px;">The Notes</h3><ul style="padding-left:20px; color:#555; line-height:1.6;"><li><strong>Pecan Surprise:</strong> Oven-candied pecans buried in the frosting.</li><li><strong>Structure:</strong> We use a grand pan (30x20cm).</li><li><strong>Alchemy:</strong> We brown the butter before mixing the frosting to create a deep hazelnut aroma.</li></ul></div>
-            </div>`;
 
-        const bunsHTML = `
-            <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/Flow%20Dec%2031%202025.jpeg" class="modal-hero-img">
-            <div class="modal-body">
-                <span style="color:var(--brand-cherry); font-weight:bold;">Morning Goods</span>
-                <h1 style="font-family:var(--font-display); font-size:2rem; margin: 10px 0;">Estate Sticky Buns</h1>
-                 <img src="sticky_glove.jpg" style="border-radius:12px; margin: 20px 0; box-shadow:0 10px 20px rgba(0,0,0,0.1);">
-                <p class="story-text">These are not cinnamon rolls; they are an experience. Soft, buttery brioche spirals are finished with an ooey-gooey caramel pecan praline topping. The dough itself is proofed twice, a slow process which develops a pillowy, soft gluten structure.</p>
-                <div class="data-grid">
-                     <div class="data-point"><div class="dp-icon"><i class="fa-regular fa-clock"></i></div><div class="dp-label">Proof</div><div class="dp-value">3 Hours</div></div>
-                     <div class="data-point"><div class="dp-icon"><i class="fa-solid fa-cubes"></i></div><div class="dp-label">Yield</div><div class="dp-value">12 Buns</div></div>
-                     <div class="data-point"><div class="dp-icon"><i class="fa-solid fa-fire-burner"></i></div><div class="dp-label">Technique</div><div class="dp-value">Brown Butter</div></div>
+                <div class="archive-paper">
+                     <div class="archive-header">Chef's Notes</div>
+                     <p style="margin-bottom:15px; line-height:1.6;"><strong>On Acidity:</strong> The sponge was balanced with crushed pineapple to cut the sweetness. Previous trials with too much baking soda were soapy; this version is perfected.</p>
+                     
+                     <div class="archive-section-title">Anatomy</div>
+                     <ul class="ingredient-list">
+                        <li><strong>Frosting:</strong> Cream cheese base with browned butter.</li>
+                        <li><strong>Inclusion:</strong> Toasted Coconut & Pineapple.</li>
+                        <li><strong>Surprise:</strong> Every layer has a "crunch" of candied pecan.</li>
+                     </ul>
+
+                     <p style="margin-top:20px; font-style:italic;">"The result is a cake that improves as it sits. Best eaten on Day 2." - Erika</p>
                 </div>
-                <div class="recipe-block"><h3 style="font-family:var(--font-display); margin-bottom:10px;">The Method</h3><p style="font-size:1rem; color:#555;">Dough is rolled into a tight log over a butter and brown sugar filling, then sliced with floss to preserve the layers. The rolls then rest in a bed of hot caramel, corn syrup, and pecan pralines before their final bake.</p></div>
-            </div>`;
+                
+                <div style="height:100px;"></div>
+            </div>
+        `;
 
-        let cart = [];
+
+        /* 2. CORE LOGIC */
         
-        // --- 2. LOGIC (UI & Navigation) ---
+        // Video Fixer script for Mobile
+        document.addEventListener('DOMContentLoaded', () => {
+            const vid = document.getElementById('hero-vid');
+            vid.play().catch(e => {
+                console.log("Autoplay blocked, showing user prompt interaction usually handles this.");
+            });
+            // Ensure tabs reset
+            filterMenu('cakes', document.querySelector('.tab-pill'));
+        });
+
+        // Tab Filtering
         function filterMenu(id, btn) {
             document.querySelectorAll('.grid-container').forEach(el => el.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            
             document.querySelectorAll('.tab-pill').forEach(el => el.classList.remove('active'));
-            btn.classList.add('active');
+            if(btn) btn.classList.add('active');
+        }
+
+        // Modal Handlers
+        function openBunsModal() {
+            document.getElementById('modal-dynamic-content').innerHTML = bunsHTML;
+            setFloatingButton('Sticky Buns', 850);
+            openModal();
+        }
+
+        function openCarrotCakeModal() {
+            document.getElementById('modal-dynamic-content').innerHTML = carrotHTML;
+            setFloatingButton('Sovereign Gâteau', 1250);
+            openModal();
+        }
+
+        function setFloatingButton(name, price) {
+            const btn = document.getElementById('floating-btn');
+            document.getElementById('f-text').innerText = "Add " + name;
+            document.getElementById('f-price').innerText = price + " EGP";
+            btn.onclick = () => addToCart(name, price);
         }
 
         function openModal() {
@@ -420,68 +803,66 @@
             document.getElementById('floating-bar').classList.remove('active');
         }
 
-        function openCarrotCakeModal() {
-            document.getElementById('modal-dynamic-content').innerHTML = carrotCakeHTML;
-            document.getElementById('floating-btn').innerText = "Add Gâteau (1250 EGP)";
-            document.getElementById('floating-btn').onclick = () => addToCart("Sovereign Gâteau", 1250);
-            openModal();
-        }
-
-        function openBunsModal() {
-            document.getElementById('modal-dynamic-content').innerHTML = bunsHTML;
-            document.getElementById('floating-btn').innerText = "Add Buns (850 EGP)";
-            document.getElementById('floating-btn').onclick = () => addToCart("Sticky Buns", 850);
-            openModal();
-        }
-
-        // --- 3. SERVICE INQUIRY LOGIC ---
+        // Services Inquiry
         function inquireService() {
             const name = document.getElementById('service-name').value;
             const date = document.getElementById('service-date').value;
             const guests = document.getElementById('service-guests').value;
             const request = document.getElementById('service-request').value;
 
-            if (!name || !date || !guests || !request) {
-                return alert("The Butler requires all fields to process an inquiry.");
-            }
+            if(!name || !request) return alert("The Butler requires at least a Name and Request Details.");
 
-            const msg = `*ESTATE SERVICE INQUIRY*%0a%0a` +
-                        `**Client:** ${name}%0a` +
-                        `**Event Date:** ${date}%0a` +
-                        `**No. of Guests:** ${guests}%0a%0a` +
-                        `**Request Details:**%0a${request}`;
-
+            const msg = `*CONCIERGE INQUIRY*%0a%0aName: ${name}%0aDate: ${date}%0aGuests: ${guests}%0aRequest: ${request}`;
             window.open(`https://wa.me/201024274466?text=${msg}`);
         }
 
-        // --- 4. CART & CHECKOUT SYSTEM ---
+        // Cart & Checkout
+        let cart = [];
+
         function addToCart(name, price) {
             cart.push({name, price});
-            const badge = document.getElementById('cart-badge');
-            badge.innerText = cart.length;
-            badge.style.opacity = 1;
-            badge.style.transform = 'scale(1.3)';
-            setTimeout(() => { badge.style.transform = 'scale(1)'; }, 200);
+            // Animation for Badge
+            const b = document.getElementById('cart-badge');
+            b.innerText = cart.length;
+            b.classList.add('active');
+            
             closeModal();
+            // Subtle notification?
+            // For luxury feel, we just update the badge and maybe scroll top or vibe
         }
 
         function openCheckout() {
-            const list = document.getElementById('cart-contents');
-            document.getElementById('checkout').classList.add('open');
+            const drawer = document.getElementById('checkout');
+            drawer.classList.add('open');
             
-            if (cart.length === 0) {
-                 list.innerHTML = `<p style="color:#999; text-align:center; margin-top:40px;">The trunk is empty.</p>`;
-                 return;
+            const list = document.getElementById('cart-contents');
+            if(cart.length === 0) {
+                list.innerHTML = `<p style="text-align:center; color:#999; margin-top:50px;">Your trunk is currently empty.</p>`;
+                return;
             }
 
             let html = "";
             let total = 0;
-            cart.forEach(item => {
-                html += `<div style="border-bottom:1px solid #eee; padding:10px 0; display:flex; justify-content:space-between;"><b>${item.name}</b> <span>${item.price} EGP</span></div>`;
-                total += item.price;
+            cart.forEach((i, idx) => {
+                total += i.price;
+                html += `
+                    <div style="display:flex; justify-content:space-between; margin-bottom:15px; padding-bottom:10px; border-bottom:1px solid #eee;">
+                        <div>
+                            <div style="font-family:var(--font-display);">${i.name}</div>
+                            <div style="color:var(--brand-cherry); font-size:0.9rem; cursor:pointer;" onclick="removeCart(${idx})">Remove</div>
+                        </div>
+                        <div style="font-weight:bold;">${i.price} EGP</div>
+                    </div>
+                `;
             });
-            html += `<br><div style="text-align:right; font-size:1.2rem;"><strong>Total: ${total} EGP</strong></div>`;
+            html += `<div style="text-align:right; font-size:1.2rem; font-family:var(--font-display); margin-top:20px;">Total: ${total} EGP</div>`;
             list.innerHTML = html;
+        }
+
+        function removeCart(idx) {
+            cart.splice(idx, 1);
+            document.getElementById('cart-badge').innerText = cart.length;
+            openCheckout(); // re-render
         }
 
         function closeCheckout() {
@@ -489,23 +870,28 @@
         }
 
         function confirmOrder() {
-            if (cart.length === 0) return alert("Your trunk is empty.");
+            if(cart.length === 0) return alert("Empty Trunk");
             
             const name = document.getElementById('cust-name').value;
             const addr = document.getElementById('cust-addr').value;
             
-            if (!name || !addr) return alert("The Butler requires your name and address.");
+            if(!name || !addr) return alert("Delivery Details Required");
 
-            let msg = `*NEW ORDER - POMELLI*%0aName: ${name}%0aAddr: ${addr}%0a%0aITEMS:%0a`;
+            let msg = `*NEW PROVISION ORDER*%0a%0aClient: ${name}%0aAddress: ${addr}%0a%0aITEMS:%0a`;
             let total = 0;
-            cart.forEach(item => {
-                msg += `- ${item.name} (${item.price} EGP)%0a`;
-                total += item.price;
+            cart.forEach(i => {
+                msg += `- ${i.name} (${i.price})%0a`;
+                total += i.price;
             });
-            msg += `%0a*TOTAL: ${total} EGP*`;
-            
+            msg += `%0a*TOTAL ESTIMATE: ${total} EGP*`;
+
             window.open(`https://wa.me/201024274466?text=${msg}`);
         }
+        
+        function scrollToTop() {
+            window.scrollTo({top:0, behavior:'smooth'});
+        }
+
     </script>
 </body>
 </html>
