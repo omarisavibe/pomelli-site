@@ -1,577 +1,1553 @@
-/* =========================================
-   POMELLI ESTATE | VISUAL IDENTITY SYSTEM
-   Style: 1920s Art Deco Meets Beatrix Potter
-   ========================================= */
+/* 
+==========================================================================
+   PROJECT: POMELLI DIGITAL ESTATE 
+   TYPE:    Mobile-First Progressive Web App Styles
+   VERSION: 5.2 (The Grand Archive)
+   AUTHOR:  Private Estate Design
+========================================================================== 
+*/
 
-/* --- 1. LUXURY COLOR PALETTE --- */
+
+/* ==========================================================================
+   1. ROOT VARIABLES (The Luxury Palette)
+   ========================================================================== */
 :root {
-    --walnut-deep: #2A1B18;    /* Dark Wood */
-    --walnut-light: #4A3B32;   /* Lighter Wood */
-    --cherry-velvet: #721121;  /* THE Deep Red (Branding Color) */
-    --cherry-bright: #9E1B2D;  /* Hover State Red */
-    --cream: #F4F1EA;          /* Base Background */
-    --paper-vintage: #EFEDE4;  /* Texture Background */
-    --gold-matte: #C5A059;     /* Borders */
-    --gold-shine: #D4AF37;     /* Text Highlights */
-    --sage-green: #DDE2D5;     /* Watercolor Background Base */
-    --text-main: #1D1D1D;
+    /* --- COLOR SYSTEM --- */
+    
+    /* THE WALNUT: Deep, dark wood tones for text and contrast */
+    --walnut-ink:      #1F1816;
+    --walnut-light:    #3E3432;
+    
+    /* THE CHERRY: The Brand Signature (Deep Wine Red) */
+    --cherry-deep:     #5D0E19; 
+    --cherry-vivid:    #8A1525;
+    
+    /* THE PAPER: Replicating high-quality cardstock */
+    --paper-cream:     #F9F8F4;
+    --paper-white:     #FFFFFF;
+    --paper-dark:      #ECE8DE;
+    
+    /* THE GOLD: Used sparingly for accents */
+    --gold-leaf:       #CFA968;
+    --gold-shimmer:    #E5C585;
+
+    /* --- TYPOGRAPHY (Mapped to HTML Google Fonts) --- */
+    --font-headline:   'Cinzel', serif;
+    --font-body:       'Cormorant Garamond', serif;
+    --font-script:     'Monsieur La Doulaise', cursive;
+
+    /* --- SPACING & GEOMETRY (8pt Grid System) --- */
+    --spacer-xs:       8px;
+    --spacer-sm:       16px;
+    --spacer-md:       24px;
+    --spacer-lg:       32px;
+    --spacer-xl:       64px;
+
+    --radius-sm:       8px;
+    --radius-md:       16px;
+    --radius-lg:       30px; /* Used for Hero curve */
+
+    /* --- DEPTH & SHADOWS --- */
+    --shadow-soft:     0 5px 15px -5px rgba(31, 24, 22, 0.05);
+    --shadow-card:     0 10px 30px -10px rgba(31, 24, 22, 0.12);
+    --shadow-float:    0 20px 60px -10px rgba(31, 24, 22, 0.25);
+    
+    /* --- Z-INDEX LAYERS --- */
+    --z-background:    0;
+    --z-content:       10;
+    --z-sticky:        900;
+    --z-nav:           1000;
+    --z-backdrop:      2000;
+    --z-modal:         2100;
+    --z-drawer:        5000;
+    --z-alert:         6000;
 }
 
-/* --- 2. GLOBAL RESETS & TYPOGRAPHY --- */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+
+/* ==========================================================================
+   2. GLOBAL RESETS & NORMALIZATION
+   ========================================================================== */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    
+    /* Removes the grey highlight on tap on iOS */
+    -webkit-tap-highlight-color: transparent; 
 }
 
 html {
     scroll-behavior: smooth;
+    font-size: 16px; /* Base for REM calculation */
 }
 
 body {
-    background-color: var(--cream);
-    color: var(--text-main);
-    font-family: 'Cormorant Garamond', serif; /* Body text */
-    font-size: 18px;
+    background-color: var(--paper-cream);
+    color: var(--walnut-ink);
+    font-family: var(--font-body);
+    font-size: 1.125rem; /* 18px body text for readability */
     line-height: 1.6;
-    overflow-x: hidden;
-    opacity: 0; 
-    animation: pageFadeIn 1.5s forwards; /* The smooth "Theater Curtain" load */
+    overflow-x: hidden; /* Prevent side scroll */
+    padding-bottom: 120px; /* Essential pad for mobile UI bottom bar */
 }
 
-/* FADE IN ANIMATION */
-@keyframes pageFadeIn {
-    to { opacity: 1; }
-}
-
-/* TYPOGRAPHY UTILITIES */
-h1, h2, h3 {
-    font-family: 'Cinzel', serif; /* The "Gatsby" Font */
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    font-weight: 500;
-}
-
-/* The signature hand-written style */
-.script {
-    font-family: 'Monsieur La Doulaise', cursive;
-    line-height: 0.8;
-}
-
-.script-cherry {
-    font-family: 'Monsieur La Doulaise', cursive;
-    color: var(--cherry-velvet);
-    font-size: 4rem;
+/* Images & Assets */
+img, video {
+    width: 100%;
+    height: auto;
     display: block;
-    margin-bottom: 20px;
-    line-height: 0.8;
+    object-fit: cover;
 }
 
-.italic-serif {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
+ul { list-style: none; }
+a { text-decoration: none; color: inherit; }
+button { border: none; outline: none; background: none; }
+
+
+/* ==========================================================================
+   3. ANIMATIONS & TRANSITIONS
+   ========================================================================== */
+.fade-in { 
+    opacity: 0; 
+    animation: fadeInAnim 0.8s ease forwards; 
 }
 
-/* GOLD FRAME BORDER (The "Picture Frame" Effect around the screen) */
-body::before {
-    content: '';
-    position: fixed;
-    top: 15px; left: 15px; right: 15px; bottom: 15px;
-    border: 1px solid rgba(197, 160, 89, 0.4);
-    z-index: 9999;
-    pointer-events: none;
-    border-radius: 4px;
+@keyframes fadeInAnim { 
+    from { opacity: 0; transform: translateY(10px); } 
+    to { opacity: 1; transform: translateY(0); } 
 }
 
-/* --- 3. PAGE TRANSITION MANAGER (Switching Views) --- */
-.view-section {
-    display: none; /* All pages hidden by default */
-    min-height: 100vh;
-}
+/* Micro-interaction scale on click */
+.touch-scale { transition: transform 0.1s; }
+.touch-scale:active { transform: scale(0.96); }
 
-.view-section.active-view {
-    display: block; /* Show the active page */
-    animation: fadeInView 1.2s cubic-bezier(0.22, 1, 0.36, 1);
-}
 
-@keyframes fadeInView {
-    from { opacity: 0; transform: translateY(40px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* --- 4. NAVIGATION BAR (Frosted Glass) --- */
-.navbar {
+/* ==========================================================================
+   4. APP NAVIGATION (STICKY HEADER)
+   ========================================================================== */
+.estate-nav {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 90px;
+    height: 70px; /* Taller tap target */
+    background: rgba(249, 248, 244, 0.95);
+    
+    /* Apple-style Blur Effect */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    
+    border-bottom: 1px solid rgba(31, 24, 22, 0.05);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 50px;
-    z-index: 1000;
-    /* Luxurious dark gradient with blur */
-    background: linear-gradient(to bottom, rgba(42, 27, 24, 0.95), rgba(42, 27, 24, 0.8));
-    border-bottom: 2px solid var(--gold-matte);
-    backdrop-filter: blur(10px);
-    transition: all 0.4s ease;
+    padding: 0 var(--spacer-md);
+    z-index: var(--z-nav);
+    transition: all 0.3s ease;
 }
 
 .nav-logo {
-    height: 70px;
-    width: auto;
-    border-radius: 50%;
-    border: 1px solid var(--gold-matte);
-    padding: 2px;
-    transition: transform 0.5s ease;
+    height: 42px; /* Precision sized for mobile header */
+    mix-blend-mode: multiply; /* Blends nicely onto the cream background */
 }
 
-.nav-logo:hover {
-    transform: rotate(360deg);
+.nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
-.cart-trigger {
-    color: var(--gold-shine);
-    font-family: 'Cinzel', serif;
-    cursor: pointer;
+/* Header Icons */
+.icon-btn {
     position: relative;
-    font-size: 0.9rem;
-    letter-spacing: 2px;
-    transition: 0.3s;
-    border: 1px solid transparent;
-    padding: 10px 15px;
+    font-size: 1.4rem;
+    color: var(--walnut-ink);
+    cursor: pointer;
+    transition: color 0.2s;
 }
 
-.cart-trigger:hover {
-    color: white;
-    background: var(--cherry-velvet);
-    border-color: var(--gold-matte);
-}
+.icon-btn:active { color: var(--cherry-vivid); }
 
-.cart-badge {
+/* The "Red Dot" Notification */
+.notification-dot {
     position: absolute;
-    top: -5px;
-    right: -10px;
-    background: var(--cherry-velvet);
+    top: -4px;
+    right: -6px;
+    background: var(--cherry-vivid);
     color: white;
-    font-family: sans-serif;
     font-size: 0.7rem;
-    font-weight: bold;
-    width: 20px;
-    height: 20px;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-weight: 700;
+    width: 18px; 
+    height: 18px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid white;
+    
+    /* White border makes it pop off the icon */
+    border: 2px solid var(--paper-cream);
+    
+    /* Animation state: Hidden by default */
+    opacity: 0; 
+    transform: scale(0);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* --- 5. HERO SECTION (Video Background) --- */
-.hero-wrap {
+.notification-dot.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+
+/* ==========================================================================
+   5. CINEMATIC HERO SECTION
+   ========================================================================== */
+.cinematic-stage {
     position: relative;
-    height: 100vh;
     width: 100%;
+    height: 55vh; /* Takes up just over half screen on mobile */
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+    
+    /* The distinctive "App" Curve at the bottom */
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    box-shadow: var(--shadow-card);
 }
 
-.hero-video {
-    position: absolute;
-    top: 50%; left: 50%;
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    transform: translate(-50%, -50%);
-    z-index: -1;
-    /* The "Old Cinema" Filter */
-    filter: brightness(0.4) contrast(1.1) sepia(0.2); 
-}
-
-.hero-content {
-    position: relative;
-    z-index: 2;
-    color: white;
-    padding: 60px;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: rgba(26, 15, 13, 0.4); /* See-through Walnut */
-    backdrop-filter: blur(5px);
-    max-width: 900px;
-}
-
-.hero-content h1 {
-    font-size: 4rem;
-    color: var(--cream);
-    margin: 10px 0;
-    text-shadow: 0 5px 30px black;
-}
-
-.hero-subtitle {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 1.5rem;
-    color: var(--gold-shine);
-    letter-spacing: 1px;
-}
-
-/* --- 6. PRODUCT MENU SECTION --- */
-.menu-container {
-    padding: 120px 5%;
-    background-color: var(--cream);
-    position: relative;
-}
-
-.menu-title-block {
-    text-align: center;
-    margin-bottom: 100px;
-}
-
-.product-showcase {
-    display: flex;
-    flex-direction: column;
-    gap: 150px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.showcase-item {
-    display: flex;
-    align-items: stretch;
-    gap: 80px;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 80px;
-}
-
-.showcase-item:last-child {
-    border-bottom: none;
-}
-
-/* Zig-Zag Layout */
-.showcase-item:nth-child(even) {
-    flex-direction: row-reverse;
-}
-
-/* The Magic Hover Image Container */
-.img-portal {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-    min-height: 500px;
-    box-shadow: 25px 25px 0 var(--walnut-deep); /* Heavy shadow */
-    border: 1px solid var(--walnut-deep);
-    cursor: pointer;
-}
-
-.img-portal img {
+.stage-video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 1s cubic-bezier(0.33, 1, 0.68, 1);
+    
+    /* Filters for vintage cinematic feel */
+    filter: brightness(0.7) sepia(0.2) contrast(1.1);
 }
 
-.img-portal:hover img {
-    transform: scale(1.05);
-    filter: brightness(1.1);
-}
-
-.hover-reveal-text {
+.stage-curtain {
     position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: var(--spacer-lg) var(--spacer-md);
+    
+    /* Gradient allows text readability */
+    background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.4), transparent);
+}
+
+.stage-title {
     color: white;
-    font-family: 'Cinzel', serif;
-    font-size: 1.5rem;
-    background: rgba(114, 17, 33, 0.85); /* Red glass */
-    padding: 20px 40px;
-    opacity: 0;
-    transition: 0.5s ease;
-    pointer-events: none;
-    border: 1px solid var(--gold-shine);
-}
-
-.img-portal:hover .hover-reveal-text {
-    opacity: 1;
-    top: 50%;
-}
-
-.item-story {
-    flex: 1;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.item-price {
-    color: var(--cherry-velvet);
-    font-family: 'Cinzel', serif;
-    font-size: 2rem;
-    margin: 15px 0;
-    display: block;
-}
-
-.item-desc {
-    font-size: 1.3rem;
-    line-height: 1.8;
-    color: var(--walnut-light);
-    margin-bottom: 40px;
-}
-
-/* --- 7. BUTTON STYLES --- */
-.btn-luxury {
-    background: var(--walnut-deep);
-    color: var(--gold-matte);
-    border: 1px solid var(--gold-matte);
-    padding: 18px 40px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: 0.3s;
-    text-decoration: none;
-    display: inline-block;
-    width: fit-content;
+    font-size: 2.2rem;
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 8px;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    font-family: var(--font-headline);
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    font-family: 'Cinzel', serif;
+    letter-spacing: 0.05em;
 }
 
-.btn-luxury:hover {
-    background: var(--cherry-velvet);
-    color: white;
-    border-color: var(--cherry-velvet);
-    box-shadow: 0 5px 15px rgba(114, 17, 33, 0.4);
+.stage-subtitle {
+    display: block;
+    font-family: var(--font-script);
+    color: var(--gold-shimmer);
+    font-size: 2.5rem;
+    line-height: 0.5;
+    margin-bottom: 15px;
+    opacity: 0.9;
 }
 
-.btn-secondary {
+
+/* ==========================================================================
+   6. HORIZONTAL TABS (MENU SELECTOR)
+   ========================================================================== */
+.category-rail {
+    /* Sticking under the App Header */
+    position: sticky;
+    top: 65px; 
+    z-index: var(--z-sticky);
+    
+    background: rgba(249, 248, 244, 0.95);
+    padding: 12px var(--spacer-md);
+    display: flex;
+    gap: 12px;
+    
+    /* Enable horizontal swipe */
+    overflow-x: auto;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    
+    /* Hiding Scrollbars */
+    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE */
+}
+.category-rail::-webkit-scrollbar { display: none; } /* Chrome */
+
+.pill-btn {
+    white-space: nowrap;
+    padding: 10px 24px;
+    border-radius: 40px;
+    border: 1px solid #E0DDD5;
     background: transparent;
-    color: var(--walnut-deep);
-    border: 1px solid var(--walnut-deep);
-    margin-right: 15px;
+    color: #888;
+    
+    font-family: var(--font-headline);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.btn-secondary:hover {
-    background: var(--walnut-deep);
-    color: var(--gold-matte);
+/* Active State for Tabs */
+.pill-btn.active {
+    background: var(--walnut-ink);
+    color: var(--gold-leaf);
+    border-color: var(--walnut-ink);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-/* --- 8. THE WATERCOLOR / STORYBOOK SECTION --- */
-.watercolor-section {
-    padding: 150px 50px;
-    background-color: var(--sage-green);
-    background-image: url('https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/packaging-watercolor-woodland-art.jpg'); 
-    background-blend-mode: overlay; /* Blends color with image */
+
+/* ==========================================================================
+   7. PROVISION GRIDS (PRODUCT LISTS)
+   ========================================================================== */
+.collection-grid { 
+    padding: var(--spacer-md); 
+    display: none; /* Sections hidden until active */
+}
+
+/* Reveal Animation */
+.collection-grid.active { 
+    display: block; 
+    animation: slideUpFade 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); 
+}
+
+@keyframes slideUpFade { 
+    from { opacity: 0; transform: translateY(30px); } 
+    to { opacity: 1; transform: translateY(0); } 
+}
+
+/* --- THE CARD COMPONENT --- */
+.provision-card {
+    background: var(--paper-white);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacer-lg);
+    position: relative;
+    overflow: hidden; /* Contains the image zoom */
+    
+    /* Depth */
+    box-shadow: var(--shadow-card);
+    border: 1px solid rgba(255,255,255,0.5);
+    
+    transform: translateZ(0); /* Hardware Acceleration */
+    transition: transform 0.3s;
+}
+
+.provision-img-wrap {
+    position: relative;
+    height: 350px; /* Grand visual height */
+    width: 100%;
+    overflow: hidden;
+}
+
+.provision-img-wrap img {
+    transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Card Interaction */
+.provision-card:active .provision-img-wrap img {
+    transform: scale(1.05); /* Zoom on tap */
+}
+
+/* Text Container */
+.provision-body {
+    padding: var(--spacer-md);
+    text-align: left;
+}
+.provision-body h3 {
+    margin-bottom: 5px;
+    font-size: 1.3rem;
+    color: var(--walnut-ink);
+}
+
+/* The "Read Details" Button */
+.btn-inspect {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+    padding: 16px;
+    border: 1px solid #D5D1C5;
+    border-radius: 8px;
+    
+    background: transparent;
+    color: var(--walnut-ink);
+    font-family: var(--font-headline);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* --- SPECIAL SERVICE HIGHLIGHT CARD --- */
+.service-highlight {
+    background-color: var(--walnut-ink);
+    color: var(--gold-shimmer);
+}
+
+.service-highlight h3, 
+.service-highlight p {
+    color: var(--paper-cream);
+}
+
+.service-highlight .btn-inspect {
+    border-color: rgba(229, 197, 133, 0.3);
+    color: var(--gold-shimmer);
+}
+
+/* --- THE PRICE PILL (Floating) --- */
+.price-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 5;
+    
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(8px);
+    
+    padding: 8px 18px;
+    border-radius: 50px;
+    
+    font-family: var(--font-headline);
+    color: var(--cherry-vivid);
+    font-weight: 700;
+    font-size: 0.9rem;
+    
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+
+/* ==========================================================================
+   8. VISUAL INTERMISSION (FOLKLORE SECTION)
+   ========================================================================== */
+.folklore-break {
+    margin: var(--spacer-lg) var(--spacer-md);
+    border-radius: 12px;
+    
+    /* Using the requested watercolor asset */
+    background-image: url('https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/packaging-watercolor-woodland-art.jpg');
     background-size: cover;
     background-position: center;
+    
+    position: relative;
+    padding: 6px; /* This creates a 'Frame' effect around the white box */
+    box-shadow: var(--shadow-soft);
+}
+
+.folklore-inner {
+    background: rgba(255, 255, 255, 0.93);
+    padding: var(--spacer-lg) var(--spacer-md);
     text-align: center;
-    border-top: 10px solid var(--cherry-velvet);
+    border-radius: 8px; /* Slightly tighter radius than outer */
+    border: 1px solid rgba(0,0,0,0.05);
 }
 
-.watercolor-card {
-    background: rgba(255,255,255,0.95);
-    padding: 80px 60px;
-    max-width: 900px;
-    margin: 0 auto;
-    border: 2px solid var(--gold-matte);
-    box-shadow: 0 30px 60px rgba(0,0,0,0.15);
-    /* Outline effect for vintage feel */
-    outline: 5px solid rgba(255,255,255,0.5);
-}
 
-/* --- 9. STORY/DEPTH PAGE STYLING (The Legend) --- */
-#product-story-view {
-    background: var(--walnut-deep);
-    color: var(--cream);
-}
-
-.story-header {
-    height: 70vh;
-    background: url('https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/carrot-cake-slice-art-deco-plate.jpg');
-    background-size: cover;
-    background-position: center 30%;
-    position: relative;
-    border-bottom: 5px solid var(--cherry-velvet);
-}
-
-.story-header::after {
-    content:'';
-    position: absolute;
-    inset:0;
-    /* Fade from transparent image to solid dark background */
-    background: linear-gradient(to bottom, transparent, var(--walnut-deep));
-}
-
-.story-body {
-    max-width: 1000px;
-    margin: -150px auto 0;
-    position: relative;
-    z-index: 10;
-    padding: 0 20px 100px;
-}
-
-.paper-sheet {
-    background: var(--paper-vintage);
-    color: var(--walnut-deep);
-    padding: 80px;
-    border: 1px solid var(--gold-shine);
-    box-shadow: 0 0 70px rgba(0,0,0,0.6);
-    font-size: 1.25rem;
-    position: relative;
-}
-
-/* Ingredients Styling */
-.ingredient-list { margin-left: 20px; }
-.ingredient-list li {
-    margin-bottom: 25px;
-    list-style: square; /* Diamond bullet */
-    color: var(--cherry-velvet); /* Bullet color */
-}
-.ingredient-list span {
-    color: var(--walnut-deep);
-    font-weight: bold;
-    font-family: 'Cinzel';
-    border-bottom: 1px solid var(--gold-matte);
-}
-
-.return-btn {
-    margin-bottom: 30px;
-    display: inline-block;
-    color: var(--gold-shine);
-    cursor: pointer;
-    font-family: 'Cinzel';
-    font-size: 0.9rem;
-    transition: 0.3s;
-}
-
-.return-btn:hover { color: var(--cherry-bright); }
-
-/* --- 10. CART SIDEBAR & CHECKOUT MODAL --- */
-
-/* CART DRAWER */
-.cart-overlay {
-    position: fixed;
-    top: 0;
-    right: -600px; /* Hidden off screen */
-    width: 500px;
-    height: 100vh;
-    background: var(--cream);
-    z-index: 5000;
-    transition: right 0.6s cubic-bezier(0.77, 0, 0.175, 1);
-    box-shadow: -20px 0 50px rgba(0,0,0,0.4);
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    border-left: 10px solid var(--cherry-velvet);
-}
-
-.cart-open {
-    right: 0;
-}
-
-.cart-items {
-    flex: 1;
-    overflow-y: auto;
-    margin-top: 40px;
-}
-
-.cart-item-row {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 25px;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 15px;
-}
-
-.cart-item-img {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border: 1px solid var(--gold-matte);
-}
-
-/* CHECKOUT FORM MODAL */
-.modal-bg {
-    display: none; /* Hidden */
+/* ==========================================================================
+   9. THE SHEET (PRODUCT DETAIL SUPER-MODAL)
+   ========================================================================== */
+   
+/* Darken the background screen */
+.backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(26, 15, 13, 0.95);
-    z-index: 6000;
-    justify-content: center;
-    align-items: center;
+    background: rgba(30, 24, 22, 0.6);
+    z-index: var(--z-backdrop);
+    display: none;
     opacity: 0;
-    transition: opacity 0.5s;
-    backdrop-filter: blur(5px);
+    transition: opacity 0.4s ease;
+    backdrop-filter: blur(3px);
 }
+.backdrop.open { display: block; opacity: 1; }
 
-.modal-active {
+/* The Sliding Card */
+.sheet-modal {
+    position: fixed;
+    bottom: -100%; /* Hidden */
+    left: 0;
+    width: 100%;
+    height: 92vh; /* Tall view */
+    
+    background: white;
+    border-radius: 24px 24px 0 0;
+    z-index: var(--z-modal);
+    
+    /* Premium Cubic Bezier for that "iOS Slide" feel */
+    transition: bottom 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    
     display: flex;
-    opacity: 1;
+    flex-direction: column;
+    overflow: hidden;
 }
+.sheet-modal.open { bottom: 0; }
 
-.concierge-form {
-    background: var(--paper-vintage);
-    width: 100%;
-    max-width: 550px;
-    padding: 60px;
+/* Modal Header Image */
+.sheet-header {
+    height: 300px; /* Grand height for Glove/Action shots */
     position: relative;
-    border: 4px double var(--gold-matte);
-    box-shadow: 0 0 40px rgba(197, 160, 89, 0.2);
+    flex-shrink: 0; /* Prevents shrinking */
 }
-
-/* Form Inputs */
-.form-group { margin-bottom: 25px; }
-
-.form-label {
-    display: block;
-    font-family: 'Cinzel';
-    font-size: 0.9rem;
-    margin-bottom: 8px;
-    color: var(--cherry-velvet);
-    letter-spacing: 1px;
-}
-
-.form-input {
+.sheet-hero-img {
     width: 100%;
-    padding: 15px;
-    border: 1px solid #aaa;
-    background: transparent;
-    font-family: 'Cormorant Garamond';
-    font-size: 1.2rem;
-    color: var(--walnut-deep);
+    height: 100%;
+    object-fit: cover;
 }
 
-.form-input:focus {
-    outline: none;
-    border-color: var(--cherry-velvet);
+/* Close 'X' Button */
+.sheet-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 44px; /* Standard Touch Target */
+    height: 44px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    color: var(--walnut-ink);
+}
+
+/* Scrollable Content */
+.sheet-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 25px 120px 25px; /* Large bottom pad for Floating Button */
+    background: var(--paper-cream);
+}
+
+.sheet-title-block {
+    padding: 30px 0 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.sheet-title-block h2 {
+    font-size: 1.8rem;
+    line-height: 1.2;
+}
+
+/* --- SHEET INTERNAL TABS --- */
+.internal-tabs {
+    display: flex;
+    gap: 25px;
+    border-bottom: 1px solid #E5E0D5;
+    margin: 25px 0;
+}
+
+.i-tab {
+    padding: 12px 0;
+    font-family: var(--font-headline);
+    font-size: 0.85rem;
+    color: #999;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: color 0.3s;
+}
+
+.i-tab.active {
+    color: var(--cherry-vivid);
+    border-color: var(--cherry-vivid);
+}
+
+.tab-content { display: none; animation: fadeInAnim 0.4s; }
+.tab-content.active { display: block; }
+
+
+/* --- RECIPE STYLING MODULES (For Long Text) --- */
+.recipe-meta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+    background: #EDEAE0;
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.r-tag {
+    font-size: 0.8rem;
+    font-family: var(--font-headline);
+    color: var(--cherry-deep);
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.r-text-block {
+    font-size: 1.05rem;
+    color: #444;
+    margin-bottom: 20px;
+}
+
+/* Ingredient List styling */
+.ingredients-list li {
+    padding: 10px 0;
+    border-bottom: 1px dashed #DDD;
+    display: flex;
+    align-items: flex-start;
+}
+.ingredients-list li::before {
+    content: '•';
+    color: var(--gold-leaf);
+    margin-right: 12px;
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+/* Image Embeds inside Description */
+.visuals-caption {
+    font-family: var(--font-script);
+    font-size: 2.2rem;
+    color: var(--walnut-ink);
+    text-align: center;
+    display: block;
+    margin-bottom: 15px;
+}
+
+
+/* --- FLOATING CTA (The Action Button) --- */
+.sheet-footer {
+    position: absolute; /* Relative to modal, not screen */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    
+    padding: 20px 25px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: center;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.1);
+}
+
+.btn-action {
+    width: 100%;
+    padding: 20px;
+    border-radius: 60px; /* Full pill shape */
+    border: none;
+    
+    background: var(--walnut-ink);
+    color: var(--gold-leaf);
+    
+    font-family: var(--font-headline);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(31, 24, 22, 0.4);
+    transition: transform 0.2s;
+}
+
+.btn-action:active { transform: scale(0.97); }
+
+
+/* ==========================================================================
+   10. CHECKOUT DRAWER (SIDE PANEL)
+   ========================================================================== */
+.drawer {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100%;
+    
+    background: var(--paper-cream);
+    z-index: var(--z-drawer);
+    
+    transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+    
+    display: flex;
+    flex-direction: column;
+}
+/* When class 'open' is added, transform makes it slide in from right */
+.drawer.open { transform: translateX(-100%); }
+
+.drawer-header {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding: 0 25px;
+    border-bottom: 1px solid #DDD;
     background: white;
 }
 
-select.form-input {
+.drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 25px;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+}
+
+.drawer-footer {
+    background: white;
+    border-top: 1px solid #DDD;
+    padding: 30px 25px;
+    /* Box Shadow facing upwards */
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+}
+
+/* Forms inside Checkout */
+.form-input {
+    width: 100%;
+    padding: 18px;
+    margin-bottom: 15px;
+    border: 1px solid #CCC;
+    border-radius: 8px;
+    background: var(--paper-cream);
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    color: var(--walnut-ink);
+}
+.form-input:focus {
+    outline: none;
+    border-color: var(--cherry-vivid);
+    background: white;
+}
+
+
+/* ==========================================================================
+   11. SERVICE INQUIRY MODAL (CENTER POPUP)
+   ========================================================================== */
+.inquiry-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(30, 20, 20, 0.95); /* Heavy dark overlay */
+    z-index: 6000;
+    display: none; /* Hidden */
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(5px);
+}
+
+.inquiry-modal.active {
+    display: flex;
+    animation: fadeInAnim 0.4s;
+}
+
+.inquiry-paper {
+    background: var(--paper-cream);
+    width: 100%;
+    max-width: 500px;
+    padding: 40px;
+    border-radius: 4px;
+    
+    /* Elegant double border */
+    border: 4px double var(--gold-leaf);
+    
+    position: relative;
+    box-shadow: 0 0 80px rgba(0,0,0,0.8);
+}
+
+select.form-input { appearance: none; cursor: pointer; }
+
+
+/* END OF CSS *//* 
+==========================================================================
+   PROJECT: POMELLI DIGITAL ESTATE 
+   TYPE:    Mobile-First Progressive Web App Styles
+   VERSION: 5.2 (The Grand Archive)
+   AUTHOR:  Private Estate Design
+========================================================================== 
+*/
+
+
+/* ==========================================================================
+   1. ROOT VARIABLES (The Luxury Palette)
+   ========================================================================== */
+:root {
+    /* --- COLOR SYSTEM --- */
+    
+    /* THE WALNUT: Deep, dark wood tones for text and contrast */
+    --walnut-ink:      #1F1816;
+    --walnut-light:    #3E3432;
+    
+    /* THE CHERRY: The Brand Signature (Deep Wine Red) */
+    --cherry-deep:     #5D0E19; 
+    --cherry-vivid:    #8A1525;
+    
+    /* THE PAPER: Replicating high-quality cardstock */
+    --paper-cream:     #F9F8F4;
+    --paper-white:     #FFFFFF;
+    --paper-dark:      #ECE8DE;
+    
+    /* THE GOLD: Used sparingly for accents */
+    --gold-leaf:       #CFA968;
+    --gold-shimmer:    #E5C585;
+
+    /* --- TYPOGRAPHY (Mapped to HTML Google Fonts) --- */
+    --font-headline:   'Cinzel', serif;
+    --font-body:       'Cormorant Garamond', serif;
+    --font-script:     'Monsieur La Doulaise', cursive;
+
+    /* --- SPACING & GEOMETRY (8pt Grid System) --- */
+    --spacer-xs:       8px;
+    --spacer-sm:       16px;
+    --spacer-md:       24px;
+    --spacer-lg:       32px;
+    --spacer-xl:       64px;
+
+    --radius-sm:       8px;
+    --radius-md:       16px;
+    --radius-lg:       30px; /* Used for Hero curve */
+
+    /* --- DEPTH & SHADOWS --- */
+    --shadow-soft:     0 5px 15px -5px rgba(31, 24, 22, 0.05);
+    --shadow-card:     0 10px 30px -10px rgba(31, 24, 22, 0.12);
+    --shadow-float:    0 20px 60px -10px rgba(31, 24, 22, 0.25);
+    
+    /* --- Z-INDEX LAYERS --- */
+    --z-background:    0;
+    --z-content:       10;
+    --z-sticky:        900;
+    --z-nav:           1000;
+    --z-backdrop:      2000;
+    --z-modal:         2100;
+    --z-drawer:        5000;
+    --z-alert:         6000;
+}
+
+
+/* ==========================================================================
+   2. GLOBAL RESETS & NORMALIZATION
+   ========================================================================== */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    
+    /* Removes the grey highlight on tap on iOS */
+    -webkit-tap-highlight-color: transparent; 
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px; /* Base for REM calculation */
+}
+
+body {
+    background-color: var(--paper-cream);
+    color: var(--walnut-ink);
+    font-family: var(--font-body);
+    font-size: 1.125rem; /* 18px body text for readability */
+    line-height: 1.6;
+    overflow-x: hidden; /* Prevent side scroll */
+    padding-bottom: 120px; /* Essential pad for mobile UI bottom bar */
+}
+
+/* Images & Assets */
+img, video {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+ul { list-style: none; }
+a { text-decoration: none; color: inherit; }
+button { border: none; outline: none; background: none; }
+
+
+/* ==========================================================================
+   3. ANIMATIONS & TRANSITIONS
+   ========================================================================== */
+.fade-in { 
+    opacity: 0; 
+    animation: fadeInAnim 0.8s ease forwards; 
+}
+
+@keyframes fadeInAnim { 
+    from { opacity: 0; transform: translateY(10px); } 
+    to { opacity: 1; transform: translateY(0); } 
+}
+
+/* Micro-interaction scale on click */
+.touch-scale { transition: transform 0.1s; }
+.touch-scale:active { transform: scale(0.96); }
+
+
+/* ==========================================================================
+   4. APP NAVIGATION (STICKY HEADER)
+   ========================================================================== */
+.estate-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px; /* Taller tap target */
+    background: rgba(249, 248, 244, 0.95);
+    
+    /* Apple-style Blur Effect */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    
+    border-bottom: 1px solid rgba(31, 24, 22, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--spacer-md);
+    z-index: var(--z-nav);
+    transition: all 0.3s ease;
+}
+
+.nav-logo {
+    height: 42px; /* Precision sized for mobile header */
+    mix-blend-mode: multiply; /* Blends nicely onto the cream background */
+}
+
+.nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Header Icons */
+.icon-btn {
+    position: relative;
+    font-size: 1.4rem;
+    color: var(--walnut-ink);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.icon-btn:active { color: var(--cherry-vivid); }
+
+/* The "Red Dot" Notification */
+.notification-dot {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    background: var(--cherry-vivid);
+    color: white;
+    font-size: 0.7rem;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-weight: 700;
+    width: 18px; 
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* White border makes it pop off the icon */
+    border: 2px solid var(--paper-cream);
+    
+    /* Animation state: Hidden by default */
+    opacity: 0; 
+    transform: scale(0);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.notification-dot.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+
+/* ==========================================================================
+   5. CINEMATIC HERO SECTION
+   ========================================================================== */
+.cinematic-stage {
+    position: relative;
+    width: 100%;
+    height: 55vh; /* Takes up just over half screen on mobile */
+    overflow: hidden;
+    
+    /* The distinctive "App" Curve at the bottom */
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    box-shadow: var(--shadow-card);
+}
+
+.stage-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    
+    /* Filters for vintage cinematic feel */
+    filter: brightness(0.7) sepia(0.2) contrast(1.1);
+}
+
+.stage-curtain {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: var(--spacer-lg) var(--spacer-md);
+    
+    /* Gradient allows text readability */
+    background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.4), transparent);
+}
+
+.stage-title {
+    color: white;
+    font-size: 2.2rem;
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 8px;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    font-family: var(--font-headline);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.stage-subtitle {
+    display: block;
+    font-family: var(--font-script);
+    color: var(--gold-shimmer);
+    font-size: 2.5rem;
+    line-height: 0.5;
+    margin-bottom: 15px;
+    opacity: 0.9;
+}
+
+
+/* ==========================================================================
+   6. HORIZONTAL TABS (MENU SELECTOR)
+   ========================================================================== */
+.category-rail {
+    /* Sticking under the App Header */
+    position: sticky;
+    top: 65px; 
+    z-index: var(--z-sticky);
+    
+    background: rgba(249, 248, 244, 0.95);
+    padding: 12px var(--spacer-md);
+    display: flex;
+    gap: 12px;
+    
+    /* Enable horizontal swipe */
+    overflow-x: auto;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    
+    /* Hiding Scrollbars */
+    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE */
+}
+.category-rail::-webkit-scrollbar { display: none; } /* Chrome */
+
+.pill-btn {
+    white-space: nowrap;
+    padding: 10px 24px;
+    border-radius: 40px;
+    border: 1px solid #E0DDD5;
+    background: transparent;
+    color: #888;
+    
+    font-family: var(--font-headline);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Active State for Tabs */
+.pill-btn.active {
+    background: var(--walnut-ink);
+    color: var(--gold-leaf);
+    border-color: var(--walnut-ink);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+
+/* ==========================================================================
+   7. PROVISION GRIDS (PRODUCT LISTS)
+   ========================================================================== */
+.collection-grid { 
+    padding: var(--spacer-md); 
+    display: none; /* Sections hidden until active */
+}
+
+/* Reveal Animation */
+.collection-grid.active { 
+    display: block; 
+    animation: slideUpFade 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); 
+}
+
+@keyframes slideUpFade { 
+    from { opacity: 0; transform: translateY(30px); } 
+    to { opacity: 1; transform: translateY(0); } 
+}
+
+/* --- THE CARD COMPONENT --- */
+.provision-card {
+    background: var(--paper-white);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacer-lg);
+    position: relative;
+    overflow: hidden; /* Contains the image zoom */
+    
+    /* Depth */
+    box-shadow: var(--shadow-card);
+    border: 1px solid rgba(255,255,255,0.5);
+    
+    transform: translateZ(0); /* Hardware Acceleration */
+    transition: transform 0.3s;
+}
+
+.provision-img-wrap {
+    position: relative;
+    height: 350px; /* Grand visual height */
+    width: 100%;
+    overflow: hidden;
+}
+
+.provision-img-wrap img {
+    transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Card Interaction */
+.provision-card:active .provision-img-wrap img {
+    transform: scale(1.05); /* Zoom on tap */
+}
+
+/* Text Container */
+.provision-body {
+    padding: var(--spacer-md);
+    text-align: left;
+}
+.provision-body h3 {
+    margin-bottom: 5px;
+    font-size: 1.3rem;
+    color: var(--walnut-ink);
+}
+
+/* The "Read Details" Button */
+.btn-inspect {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+    padding: 16px;
+    border: 1px solid #D5D1C5;
+    border-radius: 8px;
+    
+    background: transparent;
+    color: var(--walnut-ink);
+    font-family: var(--font-headline);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.85rem;
+    font-weight: 600;
     cursor: pointer;
 }
 
-/* Footer Style */
-footer {
-    background: var(--walnut-deep);
-    color: #666;
-    padding: 60px;
-    text-align: center;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-    border-top: 1px solid #444;
+/* --- SPECIAL SERVICE HIGHLIGHT CARD --- */
+.service-highlight {
+    background-color: var(--walnut-ink);
+    color: var(--gold-shimmer);
 }
 
-/* Responsive adjustments */
-@media (max-width: 900px) {
-    .showcase-item {
-        flex-direction: column !important; /* Stack columns on mobile */
-        gap: 30px;
-    }
-    
-    .hero-content h1 { font-size: 3rem; }
-    .img-portal { min-height: 300px; }
-    
-    .cart-overlay { width: 100%; right: -100%; }
+.service-highlight h3, 
+.service-highlight p {
+    color: var(--paper-cream);
 }
+
+.service-highlight .btn-inspect {
+    border-color: rgba(229, 197, 133, 0.3);
+    color: var(--gold-shimmer);
+}
+
+/* --- THE PRICE PILL (Floating) --- */
+.price-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 5;
+    
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(8px);
+    
+    padding: 8px 18px;
+    border-radius: 50px;
+    
+    font-family: var(--font-headline);
+    color: var(--cherry-vivid);
+    font-weight: 700;
+    font-size: 0.9rem;
+    
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+
+/* ==========================================================================
+   8. VISUAL INTERMISSION (FOLKLORE SECTION)
+   ========================================================================== */
+.folklore-break {
+    margin: var(--spacer-lg) var(--spacer-md);
+    border-radius: 12px;
+    
+    /* Using the requested watercolor asset */
+    background-image: url('https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/packaging-watercolor-woodland-art.jpg');
+    background-size: cover;
+    background-position: center;
+    
+    position: relative;
+    padding: 6px; /* This creates a 'Frame' effect around the white box */
+    box-shadow: var(--shadow-soft);
+}
+
+.folklore-inner {
+    background: rgba(255, 255, 255, 0.93);
+    padding: var(--spacer-lg) var(--spacer-md);
+    text-align: center;
+    border-radius: 8px; /* Slightly tighter radius than outer */
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+
+/* ==========================================================================
+   9. THE SHEET (PRODUCT DETAIL SUPER-MODAL)
+   ========================================================================== */
+   
+/* Darken the background screen */
+.backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(30, 24, 22, 0.6);
+    z-index: var(--z-backdrop);
+    display: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    backdrop-filter: blur(3px);
+}
+.backdrop.open { display: block; opacity: 1; }
+
+/* The Sliding Card */
+.sheet-modal {
+    position: fixed;
+    bottom: -100%; /* Hidden */
+    left: 0;
+    width: 100%;
+    height: 92vh; /* Tall view */
+    
+    background: white;
+    border-radius: 24px 24px 0 0;
+    z-index: var(--z-modal);
+    
+    /* Premium Cubic Bezier for that "iOS Slide" feel */
+    transition: bottom 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.sheet-modal.open { bottom: 0; }
+
+/* Modal Header Image */
+.sheet-header {
+    height: 300px; /* Grand height for Glove/Action shots */
+    position: relative;
+    flex-shrink: 0; /* Prevents shrinking */
+}
+.sheet-hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Close 'X' Button */
+.sheet-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 44px; /* Standard Touch Target */
+    height: 44px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    color: var(--walnut-ink);
+}
+
+/* Scrollable Content */
+.sheet-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 25px 120px 25px; /* Large bottom pad for Floating Button */
+    background: var(--paper-cream);
+}
+
+.sheet-title-block {
+    padding: 30px 0 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.sheet-title-block h2 {
+    font-size: 1.8rem;
+    line-height: 1.2;
+}
+
+/* --- SHEET INTERNAL TABS --- */
+.internal-tabs {
+    display: flex;
+    gap: 25px;
+    border-bottom: 1px solid #E5E0D5;
+    margin: 25px 0;
+}
+
+.i-tab {
+    padding: 12px 0;
+    font-family: var(--font-headline);
+    font-size: 0.85rem;
+    color: #999;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: color 0.3s;
+}
+
+.i-tab.active {
+    color: var(--cherry-vivid);
+    border-color: var(--cherry-vivid);
+}
+
+.tab-content { display: none; animation: fadeInAnim 0.4s; }
+.tab-content.active { display: block; }
+
+
+/* --- RECIPE STYLING MODULES (For Long Text) --- */
+.recipe-meta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+    background: #EDEAE0;
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.r-tag {
+    font-size: 0.8rem;
+    font-family: var(--font-headline);
+    color: var(--cherry-deep);
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.r-text-block {
+    font-size: 1.05rem;
+    color: #444;
+    margin-bottom: 20px;
+}
+
+/* Ingredient List styling */
+.ingredients-list li {
+    padding: 10px 0;
+    border-bottom: 1px dashed #DDD;
+    display: flex;
+    align-items: flex-start;
+}
+.ingredients-list li::before {
+    content: '•';
+    color: var(--gold-leaf);
+    margin-right: 12px;
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+/* Image Embeds inside Description */
+.visuals-caption {
+    font-family: var(--font-script);
+    font-size: 2.2rem;
+    color: var(--walnut-ink);
+    text-align: center;
+    display: block;
+    margin-bottom: 15px;
+}
+
+
+/* --- FLOATING CTA (The Action Button) --- */
+.sheet-footer {
+    position: absolute; /* Relative to modal, not screen */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    
+    padding: 20px 25px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: center;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.1);
+}
+
+.btn-action {
+    width: 100%;
+    padding: 20px;
+    border-radius: 60px; /* Full pill shape */
+    border: none;
+    
+    background: var(--walnut-ink);
+    color: var(--gold-leaf);
+    
+    font-family: var(--font-headline);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(31, 24, 22, 0.4);
+    transition: transform 0.2s;
+}
+
+.btn-action:active { transform: scale(0.97); }
+
+
+/* ==========================================================================
+   10. CHECKOUT DRAWER (SIDE PANEL)
+   ========================================================================== */
+.drawer {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100%;
+    
+    background: var(--paper-cream);
+    z-index: var(--z-drawer);
+    
+    transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+    
+    display: flex;
+    flex-direction: column;
+}
+/* When class 'open' is added, transform makes it slide in from right */
+.drawer.open { transform: translateX(-100%); }
+
+.drawer-header {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding: 0 25px;
+    border-bottom: 1px solid #DDD;
+    background: white;
+}
+
+.drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 25px;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+}
+
+.drawer-footer {
+    background: white;
+    border-top: 1px solid #DDD;
+    padding: 30px 25px;
+    /* Box Shadow facing upwards */
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+}
+
+/* Forms inside Checkout */
+.form-input {
+    width: 100%;
+    padding: 18px;
+    margin-bottom: 15px;
+    border: 1px solid #CCC;
+    border-radius: 8px;
+    background: var(--paper-cream);
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    color: var(--walnut-ink);
+}
+.form-input:focus {
+    outline: none;
+    border-color: var(--cherry-vivid);
+    background: white;
+}
+
+
+/* ==========================================================================
+   11. SERVICE INQUIRY MODAL (CENTER POPUP)
+   ========================================================================== */
+.inquiry-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(30, 20, 20, 0.95); /* Heavy dark overlay */
+    z-index: 6000;
+    display: none; /* Hidden */
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(5px);
+}
+
+.inquiry-modal.active {
+    display: flex;
+    animation: fadeInAnim 0.4s;
+}
+
+.inquiry-paper {
+    background: var(--paper-cream);
+    width: 100%;
+    max-width: 500px;
+    padding: 40px;
+    border-radius: 4px;
+    
+    /* Elegant double border */
+    border: 4px double var(--gold-leaf);
+    
+    position: relative;
+    box-shadow: 0 0 80px rgba(0,0,0,0.8);
+}
+
+select.form-input { appearance: none; cursor: pointer; }
+
+
+/* END OF CSS */
