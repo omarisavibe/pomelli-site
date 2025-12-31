@@ -3,451 +3,552 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pomelli | The Estate Confectionery</title>
+    <title>POMELLI | The Sovereign Estate</title>
     
-    <!-- SUPABASE CONNECTION -->
+    <!-- LIBRARIES -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <!-- FONTS -->
+
+    <!-- TYPOGRAPHY -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Monsieur+La+Doulaise&display=swap" rel="stylesheet">
-    <!-- ICONS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400;1,500&family=Monsieur+La+Doulaise&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 1. THE PALETTE (1920s + CHERRY + WALNUT) --- */
+        /* --- 1. LUXURY COLOR PALETTE & RESET --- */
         :root {
-            --walnut: #120A08;       /* Deepest Black-Brown */
-            --cherry: #780C1B;       /* VINTAGE OPERA RED */
-            --gold: #D4AF37;         /* METALLIC GOLD */
-            --cream: #F5F1E6;        /* HIGH SOCIETY PAPER */
-            --watercolor: #fdfbf7;   /* STORYBOOK PAPER */
-            --text-dark: #1a1a1a;
+            --walnut-deep: #2A1B18;
+            --walnut-light: #4A3B32;
+            --cherry-velvet: #721121; /* THE DEEP RED */
+            --cherry-bright: #9E1B2D;
+            --cream: #F4F1EA;
+            --paper-vintage: #EFEDE4;
+            --gold-matte: #C5A059;
+            --gold-shine: #D4AF37;
+            --text-main: #1D1D1D;
         }
 
-        /* --- 2. GLOBAL RESET & TYPOGRAPHY --- */
-        * { box-sizing: border-box; scroll-behavior: smooth; margin: 0; padding: 0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: var(--walnut);
-            color: var(--cream);
+            background-color: var(--cream);
+            color: var(--text-main);
             font-family: 'Cormorant Garamond', serif;
             font-size: 18px;
             overflow-x: hidden;
+            opacity: 0; /* Fade in load effect */
+            animation: pageFadeIn 1.5s forwards;
         }
 
-        h1, h2, h3, h4, button, .nav-link {
-            font-family: 'Cinzel', serif;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
+        @keyframes pageFadeIn { to { opacity: 1; } }
+
+        /* --- 2. FONTS & UTILITIES --- */
+        h1, h2, h3, .btn-luxury { font-family: 'Cinzel', serif; letter-spacing: 0.15em; text-transform: uppercase; }
+        .script { font-family: 'Monsieur La Doulaise', cursive; line-height: 0.8; }
+        .italic-serif { font-family: 'Playfair Display', serif; font-style: italic; }
+        
+        /* Gold Frame Border for the Whole Site */
+        body::before {
+            content: ''; position: fixed; top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border: 1px solid rgba(197, 160, 89, 0.3); z-index: 9999; pointer-events: none;
         }
 
-        .script-font {
-            font-family: 'Monsieur La Doulaise', cursive;
-            color: var(--cherry);
-            font-size: 4rem;
-            line-height: 0.8;
-            margin-bottom: 10px;
+        /* --- 3. PAGE TRANSITION MANAGER (VIEW HANDLING) --- */
+        .view-section {
+            display: none; /* Hide all views by default */
+            min-height: 100vh;
+        }
+        .view-section.active-view {
+            display: block; /* Show active view */
+            animation: fadeInView 1s ease;
         }
 
-        /* --- 3. NAVIGATION (STICKY & GOLD) --- */
-        nav {
-            position: fixed;
-            top: 0; left: 0; width: 100%;
-            height: 90px;
-            background: rgba(18, 10, 8, 0.95); /* Walnut with transparency */
-            border-bottom: 2px solid var(--gold);
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 50px;
+        @keyframes fadeInView { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- 4. NAVIGATION --- */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; height: 90px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 50px; z-index: 1000;
+            background: linear-gradient(to bottom, rgba(42, 27, 24, 0.95), rgba(42, 27, 24, 0.8));
+            border-bottom: 2px solid var(--gold-matte);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s;
         }
 
-        .logo-text { font-size: 1.8rem; color: var(--gold); font-weight: 700; letter-spacing: 5px; }
-        .logo-img { height: 60px; filter: invert(1); } /* Invert logo to be white/gold if it's black */
-
+        .nav-logo { height: 70px; border-radius: 50%; border: 1px solid var(--gold-matte); padding: 2px; }
+        
         .nav-actions { display: flex; gap: 30px; align-items: center; }
         
-        .cart-btn {
-            background: transparent; border: 1px solid var(--gold);
-            color: var(--gold); padding: 10px 20px;
-            cursor: pointer; transition: 0.3s;
-            display: flex; gap: 10px; align-items: center;
+        .cart-trigger {
+            color: var(--gold-shine); font-family: 'Cinzel'; cursor: pointer; position: relative;
+            font-size: 0.9rem; letter-spacing: 2px; transition: 0.3s;
         }
-        .cart-btn:hover { background: var(--cherry); border-color: var(--cherry); color: white; }
+        .cart-trigger:hover { color: var(--cherry-bright); text-shadow: 0 0 10px rgba(114, 17, 33, 0.6); }
 
-        /* --- 4. HERO SECTION (VIDEO BACKGROUND) --- */
-        .hero {
-            height: 100vh;
-            width: 100%;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+        .cart-badge {
+            position: absolute; top: -8px; right: -12px;
+            background: var(--cherry-velvet); color: white;
+            font-family: sans-serif; font-size: 0.7rem; font-weight: bold;
+            width: 18px; height: 18px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* --- 5. HOME VIEW COMPONENTS --- */
+        
+        /* HERO with VIDEO */
+        .hero-wrap {
+            position: relative; height: 100vh; width: 100%;
             overflow: hidden;
-            border-bottom: 8px solid var(--cherry);
+            display: flex; align-items: center; justify-content: center; text-align: center;
+        }
+        .hero-video {
+            position: absolute; top: 50%; left: 50%; 
+            min-width: 100%; min-height: 100%; 
+            width: auto; height: auto; 
+            transform: translate(-50%, -50%); 
+            z-index: -1; filter: brightness(0.4) contrast(1.1) sepia(0.2);
+        }
+        .hero-content { position: relative; z-index: 2; color: white; padding: 20px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); backdrop-filter: blur(5px); }
+        .hero-content h1 { font-size: 4rem; color: var(--cream); margin: 0; text-shadow: 0 5px 30px black; }
+        .hero-subtitle { font-family: 'Playfair Display'; font-style: italic; font-size: 1.5rem; color: var(--gold-shine); margin-top: 10px; }
+
+        /* THE MENU SECTION */
+        .menu-container { padding: 100px 5%; background-color: var(--cream); position: relative; }
+        .menu-title-block { text-align: center; margin-bottom: 80px; }
+        .script-cherry { color: var(--cherry-velvet); font-size: 4rem; display: block; margin-bottom: 20px; }
+        
+        .product-showcase {
+            display: flex; flex-direction: column; gap: 150px;
         }
 
-        /* THE VIDEO FIX */
-        .hero video {
-            position: absolute;
-            top: 50%; left: 50%;
-            min-width: 100%; min-height: 100%;
-            width: auto; height: auto;
-            transform: translate(-50%, -50%);
-            z-index: -2;
-            object-fit: cover;
-            filter: brightness(0.5) contrast(1.1); /* Darken so text pops */
+        .showcase-item {
+            display: flex; align-items: stretch; gap: 50px;
+            border-bottom: 1px solid #ddd; padding-bottom: 80px;
         }
+        .showcase-item:last-child { border-bottom: none; }
+        .showcase-item:nth-child(even) { flex-direction: row-reverse; }
 
-        .hero-overlay {
-            z-index: 1;
-            padding: 40px;
-            border: 1px solid rgba(212, 175, 55, 0.4); /* Faint gold border */
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(2px);
-            max-width: 800px;
+        .img-portal {
+            flex: 1; position: relative; overflow: hidden; min-height: 500px;
+            box-shadow: 20px 20px 0 var(--walnut-deep); border: 1px solid var(--walnut-deep); cursor: pointer;
         }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin: 20px 0;
-            color: white;
-            text-shadow: 0 4px 20px rgba(0,0,0,1);
+        .img-portal img { width: 100%; height: 100%; object-fit: cover; transition: 1s ease; }
+        .img-portal:hover img { transform: scale(1.1); filter: brightness(1.1); }
+        .hover-reveal-text {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            color: white; font-family: 'Cinzel'; font-size: 1.5rem;
+            background: rgba(114, 17, 33, 0.8); padding: 20px 40px;
+            opacity: 0; transition: 0.5s; pointer-events: none; border: 1px solid var(--gold-shine);
         }
+        .img-portal:hover .hover-reveal-text { opacity: 1; }
 
-        .hero p { font-size: 1.4rem; font-style: italic; color: var(--gold); }
+        .item-story { flex: 1; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+        .item-price { color: var(--cherry-velvet); font-family: 'Cinzel'; font-size: 2rem; margin: 20px 0; display: block; }
+        .item-desc { font-size: 1.3rem; line-height: 1.8; color: var(--walnut-light); margin-bottom: 40px; }
 
-        /* --- 5. THE RECIPE / LAYERING DETAIL --- */
-        .anatomy-section {
-            padding: 100px 5vw;
-            background-color: var(--walnut);
-            display: flex;
-            flex-wrap: wrap;
-            gap: 60px;
-            align-items: center;
+        .btn-luxury {
+            background: var(--walnut-deep); color: var(--gold-matte); border: 1px solid var(--gold-matte);
+            padding: 18px 40px; cursor: pointer; font-size: 1rem; transition: 0.3s;
+            text-decoration: none; display: inline-block; width: fit-content; margin-right: 10px;
         }
+        .btn-luxury:hover { background: var(--cherry-velvet); color: white; border-color: white; }
+        
+        .btn-secondary { background: transparent; color: var(--walnut-deep); border: 1px solid var(--walnut-deep); }
+        .btn-secondary:hover { background: var(--walnut-deep); color: var(--gold-matte); }
 
-        .anatomy-text { flex: 1; min-width: 400px; }
-        .anatomy-image { 
-            flex: 1; min-width: 400px; 
-            border: 10px solid var(--cherry); 
-            box-shadow: 20px 20px 0 var(--gold);
-        }
-        .anatomy-image img { width: 100%; display: block; }
-
-        .layer-list { list-style: none; margin-top: 40px; border-left: 2px solid var(--gold); padding-left: 30px; }
-        .layer-list li { margin-bottom: 25px; position: relative; }
-        .layer-list li::before {
-            content: '◆'; position: absolute; left: -39px; top: 0; color: var(--cherry); font-size: 1.2rem;
-        }
-        .layer-title { display: block; font-family: 'Cinzel'; color: var(--gold); font-size: 1.1rem; margin-bottom: 5px; }
-
-        /* --- 6. THE STORYBOOK PACKAGING (The "Watercolor Stuff") --- */
-        .storybook-section {
-            background-color: var(--watercolor); /* Light paper color */
-            color: var(--text-dark); /* Dark text for contrast */
-            padding: 100px 5vw;
-            text-align: center;
-            background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png'); /* Paper Texture */
+        /* THE WATERCOLOR / PACKAGING SECTION */
+        .watercolor-section {
+            padding: 120px 50px;
+            background-color: #DDE2D5; /* Sage Paper Color */
+            background-image: url('https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/packaging-watercolor-woodland-art.jpg'); 
+            background-blend-mode: overlay;
+            background-size: cover; background-position: center;
+            text-align: center; border-top: 10px solid var(--cherry-velvet);
             position: relative;
         }
-
-        /* A decorative separator to separate the walnut luxury from the watercolor whimsy */
-        .storybook-section::before {
-            content: '';
-            position: absolute; top: -10px; left: 0; width: 100%; height: 20px;
-            background: repeating-linear-gradient(45deg, var(--gold), var(--gold) 10px, var(--cherry) 10px, var(--cherry) 20px);
-        }
-
-        .watercolor-grid {
-            display: flex; gap: 40px; margin-top: 60px; justify-content: center; align-items: center;
-        }
-
         .watercolor-card {
-            background: white;
-            padding: 20px;
-            border: 1px solid #ddd;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            max-width: 500px;
-            text-align: left;
+            background: rgba(255,255,255,0.9); padding: 60px; max-width: 800px; margin: 0 auto;
+            border: 2px solid var(--gold-matte); box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+        }
+
+        /* --- 6. DETAILED PRODUCT STORY VIEW (The hidden depth page) --- */
+        #product-story-view { background: var(--walnut-deep); color: var(--cream); }
+        
+        .story-header { 
+            height: 60vh; background: url('https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/carrot-cake-slice-art-deco-plate.jpg');
+            background-size: cover; background-position: center; position: relative;
+        }
+        .story-header::after { content:''; position: absolute; inset:0; background: linear-gradient(to bottom, transparent, var(--walnut-deep)); }
+
+        .story-body { max-width: 1000px; margin: -100px auto 0; position: relative; z-index: 10; padding: 0 20px; }
+        .paper-sheet {
+            background: var(--paper-vintage); color: var(--walnut-deep);
+            padding: 80px; border: 1px solid var(--gold-shine);
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            font-size: 1.2rem;
         }
         
-        .illustration-box {
-            width: 100%; height: 300px; background: #eaeaea; 
-            overflow: hidden; margin-bottom: 20px; border-bottom: 3px solid var(--cherry);
+        .ingredient-list li { margin-bottom: 15px; list-style: square; color: var(--cherry-velvet); }
+        .ingredient-list span { color: var(--walnut-deep); }
+
+        .return-btn { margin-bottom: 20px; display: inline-block; color: var(--gold-shine); cursor: pointer; border-bottom: 1px solid var(--gold-shine); }
+
+        /* --- 7. CART DRAWER & CHECKOUT MODAL --- */
+        .cart-overlay {
+            position: fixed; top: 0; right: -500px; width: 450px; height: 100vh;
+            background: var(--cream); z-index: 5000; transition: 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+            box-shadow: -10px 0 40px rgba(0,0,0,0.5); padding: 40px; display: flex; flex-direction: column;
+            border-left: 15px solid var(--cherry-velvet);
         }
+        .cart-open { right: 0; }
         
-        .illustration-box img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* --- 7. THE SHOP (Functional) --- */
-        .shop-section {
-            padding: 100px 5vw;
-            background: linear-gradient(to bottom, var(--walnut), #000);
-            text-align: center;
-        }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 50px;
-            margin-top: 60px;
-        }
-
-        .product-card {
-            background: white;
-            color: black;
-            transition: 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .product-card:hover { transform: translateY(-10px); }
-
-        .card-img { height: 400px; overflow: hidden; position: relative; }
-        .card-img img { width: 100%; height: 100%; object-fit: cover; transition: 1s; }
-        .product-card:hover .card-img img { transform: scale(1.1); }
-
-        .card-info { padding: 30px; border-top: 5px solid var(--gold); }
-        .price { font-size: 1.5rem; color: var(--cherry); font-weight: bold; font-family: 'Cinzel'; margin: 10px 0; }
-
-        .buy-btn {
-            width: 100%; padding: 15px; border: 2px solid var(--walnut); background: none;
-            font-family: 'Cinzel'; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 15px;
-        }
-        .buy-btn:hover { background: var(--cherry); color: white; border-color: var(--cherry); }
-
-        /* --- 8. THE CART DRAWER --- */
-        .drawer {
-            position: fixed; top: 0; right: -450px;
-            width: 450px; height: 100vh;
-            background: var(--cream); color: var(--walnut);
-            z-index: 2000; box-shadow: -10px 0 50px black;
-            transition: 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0);
-            display: flex; flex-direction: column;
-            border-left: 10px solid var(--cherry);
-        }
-        .drawer.open { right: 0; }
+        .cart-items { flex: 1; overflow-y: auto; margin-top: 30px; }
+        .cart-item-row { display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px; }
+        .cart-item-img { width: 70px; height: 70px; object-fit: cover; }
         
-        .drawer-header { padding: 30px; background: var(--walnut); color: var(--gold); display: flex; justify-content: space-between; align-items: center;}
-        .drawer-body { flex: 1; padding: 30px; overflow-y: auto; }
-        .drawer-footer { padding: 30px; background: white; border-top: 1px solid #ccc; }
-
-        .drawer-item { display: flex; gap: 20px; margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 20px; }
-        .drawer-item img { width: 80px; height: 80px; object-fit: cover; border: 1px solid var(--gold); }
+        /* CHECKOUT MODAL (The Concierge Form) */
+        .modal-bg {
+            display: none; position: fixed; inset: 0; background: rgba(26, 15, 13, 0.9); z-index: 6000;
+            justify-content: center; align-items: center; opacity: 0; transition: 0.5s;
+        }
+        .modal-active { display: flex; opacity: 1; }
+        .concierge-form {
+            background: var(--paper-vintage); width: 100%; max-width: 500px;
+            padding: 50px; position: relative; border: 4px double var(--gold-matte);
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-family: 'Cinzel'; font-size: 0.9rem; margin-bottom: 5px; color: var(--cherry-velvet); }
+        .form-input { width: 100%; padding: 15px; border: 1px solid #aaa; background: transparent; font-family: 'Cormorant Garamond'; font-size: 1.1rem; }
+        .form-input:focus { outline: none; border-color: var(--cherry-velvet); background: white; }
         
-        .checkout-cta { width: 100%; background: var(--cherry); color: white; border: none; padding: 20px; font-size: 1.2rem; cursor: pointer; }
-
     </style>
 </head>
 <body>
 
     <!-- NAVIGATION -->
-    <nav>
-        <span class="logo-text">POMELLI</span>
-        <!-- Optional: Use your image logo instead of text above -->
-        <!-- <img src="pomelli-vintage-logo-script.jpg" class="logo-img" alt="Pomelli"> -->
+    <nav class="navbar">
+        <!-- Logo linking to Home View -->
+        <a href="#" onclick="switchView('home')" style="display:flex; align-items:center; text-decoration:none;">
+            <img src="images/pomelli-vintage-logo-script.jpg" alt="P" class="nav-logo" id="logo-img"> <!-- Assumes you saved logo in images folder, backup handles error -->
+        </a>
         
         <div class="nav-actions">
-            <button class="cart-btn" onclick="toggleDrawer()">
-                <i class="fa-solid fa-briefcase"></i> 
-                <span>Your Trunk (<span id="cart-count">0</span>)</span>
-            </button>
+            <span class="cart-trigger" onclick="openCart()">
+                YOUR TRUNK <i class="fa-solid fa-lock" style="margin-left: 5px;"></i>
+                <span class="cart-badge" id="cart-badge">0</span>
+            </span>
         </div>
     </nav>
 
-    <!-- DRAWER / CART -->
-    <div class="drawer" id="cart-drawer">
-        <div class="drawer-header">
-            <h3>Current Selection</h3>
-            <i class="fa-solid fa-xmark" style="cursor: pointer; font-size: 1.5rem;" onclick="toggleDrawer()"></i>
-        </div>
-        <div class="drawer-body" id="cart-body">
-            <p style="font-style: italic; opacity: 0.7;">Your trunk is currently empty, madame.</p>
-        </div>
-        <div class="drawer-footer">
-            <div style="display:flex; justify-content: space-between; font-size: 1.5rem; margin-bottom: 15px; font-family:'Cinzel';">
-                <span>Total:</span>
-                <span id="cart-total">$0.00</span>
+    <!-- === VIEW 1: HOME PAGE === -->
+    <div id="home-view" class="view-section active-view">
+        
+        <!-- HERO HEADER -->
+        <header class="hero-wrap">
+            <video autoplay muted loop playsinline class="hero-video">
+                <source src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/asembeling%20carrot%20cake%20video.mp4" type="video/mp4">
+            </video>
+            <div class="hero-content">
+                <div class="script" style="font-size: 5rem; color: #fff; margin-bottom: 20px;">Pomelli</div>
+                <h1>The Estate Archives</h1>
+                <p class="hero-subtitle">Rare confections for the private study.</p>
+                <br>
+                <button class="btn-luxury" onclick="scrollToMenu()">Acquire for Tonight</button>
             </div>
-            <button class="checkout-cta" onclick="alert('Redirecting to secure concierge checkout...')">Arrange Delivery</button>
+        </header>
+
+        <!-- PRODUCT SHOWCASE (MENU) -->
+        <section class="menu-container" id="menu-anchor">
+            <div class="menu-title-block">
+                <span class="script-cherry">High Society Folklore</span>
+                <h2>The Current Allocation</h2>
+                <div style="width: 2px; height: 50px; background: var(--cherry-velvet); margin: 20px auto;"></div>
+            </div>
+
+            <div class="product-showcase">
+                
+                <!-- PRODUCT 1: THE CAKE (Detailed) -->
+                <div class="showcase-item">
+                    <div class="img-portal" onclick="openProductStory('sovereign')">
+                        <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sovereign-carrot-cake-whole.jpg" alt="Cake">
+                        <div class="hover-reveal-text">Read The Legend</div>
+                    </div>
+                    <div class="item-story">
+                        <h3>The Sovereign Gâteau</h3>
+                        <span class="item-price">1250 EGP</span>
+                        <p class="item-desc">
+                            A breathlessly heavy three-layer tower, A4-Grand size. The sponge is dense with heirloom carrots, bound by brown-butter cream cheese frosting. At every bite, a "Pecan Surprise"—oven-candied nuts swimming in salted butterscotch sauce. It is nutty, caramelly, and distinctly salty.
+                        </p>
+                        <div style="display: flex; gap: 15px;">
+                            <!-- Opens Depth Page -->
+                            <button class="btn-luxury btn-secondary" onclick="openProductStory('sovereign')">The Legend</button>
+                            <!-- Adds to Cart -->
+                            <button class="btn-luxury" onclick="addToCart('Sovereign Gâteau', 1250, 'https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sovereign-carrot-cake-whole.jpg')">Add to Trunk</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRODUCT 2: BUTLER SERVICE -->
+                <div class="showcase-item">
+                    <div class="img-portal">
+                        <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/butler-service-caramel-drip.jpg" alt="Service">
+                        <div class="hover-reveal-text">Inquire Only</div>
+                    </div>
+                    <div class="item-story">
+                        <h3>Service à la Russe</h3>
+                        <span class="item-price">Inquire for Rate</span>
+                        <p class="item-desc">
+                            We dispatch a white-gloved attendant to your Cairo residence to execute the "Perfect Pour" of warm caramel tableside. Recommended for dinner parties in Zamalek or Katameya Heights.
+                        </p>
+                        <button class="btn-luxury btn-secondary" onclick="window.location.href='mailto:concierge@pomelli.com'">Contact Concierge</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- WATERCOLOR GIFTING SECTION -->
+        <section class="watercolor-section">
+            <div class="watercolor-card">
+                <span class="script" style="color: var(--walnut-deep); font-size: 3rem;">A Gift of Folklore</span>
+                <h2 style="color: var(--cherry-velvet);">The Beatrix Box</h2>
+                <p style="margin: 20px 0; font-size: 1.2rem; color: #555;">
+                    Your confection is not merely delivered; it arrives. Enclosed in our signature packaging featuring hand-painted woodland scenes in the style of Beatrix Potter. 
+                    <br><br>
+                    It is the warmth of the nursery and the glamour of the estate, all in one.
+                </p>
+                <!-- This links to the visual watercolor assets -->
+                <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/vintage-storybook-illustration-wide.jpg" style="width: 100%; border: 1px solid #aaa; margin-top: 20px;">
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer style="background: var(--walnut-deep); color: #888; padding: 50px; text-align: center;">
+            <p>Pomelli Cairo • Since 2024 • +20 102 427 4466</p>
+        </footer>
+
+    </div>
+
+    <!-- === VIEW 2: PRODUCT DEPTH PAGE (The Legend) === -->
+    <div id="product-story-view" class="view-section">
+        <header class="story-header"></header>
+        <div class="story-body">
+            <div class="paper-sheet">
+                <span class="return-btn" onclick="switchView('home')">&larr; Return to The Estate</span>
+                
+                <h1 style="color: var(--cherry-velvet); font-size: 3.5rem; margin-bottom: 30px;">The Anatomy of Opulence</h1>
+                <p>
+                    You have requested the particulars of the Sovereign Gâteau. It is a recipe guarded within the family archives, designed not for the casual snacker, but for the serious hedonist.
+                </p>
+                
+                <h3 style="margin-top: 40px; color: var(--gold-shine);">The Architecture</h3>
+                <p>
+                    This is an A4-Grand Sized confection, constructed in three towering layers. It is not airy; it is substantial, smelling of winter spices and old wood.
+                </p>
+
+                <h3 style="margin-top: 40px; color: var(--gold-shine);">The Alchemy (Ingredients)</h3>
+                <ul class="ingredient-list">
+                    <li>
+                        <span>Brown Butter Cream Cheese Frosting:</span> <br>We brown the butter until it sings with a nutty aroma before whipping it into the cheese. It is tangy, deep, and impossibly smooth.
+                    </li>
+                    <li>
+                        <span>The "Pecan Surprise":</span> <br>Buried within every single bite are pecans that have been oven-candied until crisp, then drowned in our house-made salted butterscotch.
+                    </li>
+                    <li>
+                        <span>The Structure:</span> <br>Cake layer. Frosting. Pool of Butterscotch. Pecan shard. Repeat. Repeat again.
+                    </li>
+                </ul>
+
+                <br><br>
+                <center>
+                    <button class="btn-luxury" onclick="addToCart('Sovereign Gâteau', 1250, 'https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sovereign-carrot-cake-whole.jpg')">Add to Trunk (1250 EGP)</button>
+                </center>
+
+            </div>
         </div>
     </div>
 
-    <!-- HERO SECTION: VIDEO IS BACK -->
-    <section class="hero">
-        <video autoplay muted loop playsinline>
-            <source src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/asembeling%20carrot%20cake%20video.mp4" type="video/mp4">
-        </video>
-        <div class="hero-overlay">
-            <span class="script-font" style="color: var(--cream);">High Society Flavor</span>
-            <h1>The A4 Sovereign Cake</h1>
-            <p>Oven-Candied Pecans • Brown Butter Silk • Salted Butterscotch</p>
+    <!-- === CHECKOUT SYSTEM === -->
+    
+    <!-- 1. SIDE DRAWER -->
+    <div class="cart-overlay" id="cart-drawer">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid var(--cherry-velvet); padding-bottom: 15px;">
+            <h2 style="font-size: 1.5rem; margin:0;">The Trunk</h2>
+            <i class="fa-solid fa-xmark" style="font-size: 1.5rem; cursor: pointer;" onclick="closeCart()"></i>
         </div>
-    </section>
 
-    <!-- ANATOMY OF THE CAKE SECTION (Your Specific Detail) -->
-    <section class="anatomy-section">
-        <div class="anatomy-image">
-            <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sovereign-carrot-cake-whole.jpg" alt="The Whole A4 Cake">
+        <div class="cart-items" id="cart-items-container">
+            <!-- Items injected by JS -->
+            <p style="text-align: center; color: #888; margin-top: 40px;">Your trunk is currently empty, Sir/Madam.</p>
         </div>
-        <div class="anatomy-text">
-            <span class="script-font">Construction</span>
-            <h2 style="color: var(--gold); margin-bottom: 20px;">The Anatomy of a Slice</h2>
-            <p>Not a mere dessert, but a rectangular A4 masterpiece of engineering. A three-layered triumph designed for the true epicurean.</p>
-            
-            <ul class="layer-list">
-                <li>
-                    <span class="layer-title">I. The Foundation</span>
-                    Heritage spiced carrot sponge, dense yet crumbly, providing the structural integrity for what follows.
-                </li>
-                <li>
-                    <span class="layer-title">II. The Binding</span>
-                    A generous slathering of <strong>Brown Butter Cream Cheese Frosting</strong>. Not too sweet, but deeply nutty and rich.
-                </li>
-                <li>
-                    <span class="layer-title">III. The "Surprise"</span>
-                    Here lies the magic: A flowing river of amber <strong>Salted Butterscotch Sauce</strong>, concealing a crunch of oven-candied pecans.
-                </li>
-                <li>
-                    <span class="layer-title">IV. The Repetition</span>
-                    We repeat this architecture twice more. Cake. Frosting. Sauce. Pecans.
-                </li>
-                <li>
-                    <span class="layer-title">V. The Crown</span>
-                    Finished with a final thin veil of frosting, flooded with butterscotch, and piled high with candied nuts. A pecan surprise in every single bite.
-                </li>
-            </ul>
-        </div>
-    </section>
 
-    <!-- PACKAGING SECTION (The Watercolor / Beatrix Vibe) -->
-    <section class="storybook-section">
-        <span class="script-font">Beatrix & The Box</span>
-        <h2>A Gift From The Garden</h2>
-        <div style="width: 100px; height: 3px; background: var(--cherry); margin: 20px auto;"></div>
-        <p style="max-width: 600px; margin: 0 auto; line-height: 1.8;">
-            While the flavors recall the grandeur of the ballroom, the packaging whispers of the nursery. 
-            We do not use standard cardboard. Your confection arrives in a box adorned with 
-            <strong style="color: var(--cherry);">vintage watercolor woodland illustrations</strong>.
-        </p>
-
-        <div class="watercolor-grid">
-            <div class="watercolor-card">
-                <div class="illustration-box">
-                    <!-- Simulate the packaging using the Manor/Interior shot which implies the setting -->
-                    <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/carrot-cake-manor-interior.jpg" alt="Vintage Interior">
-                </div>
-                <h3>The Presentation</h3>
-                <p style="font-size: 0.9rem; margin-top: 10px;">Unboxing feels like opening a vintage storybook found in an estate attic. A collision of Beaux-Arts glamour and pastoral nostalgia.</p>
+        <div style="margin-top: auto; border-top: 1px solid #ccc; padding-top: 20px;">
+            <div style="display:flex; justify-content:space-between; font-size: 1.3rem; margin-bottom: 20px;">
+                <span class="italic-serif">Total Estimate:</span>
+                <span style="font-family:'Cinzel'; color: var(--cherry-velvet);" id="cart-total">0 EGP</span>
             </div>
+            <button class="btn-luxury" style="width: 100%;" onclick="openCheckoutModal()">Request Delivery</button>
         </div>
-    </section>
+    </div>
 
-    <!-- SHOPPING SECTION -->
-    <section class="shop-section">
-        <span class="script-font">The Provisioning Room</span>
-        <h2 style="color: white;">Secure Your Allocation</h2>
-        
-        <div class="product-grid" id="grid">
-            <!-- DYNAMIC CONTENT FILLED BY JS BELOW -->
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer style="background: black; padding: 40px; text-align: center; border-top: 2px solid var(--cherry);">
-        <span class="logo-text" style="font-size: 1rem;">POMELLI © 1922</span>
-    </footer>
-
-    <!-- JAVASCRIPT LOGIC (Internal for single-file ease) -->
-    <script>
-        /* --- 1. DATA (INVENTORY) --- */
-        const inventory = [
-            {
-                id: 1,
-                title: "The Sovereign A4 Gâteau",
-                desc: "The flagship. Three layers. A4 size. Loaded with butterscotch and oven-candied pecans.",
-                price: 135.00,
-                img: "https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sovereign-carrot-cake-whole.jpg"
-            },
-            {
-                id: 2,
-                title: "Tableside Slice Service",
-                desc: "Single plating on art-deco china. The 'Pecan Surprise' experience for one.",
-                price: 22.00,
-                img: "https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/carrot-cake-slice-art-deco-plate.jpg"
-            },
-            {
-                id: 3,
-                title: "Butler Service à la Russe",
-                desc: "We bring the sauce, the silver, and the white gloves to your private estate.",
-                price: 450.00,
-                img: "https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/butler-service-caramel-drip.jpg"
-            }
-        ];
-
-        let cart = [];
-
-        /* --- 2. RENDER SHOP --- */
-        const grid = document.getElementById('grid');
-        
-        inventory.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'product-card';
-            card.innerHTML = `
-                <div class="card-img">
-                    <img src="${item.img}" alt="${item.title}">
-                </div>
-                <div class="card-info">
-                    <h3>${item.title}</h3>
-                    <p style="font-size: 0.9rem; margin: 10px 0;">${item.desc}</p>
-                    <div class="price">$${item.price.toFixed(2)}</div>
-                    <button class="buy-btn" onclick="addToCart(${item.id})">Add to Trunk</button>
-                </div>
-            `;
-            grid.appendChild(card);
-        });
-
-        /* --- 3. CART FUNCTIONS --- */
-        function addToCart(id) {
-            const product = inventory.find(p => p.id === id);
-            cart.push(product);
-            updateCartUI();
+    <!-- 2. CONCIERGE FORM MODAL -->
+    <div class="modal-bg" id="checkout-modal">
+        <div class="concierge-form">
+            <div style="text-align: right;"><i class="fa-solid fa-xmark" style="cursor: pointer; font-size: 1.5rem;" onclick="closeModal()"></i></div>
             
-            const drawer = document.getElementById('cart-drawer');
-            drawer.classList.add('open');
+            <h2 style="text-align: center; color: var(--walnut-deep); margin-bottom: 10px;">The Concierge Desk</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 30px; font-style: italic;">Where in Cairo shall we arrive?</p>
+
+            <!-- FORM -->
+            <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-input" id="c-name" placeholder="e.g. Lady Sarah...">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Delivery Zone</label>
+                <select class="form-input" id="c-city">
+                    <option value="Zamalek">Zamalek</option>
+                    <option value="Maadi">Maadi</option>
+                    <option value="New Cairo">New Cairo / Tagamoa</option>
+                    <option value="Sheikh Zayed">Sheikh Zayed / 6 Oct</option>
+                    <option value="Dokki">Dokki / Mohandessin</option>
+                    <option value="Heliopolis">Heliopolis</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Street Address</label>
+                <input type="text" class="form-input" id="c-address" placeholder="Building, Street, Apt...">
+            </div>
+            
+            <button class="btn-luxury" style="width: 100%; background: var(--cherry-velvet); border-color: var(--cherry-velvet);" onclick="submitToWhatsApp()">Send Order via WhatsApp</button>
+            <p style="text-align: center; font-size: 0.8rem; color: #999; margin-top: 10px;">Direct connection to 01024274466</p>
+        </div>
+    </div>
+
+    <!-- LOGIC SCRIPT -->
+    <script>
+        // === STATE MANAGEMENT ===
+        let cart = [];
+        
+        // --- 1. VIEW NAVIGATION ---
+        function switchView(viewName) {
+            // Hide all
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active-view'));
+            
+            // Show Specific
+            if(viewName === 'home') document.getElementById('home-view').classList.add('active-view');
+            if(viewName === 'story') {
+                document.getElementById('product-story-view').classList.add('active-view');
+                window.scrollTo(0,0);
+            }
+        }
+
+        function scrollToMenu() {
+            document.getElementById('menu-anchor').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function openProductStory(productId) {
+            // In a bigger app, we would load data based on ID. 
+            // For now, we only have one "Legend" to show.
+            switchView('story');
+        }
+
+        // --- 2. CART LOGIC ---
+        function addToCart(name, price, img) {
+            const item = { name, price, img };
+            cart.push(item);
+            updateCartUI();
+            openCart();
         }
 
         function updateCartUI() {
-            // Count
-            document.getElementById('cart-count').innerText = cart.length;
-            
-            // Total
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
-            document.getElementById('cart-total').innerText = "$" + total.toFixed(2);
+            // Badge
+            document.getElementById('cart-badge').innerText = cart.length;
 
-            // Render Body
-            const body = document.getElementById('cart-body');
-            if (cart.length === 0) {
-                body.innerHTML = '<p style="font-style: italic; opacity: 0.7;">Your trunk is currently empty, madame.</p>';
+            // List
+            const container = document.getElementById('cart-items-container');
+            const totalEl = document.getElementById('cart-total');
+            
+            if(cart.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #888; margin-top: 40px;">Your trunk is currently empty, Sir/Madam.</p>';
+                totalEl.innerText = "0 EGP";
                 return;
             }
 
-            body.innerHTML = cart.map(item => `
-                <div class="drawer-item">
-                    <img src="${item.img}" alt="thumb">
+            let total = 0;
+            container.innerHTML = cart.map((item, index) => {
+                total += item.price;
+                return `
+                <div class="cart-item-row">
+                    <img src="${item.img}" class="cart-item-img">
                     <div>
-                        <div style="font-family:'Cinzel'; margin-bottom: 5px;">${item.title}</div>
-                        <div style="color: var(--cherry);">$${item.price.toFixed(2)}</div>
+                        <div style="font-family:'Cinzel'; color: #2A1B18;">${item.name}</div>
+                        <div style="color: #721121;">${item.price} EGP</div>
+                        <div style="font-size:0.8rem; color:#aaa; cursor:pointer;" onclick="removeItem(${index})">Remove</div>
                     </div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
+
+            totalEl.innerText = total + " EGP";
         }
 
-        function toggleDrawer() {
-            const drawer = document.getElementById('cart-drawer');
-            drawer.classList.toggle('open');
+        function removeItem(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function openCart() { document.getElementById('cart-drawer').classList.add('cart-open'); }
+        function closeCart() { document.getElementById('cart-drawer').classList.remove('cart-open'); }
+
+        // --- 3. CHECKOUT & WHATSAPP LOGIC ---
+        function openCheckoutModal() {
+            if(cart.length === 0) {
+                alert("The trunk is empty. We cannot dispatch a ghost carriage.");
+                return;
+            }
+            closeCart();
+            document.getElementById('checkout-modal').classList.add('modal-active');
+        }
+        function closeModal() { document.getElementById('checkout-modal').classList.remove('modal-active'); }
+
+        function submitToWhatsApp() {
+            // 1. Gather Data
+            const name = document.getElementById('c-name').value;
+            const city = document.getElementById('c-city').value;
+            const address = document.getElementById('c-address').value;
+            
+            if(!name || !address) {
+                alert("The Concierge requires your Name and Address to proceed.");
+                return;
+            }
+
+            // 2. Build Cart Text
+            let orderText = "";
+            let finalTotal = 0;
+            cart.forEach(i => {
+                orderText += `- ${i.name} (${i.price} EGP)%0a`;
+                finalTotal += i.price;
+            });
+
+            // 3. Construct WhatsApp URL
+            // Using standard phone format (remove leading 0 if strictly using international format, but works with local usually. Safer is +20)
+            const phoneNumber = "201024274466"; 
+            
+            const message = `*GREETINGS POMELLI ESTATE*%0a%0aMy name is ${name}. I wish to acquire:%0a${orderText}%0a*Total: ${finalTotal} EGP*%0a%0aDeliver to: ${address}, ${city}.`;
+            
+            const url = `https://wa.me/${phoneNumber}?text=${message}`;
+
+            // 4. Send
+            window.open(url, '_blank');
+            
+            // 5. Cleanup
+            cart = [];
+            updateCartUI();
+            closeModal();
+            alert("The Butler has been dispatched via WhatsApp.");
         }
 
     </script>
