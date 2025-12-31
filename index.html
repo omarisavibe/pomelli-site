@@ -3,409 +3,621 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pomelli | The Estate App</title>
-    
-    <!-- FONTS -->
+    <title>Pomelli | The Estate</title>
+
+    <!-- PREMIUM FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;1,400&family=Monsieur+La+Doulaise&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400;1,600&family=Monsieur+La+Doulaise&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <style>
-        /* --- 1. CORE VARIABLES & RESET --- */
+        /* ========================
+           1. FOUNDATION OF LUXURY
+           ======================== */
         :root {
-            --cherry: #721121;  /* The signature Pomelli Red */
-            --cream: #FCFBF8;
-            --walnut: #2a1b18;
-            --gold: #C0A062;
-            --text-dark: #1a1a1a;
+            --brand-cherry: #721121;  /* Deep Vintage Red */
+            --brand-cream: #FDFBF7;   /* Estate Paper */
+            --brand-dark: #1E1210;    /* Walnut Ink */
+            --brand-gold: #C0A062;    /* Matte Gold */
+            --font-title: 'Cinzel', serif;
+            --font-body: 'Cormorant Garamond', serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background-color: var(--cream);
-            font-family: 'Cormorant Garamond', serif;
-            color: var(--text-dark);
-            padding-bottom: 90px;
+            background-color: var(--brand-cream);
+            color: var(--brand-dark);
+            font-family: var(--font-body);
+            font-size: 18px;
             overflow-x: hidden;
+            padding-bottom: 90px;
         }
 
         img { width: 100%; display: block; object-fit: cover; }
         
-        h1, h2, h3, button { font-family: 'Cinzel', serif; letter-spacing: 0.05em; text-transform: uppercase; }
-        .script { font-family: 'Monsieur La Doulaise', cursive; color: var(--cherry); line-height: 1; }
+        h1, h2, h3, h4, .btn { font-family: var(--font-title); text-transform: uppercase; letter-spacing: 0.05em; }
+        .script { font-family: 'Monsieur La Doulaise', cursive; line-height: 0.7; color: var(--brand-cherry); }
 
-        /* --- 2. COMPACT HEADER & LOGO FIX --- */
+        /* ========================
+           2. NAVIGATION & LOGO
+           ======================== */
         .app-header {
             position: fixed; top: 0; left: 0; width: 100%; height: 60px;
-            background: rgba(252, 251, 248, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(253, 251, 247, 0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
             display: flex; justify-content: center; align-items: center;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
             z-index: 2000;
         }
 
-        .logo {
-            height: 35px; /* Fixed small size so it stays in frame */
+        .logo-container img {
+            height: 35px; /* LOGO FIX: Small and Perfect in frame */
             width: auto;
-            object-fit: contain;
-            /* Ensures visual blending */
             mix-blend-mode: multiply;
         }
 
-        .cart-icon {
-            position: absolute; right: 20px; color: var(--text-dark);
-            font-size: 1.2rem; cursor: pointer;
+        .bag-icon {
+            position: absolute; right: 25px; 
+            font-size: 1.3rem; color: var(--brand-dark); cursor: pointer;
         }
-        .badge {
+        .bag-count {
             position: absolute; top: -5px; right: -8px;
-            background: var(--cherry); color: white;
-            font-size: 0.6rem; width: 16px; height: 16px;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            opacity: 0;
+            background: var(--brand-cherry); color: white;
+            font-family: var(--font-title); font-size: 0.7rem; font-weight: bold;
+            width: 18px; height: 18px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; transition: 0.3s;
         }
-        .badge.show { opacity: 1; }
+        .bag-count.show { opacity: 1; }
 
-        /* --- 3. HERO (Video) --- */
-        .hero-section {
-            margin-top: 60px; height: 50vh; width: 100%; position: relative;
+        /* ========================
+           3. HERO VIDEO HEADER
+           ======================== */
+        .hero {
+            margin-top: 60px;
+            position: relative; width: 100%; height: 50vh;
         }
-        .hero-section video { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.7); }
-        .hero-caption {
-            position: absolute; bottom: 20px; left: 20px; color: white;
-        }
-        .hero-caption h1 { font-size: 2.2rem; line-height: 1; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-
-        /* --- 4. TABS NAVIGATION --- */
-        .tab-bar {
-            display: flex; overflow-x: auto; gap: 15px; padding: 15px 20px;
-            background: var(--cream); position: sticky; top: 60px; z-index: 1000;
-            border-bottom: 1px solid #eee;
-            /* Hide Scrollbar */
-            scrollbar-width: none; -ms-overflow-style: none;
-        }
-        .tab-bar::-webkit-scrollbar { display: none; }
-
-        .tab-pill {
-            padding: 8px 16px; border-radius: 20px; border: 1px solid #e0e0e0;
-            white-space: nowrap; font-family: 'Cinzel'; font-size: 0.8rem;
-            color: #777; background: transparent; transition: 0.3s;
-        }
-        .tab-pill.active {
-            background: var(--cherry); color: white; border-color: var(--cherry);
-            box-shadow: 0 4px 10px rgba(114, 17, 33, 0.2);
+        .hero video { height: 100%; width: 100%; object-fit: cover; filter: brightness(0.75); }
+        .hero-text {
+            position: absolute; bottom: 30px; left: 30px; color: white;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.6);
         }
 
-        /* --- 5. CONTENT GRIDS --- */
-        .content-tab { display: none; padding: 20px; animation: fadeInUp 0.5s ease; }
-        .content-tab.active { display: block; }
-        @keyframes fadeInUp { from {opacity:0; transform:translateY(10px);} to {opacity:1;} }
+        /* ========================
+           4. STICKY TABS
+           ======================== */
+        .sticky-tabs {
+            position: sticky; top: 60px; background: var(--brand-cream);
+            display: flex; overflow-x: auto; padding: 15px 20px;
+            gap: 15px; z-index: 1000;
+            border-bottom: 1px solid #efeae0;
+            scrollbar-width: none; /* Hide scrollbar */
+        }
+        .sticky-tabs::-webkit-scrollbar { display: none; }
 
-        /* Product Cards */
-        .card {
-            background: white; border-radius: 12px; overflow: hidden;
-            margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.04);
-            position: relative;
+        .tab-btn {
+            background: transparent; border: 1px solid #d4cfc5; border-radius: 50px;
+            padding: 8px 18px; white-space: nowrap; font-family: var(--font-title);
+            font-size: 0.8rem; color: #777; cursor: pointer; transition: 0.3s;
+        }
+        .tab-btn.active {
+            background: var(--brand-cherry); color: white; border-color: var(--brand-cherry);
+        }
+
+        /* ========================
+           5. PRODUCT FEED
+           ======================== */
+        .tab-content { display: none; padding: 25px 20px; animation: fadeInUp 0.5s; }
+        .tab-content.active { display: block; }
+        @keyframes fadeInUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+        .product-card {
+            background: white; border-radius: 8px; overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06); margin-bottom: 30px;
         }
         
-        .card-tag {
-            position: absolute; top: 15px; left: 15px;
-            background: rgba(255,255,255,0.9); padding: 5px 12px;
-            border-radius: 4px; font-family: 'Cinzel'; font-size: 0.7rem; color: var(--cherry);
-            letter-spacing: 1px;
+        /* Action Image Header */
+        .card-image-block { position: relative; height: 380px; }
+        .price-badge {
+            position: absolute; bottom: 20px; right: 20px;
+            background: white; padding: 6px 14px;
+            font-family: var(--font-title); font-weight: bold; color: var(--brand-cherry);
+            border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
 
-        .card-img-wrap { height: 350px; overflow: hidden; }
-        
-        .card-body { padding: 20px; }
-        .card-body h3 { font-size: 1.1rem; margin-bottom: 5px; color: var(--walnut); }
-        .card-price { color: var(--cherry); font-weight: bold; font-family: 'Cinzel'; margin-bottom: 10px; display: block; }
-        .card-desc { font-size: 0.95rem; color: #666; margin-bottom: 15px; line-height: 1.5; }
+        .card-info { padding: 25px; text-align: center; }
+        .card-info h3 { font-size: 1.3rem; margin-bottom: 5px; color: var(--brand-dark); }
+        .short-desc { color: #666; font-size: 1rem; margin-bottom: 20px; line-height: 1.5; }
 
-        .btn-add {
+        .btn-action {
             width: 100%; padding: 15px; border: none;
-            background: var(--walnut); color: white;
-            font-family: 'Cinzel'; cursor: pointer;
+            background: var(--brand-dark); color: var(--brand-gold);
+            font-family: var(--font-title); font-size: 1rem; cursor: pointer;
+        }
+
+        /* The Special Story Layout for Service */
+        .service-layout {
+            text-align: center; background: white; border: 1px solid var(--brand-gold);
+            padding: 30px; border-radius: 0;
+        }
+
+        /* ========================
+           6. THE ULTRA-VISUAL MODAL
+           ======================== */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(30,18,16, 0.7);
+            z-index: 3000; display: none; backdrop-filter: blur(4px);
+            opacity: 0; transition: 0.3s;
+        }
+        .modal-overlay.open { display: block; opacity: 1; }
+
+        .detail-sheet {
+            position: fixed; bottom: -100%; left: 0; width: 100%; height: 92vh;
+            background: white; z-index: 3100;
+            border-radius: 20px 20px 0 0; transition: 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+            overflow-y: scroll; padding-bottom: 100px;
+            background-color: var(--brand-cream);
+        }
+        .detail-sheet.open { bottom: 0; }
+
+        /* The Ultra Details Styling */
+        .sheet-hero-img { height: 400px; position: relative; }
+        
+        .close-btn {
+            position: absolute; top: 20px; right: 20px;
+            background: white; width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; cursor: pointer; z-index: 10;
+        }
+
+        .sheet-body { padding: 40px 25px; }
+
+        /* VISUAL DESCRIPTION BLOCKS */
+        .profile-grid {
+            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;
+            margin: 20px 0 30px; text-align: center;
+        }
+        .profile-item { background: #EFEBE5; padding: 10px; border-radius: 4px; }
+        .profile-icon { font-size: 1.2rem; color: var(--brand-cherry); margin-bottom: 5px; }
+        .profile-label { font-size: 0.7rem; font-family: var(--font-title); color: #666; text-transform: uppercase; }
+
+        .story-text {
+            font-size: 1.3rem; line-height: 1.7; color: #333; margin-bottom: 30px;
         }
         
-        /* THE STICKY BUN SPECIAL LAYOUT */
-        .sticky-layout {
-            border: 2px solid var(--gold); border-radius: 0;
+        /* The "Embedded Visual" */
+        .embedded-visual {
+            margin: 20px -25px 20px; /* Full bleed mobile */
+            height: 250px; 
+            background-size: cover; background-position: center;
         }
 
-        /* --- 6. SERVICE FORM (Custom Request) --- */
-        .inquiry-form {
-            background: white; padding: 25px; border: 1px solid var(--gold);
-        }
-        .form-label { display: block; font-family:'Cinzel'; font-size: 0.8rem; color: #888; margin-bottom: 8px; }
-        .form-input { 
-            width: 100%; padding: 12px; margin-bottom: 20px; 
-            border: 1px solid #ddd; background: #fafafa;
-            font-family: 'Cormorant Garamond'; font-size: 1rem;
-        }
-        .form-textarea { height: 100px; resize: none; }
-        .btn-whatsapp {
-            background: #25D366; color: white; border: none;
-            display: flex; justify-content: center; align-items: center; gap: 10px;
-            width: 100%; padding: 15px; font-family: sans-serif; font-weight: bold;
-            font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;
-        }
-
-        /* --- 7. CART OVERLAY --- */
-        .cart-modal {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-            z-index: 5000; display: none;
-        }
-        .cart-modal.open { display: block; }
+        /* Ingredients Visual List */
+        .ing-row { display: flex; justify-content: space-between; border-bottom: 1px dashed #dcdcdc; padding: 12px 0; font-size: 1.1rem; color: #555;}
         
-        .cart-panel {
-            position: absolute; bottom: 0; left: 0; width: 100%; height: 80vh;
-            background: white; border-radius: 20px 20px 0 0;
-            padding: 25px; display: flex; flex-direction: column;
-            animation: slideUp 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        .add-to-trunk-bar {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: white; padding: 15px 20px; border-top: 1px solid #eee;
+            transform: translateY(100%); transition: 0.4s; z-index: 3200;
+            display: flex; justify-content: space-between; align-items: center;
         }
-        @keyframes slideUp { from {transform: translateY(100%);} to {transform: translateY(0);} }
+        .add-to-trunk-bar.visible { transform: translateY(0); }
 
-        .cart-items { flex: 1; overflow-y: auto; margin: 20px 0; }
-        .cart-row { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; }
-        .checkout-btn {
-            background: var(--cherry); color: white; padding: 18px; border:none; width: 100%;
-            font-family: 'Cinzel'; font-size: 1rem;
+        .total-display { font-family: var(--font-title); font-size: 1.2rem; color: var(--brand-cherry); }
+        .big-add-btn { background: var(--brand-dark); color: var(--brand-gold); padding: 15px 30px; border:none; font-family: var(--font-title); border-radius: 50px; cursor: pointer; }
+
+
+        /* ========================
+           7. CART & CONCIERGE
+           ======================== */
+        .concierge-panel {
+            position: fixed; inset: 0; background: var(--brand-cream);
+            z-index: 4000; display: none; overflow-y: scroll;
+        }
+        .concierge-panel.open { display: block; animation: slideIn 0.3s ease; }
+        @keyframes slideIn { from{transform:translateX(100%);} to{transform:translateX(0);} }
+
+        .concierge-header {
+            padding: 20px; border-bottom: 2px solid var(--brand-gold);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        
+        .concierge-form { padding: 30px; }
+        
+        .form-label { font-family: var(--font-title); font-size: 0.8rem; color: var(--brand-cherry); margin-bottom: 8px; display: block; letter-spacing: 1px; }
+        .c-input { 
+            width: 100%; padding: 15px; border: 1px solid #ccc; 
+            background: white; margin-bottom: 25px; 
+            font-family: var(--font-body); font-size: 1.1rem; 
         }
 
     </style>
 </head>
 <body>
 
-    <!-- 1. HEADER (Fixed) -->
+    <!-- NAV -->
     <nav class="app-header">
-        <img src="pomelli-vintage-logo-script.jpg" class="logo" alt="Pomelli">
-        
-        <div class="cart-icon" onclick="openCart()">
-            <i class="fa-solid fa-shopping-bag"></i>
-            <span class="badge" id="cart-badge">0</span>
+        <div class="logo-container">
+            <img src="pomelli-vintage-logo-script.jpg" alt="POMELLI">
+        </div>
+        <div class="bag-icon" onclick="openConcierge()">
+            <i class="fa-solid fa-bell-concierge"></i>
+            <span class="bag-count" id="cart-badge">0</span>
         </div>
     </nav>
 
-    <!-- 2. HERO -->
-    <div class="hero-section">
+    <!-- HERO -->
+    <section class="hero">
         <video autoplay muted loop playsinline>
             <source src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/asembeling%20carrot%20cake%20video.mp4" type="video/mp4">
         </video>
-        <div class="hero-caption">
-            <span class="script" style="font-size: 3rem; display:block; margin-bottom: 5px;">Pomelli</span>
-            <h1>Estate<br>Provisioning</h1>
+        <div class="hero-text">
+            <span class="script" style="font-size: 4rem; margin-left: -10px;">The Archives</span>
+            <h1 style="font-size: 2.5rem; line-height: 0.9;">Estate<br>Provisions</h1>
         </div>
+    </section>
+
+    <!-- TABS -->
+    <div class="sticky-tabs">
+        <button class="tab-btn active" onclick="switchTab('morning', this)">Morning Room</button>
+        <button class="tab-btn" onclick="switchTab('patisserie', this)">Grand Patisserie</button>
+        <button class="tab-btn" onclick="switchTab('gifts', this)">Gifting & Sets</button>
     </div>
 
-    <!-- 3. TABS -->
-    <div class="tab-bar">
-        <button class="tab-pill active" onclick="setTab('morning', this)">Morning Goods</button>
-        <button class="tab-pill" onclick="setTab('cakes', this)">Signature Cakes</button>
-        <button class="tab-pill" onclick="setTab('custom', this)">Custom Atelier</button>
-    </div>
 
-    <!-- 4. CONTENT: MORNING GOODS -->
-    <div id="morning" class="content-tab active">
+    <!-- === 1. MORNING GOODS === -->
+    <div id="morning" class="tab-content active">
         
-        <!-- Sticky Buns (Sticky Layout) -->
-        <div class="card sticky-layout">
-            <div class="card-img-wrap">
-                <!-- Using the "Glove" image as the cover because sticky buns need action shots -->
-                <img src="sticky_glove.jpg" alt="Sticky Buns Pull">
+        <!-- STICKY BUNS -->
+        <div class="product-card">
+            <div class="card-image-block">
+                <!-- Using Action Shot Cover as requested -->
+                <img src="sticky_glove.jpg" alt="Sticky Buns">
+                <span class="price-badge">850 EGP</span>
             </div>
-            <div class="card-body">
+            <div class="card-info">
                 <h3>The Estate Sticky Buns</h3>
-                <span class="card-price">850 EGP (Tray of 12)</span>
-                <p class="card-desc">
-                    Made with brown butter and heavy cinnamon, soaked in the bottom of the pan in a salted brown butter pecan caramel. Gooey, nutty, salty.
-                </p>
-                <button class="btn-add" onclick="addToCart('Sticky Buns Tray', 850)">Add to Trunk</button>
+                <p class="short-desc">12 hand-rolled brioche spirals soaking in a bed of salted brown butter pecan caramel.</p>
+                <button class="btn-action" onclick="openDetails(0)">Examine Provisions</button>
             </div>
         </div>
 
     </div>
 
-    <!-- 5. CONTENT: CAKES -->
-    <div id="cakes" class="content-tab">
+
+    <!-- === 2. GRAND PATISSERIE === -->
+    <div id="patisserie" class="tab-content">
         
-        <!-- THE WATERCOLOR BANNER -->
-        <div style="background-image: url('https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/packaging-watercolor-woodland-art.jpg'); background-size: cover; padding: 40px; text-align: center; border-radius: 8px; margin-bottom: 30px; border: 1px solid var(--cherry);">
-            <h3 style="color: var(--cherry); background: rgba(255,255,255,0.9); display: inline-block; padding: 5px 15px;">Beatrix Potter Packaging</h3>
-        </div>
-
-        <!-- 1. The Slice (With new Butler Image) -->
-        <div class="card">
-            <span class="card-tag">Afternoon Tea</span>
-            <div class="card-img-wrap">
-                <img src="butler-hand-holding-cake-slice.jpg" alt="Butler Slice">
+        <!-- CARROT CAKE -->
+        <div class="product-card">
+            <div class="card-image-block">
+                <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sovereign-carrot-cake-whole.jpg">
+                <span class="price-badge">1,250 EGP</span>
             </div>
-            <div class="card-body">
-                <h3>The Salon Slice</h3>
-                <span class="card-price">145 EGP</span>
-                <p class="card-desc">A generous wedge of our Sovereign Cake, served gold-plated for solitary enjoyment.</p>
-                <button class="btn-add" onclick="addToCart('Salon Slice', 145)">Add to Trunk</button>
-            </div>
-        </div>
-
-        <!-- 2. The Whole Cake -->
-        <div class="card">
-            <span class="card-tag">Serves 12-16</span>
-            <div class="card-img-wrap">
-                <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sovereign-carrot-cake-whole.jpg" alt="Whole Cake">
-            </div>
-            <div class="card-body">
+            <div class="card-info">
                 <h3>The Sovereign Gâteau</h3>
-                <span class="card-price">1,250 EGP</span>
-                <p class="card-desc">A4 Grand Size. Three tiers of carrot sponge, oven-candied pecans, and salted butterscotch sauce.</p>
-                <button class="btn-add" onclick="addToCart('Sovereign Gateau', 1250)">Add to Trunk</button>
+                <p class="short-desc">Our flagship provision. Three dense layers of heritage carrot and candied pecan.</p>
+                <button class="btn-action" onclick="openDetails(1)">Examine Provisions</button>
+            </div>
+        </div>
+
+        <!-- SALON SLICE -->
+        <div class="product-card">
+            <div class="card-image-block">
+                <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/carrot-cake-slice-art-deco-plate.jpg">
+                <span class="price-badge">145 EGP</span>
+            </div>
+            <div class="card-info">
+                <h3>The Salon Slice</h3>
+                <p class="short-desc">A single, generous cut served with warm sauce for the solitary hedonist.</p>
+                <button class="btn-action" onclick="openDetails(2)">Examine Provisions</button>
             </div>
         </div>
 
     </div>
 
-    <!-- 6. CONTENT: CUSTOM ATELIER (Services) -->
-    <div id="custom" class="content-tab">
-        <div class="inquiry-form">
-            <span class="script" style="font-size: 2.5rem; display:block; text-align: center; margin-bottom: 10px;">The Atelier</span>
-            <h2 style="text-align: center; margin-bottom: 30px;">Bespoke Requests</h2>
-            
-            <p style="font-style: italic; color: #555; font-size: 0.95rem; margin-bottom: 25px; text-align: center;">
-                For private events, weddings, or specific off-menu requests. Type your vision below, and our Chef will reply directly via WhatsApp.
-            </p>
 
-            <label class="form-label">YOUR NAME</label>
-            <input type="text" class="form-input" id="i-name" placeholder="Lady Sarah...">
-
-            <label class="form-label">DATE & EVENT TYPE</label>
-            <input type="text" class="form-input" id="i-date" placeholder="Dec 15th, Dinner Party">
-
-            <label class="form-label">YOUR VISION / REQUEST</label>
-            <textarea class="form-input form-textarea" id="i-req" placeholder="e.g. I need a dessert table setup for 20 guests..."></textarea>
-
-            <button class="btn-whatsapp" onclick="sendInquiry()">
-                <i class="fa-brands fa-whatsapp fa-lg"></i> Send to Chef
-            </button>
+    <!-- === 3. GIFTING & SETS === -->
+    <div id="gifts" class="tab-content">
+        <!-- Watercolor Beatrix Card -->
+        <div class="service-layout" style="background-image: url('https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/packaging-watercolor-woodland-art.jpg'); background-size: cover; border: none; padding: 60px 20px;">
+            <div style="background: rgba(255,255,255,0.9); padding: 30px;">
+                <span class="script" style="font-size: 2.5rem;">Beatrix Potter</span>
+                <h3 style="color: var(--brand-cherry); margin: 10px 0;">Folklore Packaging</h3>
+                <p class="short-desc">Every allocation arrives in boxes adorned with woodland watercolor art.</p>
+            </div>
         </div>
         
         <br>
-        <!-- Mood Image -->
-        <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/carrot-cake-manor-interior.jpg" style="border-radius: 8px;">
 
-    </div>
-
-    <!-- 7. CART OVERLAY -->
-    <div class="cart-modal" id="cart-modal">
-        <div class="cart-panel">
-            <div style="display:flex; justify-content:space-between; align-items: center;">
-                <h2>Your Trunk</h2>
-                <i class="fa-solid fa-xmark" style="font-size: 1.5rem; padding: 10px;" onclick="toggleCart()"></i>
+        <div class="product-card">
+            <div class="card-info">
+                <h3>Butler Service Inquiry</h3>
+                <p class="short-desc">Request tableside service setup (Cairo Only).</p>
+                <button class="btn-action" onclick="openDetails(3)">Contact The Chef</button>
             </div>
-            
-            <div class="cart-items" id="cart-items">
-                <p style="text-align: center; color: #999; margin-top: 40px;">The trunk is empty.</p>
-            </div>
-            
-            <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
-                <label class="form-label">DELIVERY ADDRESS (CAIRO)</label>
-                <input type="text" id="c-address" class="form-input" placeholder="Building, Street, Area..." style="margin-bottom:0; background: white;">
-            </div>
-
-            <button class="checkout-btn" onclick="checkout()">
-                Checkout via WhatsApp
-            </button>
         </div>
     </div>
 
 
+    <!-- ============================================
+         THE ULTRA VISUAL MODAL (PRODUCT DETAILS)
+         ============================================ -->
+    
+    <div class="modal-overlay" id="sheet-overlay" onclick="closeSheet()"></div>
+    
+    <div class="detail-sheet" id="product-sheet">
+        <div class="sheet-hero-img">
+            <div class="close-btn" onclick="closeSheet()"><i class="fa-solid fa-xmark"></i></div>
+            <img id="m-img" src="" style="width:100%; height:100%; object-fit: cover;">
+        </div>
+
+        <div class="sheet-body">
+            <span class="script" style="font-size: 3rem; display:block; text-align:center; margin-bottom:10px;">The Profile</span>
+            <h2 id="m-title" style="text-align: center; font-size: 2rem; color: var(--brand-dark);">Title</h2>
+            
+            <!-- 1. Visual Icon Grid -->
+            <div class="profile-grid">
+                <div class="profile-item">
+                    <i class="profile-icon fa-solid fa-wheat-awn"></i>
+                    <div class="profile-label">Hand Rolled</div>
+                </div>
+                <div class="profile-item">
+                    <i class="profile-icon fa-solid fa-temperature-three-quarters"></i>
+                    <div class="profile-label">Warm Service</div>
+                </div>
+                <div class="profile-item">
+                    <i class="profile-icon fa-regular fa-clock"></i>
+                    <div class="profile-label">24hr Prep</div>
+                </div>
+            </div>
+
+            <!-- 2. Typography Description -->
+            <div id="m-desc" class="story-text">
+                <!-- Javascript will inject Rich HTML here -->
+            </div>
+            
+            <!-- 3. Embedded Visual Area (for secondary images) -->
+            <div id="m-visual" class="embedded-visual" style="display:none;"></div>
+            
+            <h4 style="text-align: center; color: var(--brand-gold); margin-top: 40px; border-bottom: 1px solid #eee; padding-bottom: 10px;">Component List</h4>
+            <div class="ing-row">
+                <span>Ingredient I</span>
+                <span style="font-family: var(--font-title); color: var(--brand-cherry);">Pecan</span>
+            </div>
+            <div class="ing-row">
+                <span>Ingredient II</span>
+                <span style="font-family: var(--font-title); color: var(--brand-cherry);">Brown Butter</span>
+            </div>
+            
+            <div style="height: 100px;"></div> <!-- Spacing for button -->
+        </div>
+
+        <!-- Sticky Buy Button -->
+        <div class="add-to-trunk-bar" id="buy-bar">
+            <div class="total-display" id="m-price">0 EGP</div>
+            <button class="big-add-btn" id="m-btn">Add Allocation</button>
+        </div>
+    </div>
+
+
+    <!-- ============================================
+         THE CONCIERGE (CHECKOUT)
+         ============================================ -->
+    
+    <div class="concierge-panel" id="cart-panel">
+        <div class="concierge-header">
+            <h2>Concierge Desk</h2>
+            <i class="fa-solid fa-xmark" onclick="closeConcierge()" style="font-size: 1.5rem; cursor: pointer;"></i>
+        </div>
+        
+        <div style="padding: 20px;">
+            <p id="empty-msg" style="text-align: center; color: #999; margin: 40px 0;">Your estate allocation list is empty.</p>
+            <div id="cart-list"></div>
+        </div>
+
+        <!-- ADDRESS FORM WITH DROP DOWN -->
+        <div class="concierge-form" id="checkout-form" style="display:none; border-top: 10px solid var(--brand-gold); background: #fdfdfd;">
+            <h3 style="margin-bottom: 20px;">Destination</h3>
+
+            <label class="form-label">ESTATE LOCATION (CAIRO)</label>
+            <select class="c-input" id="c-zone" style="height: 50px;">
+                <option value="" disabled selected>Select District...</option>
+                <option value="Zamalek">Zamalek</option>
+                <option value="Maadi">Maadi</option>
+                <option value="New Cairo (Tagamoa)">New Cairo / Tagamoa</option>
+                <option value="Sheikh Zayed">Sheikh Zayed / 6 Oct</option>
+                <option value="Heliopolis">Heliopolis</option>
+                <option value="Garden City">Garden City</option>
+                <option value="Dokki">Dokki</option>
+            </select>
+
+            <label class="form-label">STREET ADDRESS</label>
+            <input type="text" id="c-street" class="c-input" placeholder="e.g. 5 Brazil Street, Apt 4">
+
+            <label class="form-label">RESIDENT NAME</label>
+            <input type="text" id="c-name" class="c-input" placeholder="e.g. Lady Sarah...">
+
+            <button onclick="sendButler()" class="big-add-btn" style="width: 100%; border-radius: 4px; background: var(--brand-cherry); color: white;">
+                Confirm via WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <!-- SCRIPT LOGIC -->
     <script>
-        // STATE
+        const catalog = [
+            {
+                // 0: STICKY BUNS
+                title: "The Estate Sticky Buns",
+                price: 850,
+                img: "https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/Flow%20Dec%2031%202025.jpeg", 
+                secondaryImg: "sticky_glove.jpg", // The Glove shot for description
+                // Rich Visual Description
+                desc: `
+                    <p><strong>The Dough:</strong> Enriched brioche dough, prepared 24 hours in advance to ensure the crumb is distinct and feathery.</p>
+                    <br>
+                    <p><strong>The Bath:</strong> We do not drizzle. We drown. The buns are baked in a deep bed of salted brown-butter pecan caramel.</p>
+                    <br>
+                    <div style="background: url('sticky_glove.jpg'); height: 250px; background-size: cover; border-radius: 4px; margin: 15px 0;"></div>
+                    <p><strong>The Texture:</strong> Gooey. Nutty. Caramelly. Salty. Designed to be pulled apart by hand.</p>
+                `
+            },
+            {
+                // 1: CAKE
+                title: "Sovereign Gâteau",
+                price: 1250,
+                img: "https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sovereign-carrot-cake-whole.jpg",
+                secondaryImg: "https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sovereign-carrot-cake-whole.jpg",
+                desc: `
+                    <p>A masterpiece of structure and flavor. Constructed of three dense layers of spiced heritage carrot sponge.</p>
+                    <br>
+                    <p><strong>The Pecan Surprise:</strong> At every bite, you encounter oven-candied pecans swimming in a hidden pool of salted butterscotch sauce.</p>
+                    <br>
+                    <p>Frosting: Brown-butter Cream Cheese Silk.</p>
+                `
+            },
+            {
+                // 2: SLICE
+                title: "The Salon Slice",
+                price: 145,
+                img: "butler-hand-holding-cake-slice.jpg", // BUTLER HOLDING SLICE
+                secondaryImg: "https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/carrot-cake-slice-art-deco-plate.jpg",
+                desc: `
+                    <p>Sometimes one does not wish to share. A precise, generous cut of the Sovereign.</p>
+                    <div style="background: url('https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/carrot-cake-slice-art-deco-plate.jpg'); height: 200px; background-size: cover; background-position:center; margin: 20px 0;"></div>
+                    <p>Served on an art-deco plate for the visual pleasure of the guest. Best consumed with Earl Grey.</p>
+                `
+            },
+            {
+                // 3: SERVICE
+                title: "Service Inquiry",
+                price: 0,
+                img: "https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/butler-service-caramel-drip.jpg",
+                secondaryImg: "",
+                desc: `
+                    <p>Tableside service à la Russe.</p>
+                    <p>We provide the silver, the linen, and the staff. You provide the guests.</p>
+                    <br>
+                    <p>Please use the checkout to start a conversation with our Head Butler regarding dates.</p>
+                `
+            }
+        ];
+
         let cart = [];
 
-        // --- TAB SWITCHER ---
-        function setTab(tabId, btnElement) {
-            // Hide all tabs
-            document.querySelectorAll('.content-tab').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-pill').forEach(el => el.classList.remove('active'));
+        // NAVIGATION
+        function switchTab(id, btn) {
+            document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el=>el.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        // SHEET LOGIC
+        function openDetails(idx) {
+            const p = catalog[idx];
+            document.getElementById('m-title').innerText = p.title;
+            document.getElementById('m-price').innerText = (p.price > 0) ? p.price + " EGP" : "Bespoke";
+            document.getElementById('m-img').src = p.img;
             
-            // Show Target
-            document.getElementById(tabId).classList.add('active');
-            btnElement.classList.add('active');
-        }
-
-        // --- CART LOGIC ---
-        function addToCart(item, price) {
-            cart.push({name: item, price: price});
-            updateCartCount();
-            alert("Placed " + item + " in the trunk.");
-        }
-
-        function updateCartCount() {
-            const el = document.getElementById('cart-badge');
-            el.innerText = cart.length;
-            el.classList.add('show');
-        }
-
-        function toggleCart() {
-            const modal = document.getElementById('cart-modal');
-            const items = document.getElementById('cart-items');
+            // RICH HTML INJECTION
+            document.getElementById('m-desc').innerHTML = p.desc;
             
-            if(modal.style.display === 'block') {
-                modal.style.display = 'none';
+            // Logic for visual
+            if(p.secondaryImg && p.secondaryImg !== "") {
+                 // Handled in HTML string mostly, but could set bg here
+            }
+
+            // Button
+            const btn = document.getElementById('m-btn');
+            btn.innerText = (p.price > 0) ? "Secure Allocation" : "Start Inquiry";
+            btn.onclick = function() { addToCart(idx); };
+
+            document.getElementById('sheet-overlay').classList.add('open');
+            document.getElementById('product-sheet').classList.add('open');
+            document.getElementById('buy-bar').classList.add('visible');
+        }
+
+        function closeSheet() {
+            document.getElementById('sheet-overlay').classList.remove('open');
+            document.getElementById('product-sheet').classList.remove('open');
+            document.getElementById('buy-bar').classList.remove('visible');
+        }
+
+        // CART LOGIC
+        function addToCart(idx) {
+            cart.push(catalog[idx]);
+            updateBag();
+            closeSheet();
+            alert("Provision secured in Trunk.");
+        }
+
+        function updateBag() {
+            const b = document.getElementById('cart-badge');
+            b.innerText = cart.length;
+            b.classList.add('show');
+            renderCart();
+        }
+
+        function openConcierge() {
+            renderCart();
+            document.getElementById('cart-panel').classList.add('open');
+        }
+
+        function closeConcierge() {
+            document.getElementById('cart-panel').classList.remove('open');
+        }
+
+        function renderCart() {
+            const list = document.getElementById('cart-list');
+            const form = document.getElementById('checkout-form');
+            const empty = document.getElementById('empty-msg');
+            
+            list.innerHTML = "";
+            
+            if(cart.length === 0) {
+                empty.style.display = 'block';
+                form.style.display = 'none';
             } else {
-                modal.style.display = 'block';
-                // Render
-                if(cart.length === 0) {
-                    items.innerHTML = '<p style="text-align: center; color: #999; margin-top: 40px;">The trunk is empty.</p>';
-                    return;
-                }
+                empty.style.display = 'none';
+                form.style.display = 'block';
                 
-                let html = '';
-                let total = 0;
-                cart.forEach((c) => {
-                    html += `
-                    <div class="cart-row">
-                        <span>${c.name}</span>
-                        <span style="color:var(--cherry)">${c.price} EGP</span>
+                let html = "";
+                cart.forEach(item => {
+                    html += `<div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px solid #eee; padding-bottom:5px;">
+                        <span>${item.title}</span>
+                        <span style="color:var(--brand-cherry)">${item.price} EGP</span>
                     </div>`;
-                    total += c.price;
                 });
-                html += `<div style="text-align:right; font-weight:bold; margin-top:10px;">TOTAL: ${total} EGP</div>`;
-                items.innerHTML = html;
+                list.innerHTML = html;
             }
         }
-        
-        function openCart() { toggleCart(); } // alias
 
-        // --- WHATSAPP FUNCTIONS ---
-        
-        // 1. ORDER CHECKOUT
-        function checkout() {
-            if(cart.length === 0) return;
-            const addr = document.getElementById('c-address').value;
-            if(!addr) return alert("Please enter a Cairo address.");
+        // === WHATSAPP BUTLER ===
+        function sendButler() {
+            const name = document.getElementById('c-name').value;
+            const zone = document.getElementById('c-zone').value;
+            const street = document.getElementById('c-street').value;
+            
+            if(!name || !zone || !street) return alert("The Concierge requires full details to dispatch.");
 
-            let msg = `*NEW ORDER (App)*%0aAddress: ${addr}%0a%0aITEMS:%0a`;
+            // FANCY LANGUAGE GENERATOR
+            let msg = `*GREETINGS POMELLI CONCIERGE*%0a%0a`;
+            msg += `My name is ${name}. I write to you from ${zone}.%0a%0a`;
+            msg += `I wish to secure allocation of the following provisions:%0a`;
+            
             let total = 0;
-            cart.forEach(c => {
-                msg += `- ${c.name} (${c.price})%0a`;
-                total += c.price;
+            cart.forEach(item => {
+                msg += `- ${item.title} (${item.price > 0 ? item.price : 'Inquire'})%0a`;
+                total += item.price;
             });
-            msg += `%0a*Total: ${total} EGP*`;
             
-            window.open(`https://wa.me/201024274466?text=${msg}`);
-        }
+            msg += `%0a*Total Estimate: ${total} EGP*%0a`;
+            msg += `%0aDelivery Address: ${street}, ${zone}.%0a`;
+            msg += `%0aKindly confirm dispatch.`;
 
-        // 2. CUSTOM INQUIRY
-        function sendInquiry() {
-            const name = document.getElementById('i-name').value;
-            const date = document.getElementById('i-date').value;
-            const req = document.getElementById('i-req').value;
-
-            if(!name || !req) return alert("Please fill out the details.");
-
-            let msg = `*BESPOKE INQUIRY (Atelier)*%0aClient: ${name}%0aDate: ${date}%0a%0aRequest:%0a${req}`;
-            
             window.open(`https://wa.me/201024274466?text=${msg}`);
         }
 
