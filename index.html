@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pomelli | The Estate App</title>
-
-    <!-- HIGH END FONTS -->
+    <title>Pomelli | Estate Provisions</title>
+    
+    <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Monsieur+La+Doulaise&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -29,7 +29,7 @@
             font-family: var(--font-body);
             overflow-x: hidden;
             font-size: 18px;
-            padding-bottom: 90px; /* Space for footer */
+            padding-bottom: 90px;
         }
 
         img { width: 100%; display: block; object-fit: cover; }
@@ -44,9 +44,8 @@
             padding: 0 20px; z-index: 1000;
         }
         
-        /* Adjusted Logo Logic: Not too big, not out of frame */
         .logo { 
-            height: 90px; 
+            height: 400px; 
             width: auto; 
             mix-blend-mode: multiply; 
         }
@@ -61,9 +60,6 @@
             width: 18px; height: 18px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             opacity: 0; transition: 0.3s;
-        }
-        .badge.show {
-            opacity: 1;
         }
 
         /* === 2. CINEMATIC HERO (Video) === */
@@ -89,7 +85,6 @@
             display: flex; gap: 15px; padding: 15px 20px;
             overflow-x: auto; z-index: 900;
             border-bottom: 1px solid rgba(0,0,0,0.05);
-            /* Hide Scrollbar */
             -ms-overflow-style: none; scrollbar-width: none;
         }
         .menu-tabs::-webkit-scrollbar { display: none; }
@@ -105,7 +100,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
-        /* === 4. PRODUCT CARDS === */
+        /* === 4. PRODUCT CARDS & GRID CONTAINER === */
         .grid-container {
             padding: 20px 15px; display: none;
         }
@@ -132,8 +127,6 @@
             color: #666; font-size: 1rem; margin-top: 5px; 
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
         }
-
-        /* Primary Button Style */
         .btn-view {
             display: block; width: 100%; text-align: center;
             margin-top: 15px; padding: 14px; 
@@ -142,8 +135,7 @@
             border-radius: 8px; cursor: pointer; color: var(--brand-walnut);
         }
 
-        /* === 5. SPECIAL SECTIONS === */
-        /* Beatrix Potter Visual Break */
+        /* === 5. SPECIAL SECTIONS & FORM STYLES === */
         .folklore-divider {
             margin: 40px 15px;
             background-image: url('https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/packaging-watercolor-woodland-art.jpg');
@@ -156,7 +148,24 @@
             border-radius: 8px; font-family: var(--font-body); font-size: 1.2rem;
         }
 
-        /* === 6. SUPER MODULE (The Detailed View) === */
+        /* SERVICE INQUIRY FORM */
+        .inquiry-form {
+            background: white; border-radius: 16px; padding: 30px 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-family: var(--font-display); color: var(--brand-cherry); margin-bottom: 5px; font-size: 0.8rem; letter-spacing: 1px; }
+        .form-input, .form-textarea {
+            width: 100%; padding: 15px; border-radius: 8px;
+            border: 1px solid #ddd; font-family: var(--font-body); font-size: 1rem;
+        }
+        .form-textarea { resize: vertical; min-height: 100px; }
+        .btn-submit {
+             width: 100%; padding: 16px; border: none; border-radius: 8px;
+            background: var(--brand-walnut); color: var(--brand-gold);
+            font-family: var(--font-display); text-transform: uppercase; font-size: 1rem;
+        }
+        
+        /* === 6. SUPER MODAL (The Detailed View) === */
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000;
             display: none; opacity: 0; transition: 0.3s;
@@ -166,7 +175,7 @@
         .super-modal {
             position: fixed; bottom: -100%; left: 0; width: 100%; height: 90vh;
             background: white; border-radius: 24px 24px 0 0; z-index: 2100;
-            overflow-y: scroll; padding-bottom: 120px; /* space for button */
+            overflow-y: scroll; padding-bottom: 120px;
             transition: bottom 0.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
         .super-modal.open { bottom: 0; }
@@ -180,7 +189,6 @@
 
         .modal-body { padding: 30px 25px; }
 
-        /* The "Module" Styling */
         .data-grid {
             display: flex; gap: 10px; margin: 20px 0;
             border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; padding: 15px 0;
@@ -196,25 +204,21 @@
         .story-text { line-height: 1.8; color: #444; margin-bottom: 20px; font-size: 1.1rem; }
         .recipe-block { background: #FAF9F6; padding: 20px; border-radius: 12px; margin-top: 20px; }
         
-        /* Floating CTA */
         .floating-bar {
             position: fixed; bottom: 0; left: 0; width: 100%;
             padding: 15px 20px; background: white; border-top: 1px solid #eee;
             z-index: 2200; display: none; box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
         }
         .floating-bar.active { display: block; animation: fadeUp 0.3s; }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); } to { opacity: 1; }
-        }
-
+        
+        @keyframes fadeUp { from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);} }
+        
         .btn-cta {
             width: 100%; padding: 16px; border: none; border-radius: 50px;
             background: var(--brand-cherry); color: white;
             font-family: var(--font-display); text-transform: uppercase; font-size: 1rem; cursor: pointer;
         }
 
-        /* Specific Visual Embeds */
         .watercolor-embed {
             width: 100%; border-radius: 12px; margin: 25px 0;
             border: 1px solid #ddd; padding: 10px; background: white;
@@ -228,32 +232,22 @@
             display: flex; flex-direction: column;
         }
         .checkout-drawer.open { right: 0; }
-        .checkout-header { padding: 20px; border-bottom:1px solid #ddd; display:flex; align-items:center; }
-        .checkout-header h2 { font-family:'Cinzel'; font-size:1.2rem; }
-        .checkout-body { padding: 20px; flex:1; overflow-y:scroll; }
-        .cart-item { display: flex; gap: 15px; margin-bottom: 20px; }
-        .checkout-footer { padding: 30px; background:white; border-top:1px solid #ddd; box-shadow: 0 -5px 20px rgba(0,0,0,0.05);}
-        .input-field { width:100%; padding:15px; border:1px solid #ccc; border-radius:8px; margin-bottom:10px; font-family:inherit; font-size:1rem; }
-
-        /* === 8. EXPANDED FOOTER === */
-        .app-footer {
-            padding: 50px 20px 20px;
-            text-align: center;
-            border-top: 1px solid rgba(0,0,0,0.08);
-            margin-top: 50px;
+        
+        .checkout-header {
+            display: flex; align-items: center; padding: 18px 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.1); font-family: var(--font-display);
         }
-        .footer-motto { font-family: 'Monsieur La Doulaise'; font-size:2.5rem; color:var(--brand-cherry); }
-        .footer-links { margin: 20px 0; display: flex; justify-content: center; gap: 25px; }
-        .footer-link { color: #666; font-size: 0.8rem; text-transform: uppercase; font-family: var(--font-display); }
-        .copyright { font-size: 0.8rem; color: #aaa; margin-top: 20px; }
+        .checkout-body { padding: 20px; flex: 1; overflow-y: scroll; }
+        .checkout-footer { padding: 20px; border-top: 1px solid #ddd; background: white; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); }
+
     </style>
 </head>
 <body>
 
     <!-- NAV -->
     <nav class="app-nav">
+        <div style="width:40px;"></div> <!-- Spacer -->
         <img src="pomelli-vintage-logo-script.jpg" class="logo" alt="Pomelli Estate">
-        
         <div class="cart-trigger" onclick="openCheckout()">
             <i class="fa-solid fa-suitcase"></i>
             <div class="badge" id="cart-badge">0</div>
@@ -297,7 +291,7 @@
             <span class="p-price">850 EGP</span>
             <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/Flow%20Dec%2031%202025.jpeg" class="p-image">
             <div class="p-content">
-                <h2 class="p-title">Sticky Pecan Buns</h2>
+                <h2 class="p-title">Caramel Pecan Sticky Buns</h2>
                 <p class="p-desc-short">Tray of 12 brioche spirals bathing in a bed of salted brown butter pecan caramel.</p>
                 <button class="btn-view" onclick="openBunsModal()">View The Sticky Details</button>
             </div>
@@ -311,40 +305,39 @@
         </div>
     </section>
 
-    <!-- === GRID: SERVICES === -->
+    <!-- === GRID: SERVICES (INQUIRY FORM) === -->
     <section id="services" class="grid-container">
-        <div class="product-card">
-            <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/butler-service-caramel-drip.jpg" class="p-image">
-            <div class="p-content">
-                <h2 class="p-title">Bespoke Inquiries</h2>
-                <p class="p-desc-short">For special occasions, custom flavor profiles, or white-glove service, please open a direct line to our concierge.</p>
-                <button class="btn-view" onclick="openInquiryModal()">Begin Inquiry</button>
-            </div>
+        <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/butler-service-caramel-drip.jpg" style="border-radius:16px;">
+        <div class="inquiry-form" style="margin-top:25px;">
+             <h2 class="p-title" style="text-align:center;">Service Concierge</h2>
+             <p style="text-align:center; color:#666; margin-bottom:30px; font-size:1rem;">Request a custom dessert commission or our signature plating service for your Cairo event.</p>
+             
+             <div class="form-group">
+                 <label class="form-label">Your Name</label>
+                 <input type="text" class="form-input" id="service-name">
+             </div>
+             <div class="form-group">
+                 <label class="form-label">Event Date</label>
+                 <input type="date" class="form-input" id="service-date">
+             </div>
+             <div class="form-group">
+                 <label class="form-label">Number of Guests (Approx.)</label>
+                 <input type="number" class="form-input" id="service-guests" placeholder="e.g., 20">
+             </div>
+             <div class="form-group">
+                 <label class="form-label">Your Request</label>
+                 <textarea class="form-textarea" id="service-request" placeholder="Please describe the nature of your event and your desired confections..."></textarea>
+             </div>
+             <button class="btn-submit" onclick="inquireService()">Dispatch Inquiry to Butler</button>
         </div>
-        <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/carrot-cake-manor-interior.jpg" style="border-radius:12px; margin-top:20px;">
+        <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/carrot-cake-manor-interior.jpg" style="border-radius:16px; margin-top:25px;">
     </section>
-
-    <!-- EXPANDED FOOTER -->
-    <footer class="app-footer">
-        <span class="footer-motto">The Art of Hospitality</span>
-        <div class="footer-links">
-            <a href="#" class="footer-link">Allergens</a>
-            <a href="#" class="footer-link">Delivery Area</a>
-            <a href="#" class="footer-link">Contact</a>
-        </div>
-        <div class="copyright">
-            © 2024 Pomelli Estate. A Gentleman's Agreement on Privacy.<br>Cairo, Egypt.
-        </div>
-    </footer>
-
 
     <!-- === THE SUPER MODAL (DETAIL VIEW) === -->
     <div class="modal-overlay" id="overlay" onclick="closeModal()"></div>
     
     <div class="super-modal" id="modal">
         <div class="close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></div>
-        
-        <!-- DYNAMIC CONTENT AREA -->
         <div id="modal-dynamic-content"></div>
     </div>
 
@@ -359,24 +352,21 @@
             <i class="fa-solid fa-arrow-left" onclick="closeCheckout()" style="font-size:1.5rem; margin-right:15px; cursor:pointer;"></i>
             <h2>Your Trunk</h2>
         </div>
-        
-        <div id="cart-contents" class="checkout-body">
-            <!-- JS inserts cart items here -->
+        <div class="checkout-body" id="cart-contents">
+            <p style="color:#999; text-align:center; margin-top:40px;">The trunk is empty.</p>
         </div>
-
         <div class="checkout-footer">
-            <input type="text" id="cust-name" class="input-field" placeholder="Your Name">
-            <input type="text" id="cust-addr" class="input-field" placeholder="Address (Building/Street/City)">
-            <button class="btn-cta" onclick="confirmOrder()">Confirm via WhatsApp</button>
+            <p style="margin-bottom:10px;">Send order to our Butler via WhatsApp:</p>
+            <input type="text" id="cust-name" class="form-input" placeholder="Your Name">
+            <input type="text" id="cust-addr" class="form-input" style="margin-top:10px;" placeholder="Address (Building/Street/City)">
+            <button class="btn-cta" style="margin-top:15px;" onclick="confirmOrder()">Confirm via WhatsApp</button>
         </div>
     </div>
 
 
-    <!-- === SCRIPT LOGIC === -->
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // --- 1. DATA (HTML Templates for Modals) ---
-
-        // Added more detailed modules from the user's recipe text.
+        // --- 1. DATA (Modules) ---
         const carrotCakeHTML = `
             <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sovereign-carrot-cake-whole.jpg" class="modal-hero-img">
             <div class="modal-body">
@@ -387,68 +377,135 @@
                     <div class="data-point"><div class="dp-icon"><i class="fa-solid fa-users"></i></div><div class="dp-label">Serves</div><div class="dp-value">16 Ppl</div></div>
                     <div class="data-point"><div class="dp-icon"><i class="fa-solid fa-utensils"></i></div><div class="dp-label">Style</div><div class="dp-value">Grand Tier</div></div>
                 </div>
-                <p class="story-text">Inspired by Truluck's iconic recipe. This is not a mere cake; it is a monument. Layers of impossibly moist carrot sponge, rich with pineapple and coconut, are stacked with a tangy cream cheese frosting and a house-made brown butter butterscotch.</p>
+                <p class="story-text">Inspired by the iconic recipe from Truluck's. A breathless tower featuring layers of moist carrot sponge with pineapple and coconut, oven-candied pecans, a rich brown-butter butterscotch, and tangy cream cheese frosting.</p>
                 <img src="watercolored carrot cake.jpg" class="watercolor-embed" alt="Illustration">
-                <div class="recipe-block">
-                    <h3 style="font-family:var(--font-display); margin-bottom:10px;">The Archives</h3>
-                    <ul style="padding-left:20px; color:#555; line-height:1.6;">
-                        <li><strong>Candied Pecans:</strong> Toasted, then candied with cinnamon and salt for a brittle, unforgettable crunch.</li>
-                        <li><strong>The Frosting:</strong> By browning the butter first, we achieve a nutty depth of flavor unheard of in standard frostings.</li>
-                        <li><strong>Dimensions:</strong> The 'Grand Rectangular Tier' is a 20cm x 30cm affair.</li>
-                    </ul>
-                </div>
-                <br><br>
-            </div>
-        `;
+                <div class="recipe-block"><h3 style="font-family:var(--font-display); margin-bottom:10px;">The Notes</h3><ul style="padding-left:20px; color:#555; line-height:1.6;"><li><strong>Pecan Surprise:</strong> Oven-candied pecans buried in the frosting.</li><li><strong>Structure:</strong> We use a grand pan (30x20cm).</li><li><strong>Alchemy:</strong> We brown the butter before mixing the frosting to create a deep hazelnut aroma.</li></ul></div>
+            </div>`;
 
-        // NEW detailed module for the Buns
         const bunsHTML = `
-            <img src="sticky_glove.jpg" class="modal-hero-img"> <!-- The glove shot as the hero -->
+            <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/Flow%20Dec%2031%202025.jpeg" class="modal-hero-img">
             <div class="modal-body">
                 <span style="color:var(--brand-cherry); font-weight:bold;">Morning Goods</span>
                 <h1 style="font-family:var(--font-display); font-size:2rem; margin: 10px 0;">Estate Sticky Buns</h1>
-                 <div class="data-grid">
-                    <div class="data-point"><div class="dp-icon"><i class="fa-regular fa-clock"></i></div><div class="dp-label">Total Time</div><div class="dp-value">3 Hours</div></div>
-                    <div class="data-point"><div class="dp-icon"><i class="fa-solid fa-box-archive"></i></div><div class="dp-label">Yield</div><div class="dp-value">12 Buns</div></div>
+                 <img src="sticky_glove.jpg" style="border-radius:12px; margin: 20px 0; box-shadow:0 10px 20px rgba(0,0,0,0.1);">
+                <p class="story-text">These are not cinnamon rolls; they are an experience. Soft, buttery brioche spirals are finished with an ooey-gooey caramel pecan praline topping. The dough itself is proofed twice, a slow process which develops a pillowy, soft gluten structure.</p>
+                <div class="data-grid">
+                     <div class="data-point"><div class="dp-icon"><i class="fa-regular fa-clock"></i></div><div class="dp-label">Proof</div><div class="dp-value">3 Hours</div></div>
+                     <div class="data-point"><div class="dp-icon"><i class="fa-solid fa-cubes"></i></div><div class="dp-label">Yield</div><div class="dp-value">12 Buns</div></div>
+                     <div class="data-point"><div class="dp-icon"><i class="fa-solid fa-fire-burner"></i></div><div class="dp-label">Technique</div><div class="dp-value">Brown Butter</div></div>
                 </div>
-                <p class="story-text">Soft, buttery cinnamon rolls that begin a day in ultimate indulgence. These brioche spirals are finished with an ooey-gooey caramel pecan praline topping that coats every crevice.</p>
-                <div style="text-align:center; margin-bottom: 20px;">
-                     <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/Flow%20Dec%2031%202025.jpeg" style="border-radius:12px; border:1px solid #eee;">
-                     <p style="font-style:italic; font-size:0.8rem; color:#999;">The Finished Tray</p>
-                </div>
-                <div class="recipe-block">
-                    <h3 style="font-family:var(--font-display); margin-bottom:10px;">Butler's Notes</h3>
-                    <ul style="padding-left:20px; color:#555; line-height:1.6;">
-                        <li><strong>Dough:</strong> Pillowy-soft dough kneaded for 10 minutes to develop gluten perfectly.</li>
-                        <li><strong>Caramel:</strong> A bubbling alchemy of corn syrup, brown sugar, and butter, poured over pecans.</li>
-                        <li><strong>The Final Flourish:</strong> After baking, the tray is inverted to reveal the glorious, gooey bottom.</li>
-                    </ul>
-                </div>
-            </div>
-        `;
+                <div class="recipe-block"><h3 style="font-family:var(--font-display); margin-bottom:10px;">The Method</h3><p style="font-size:1rem; color:#555;">Dough is rolled into a tight log over a butter and brown sugar filling, then sliced with floss to preserve the layers. The rolls then rest in a bed of hot caramel, corn syrup, and pecan pralines before their final bake.</p></div>
+            </div>`;
 
-        // NEW modal content for the Service Inquiry Form
-        const serviceInquiryHTML = `
-            <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/butler-service-caramel-drip.jpg" class="modal-hero-img">
-            <div class="modal-body">
-                <span style="color:var(--brand-cherry); font-weight:bold;">Concierge Desk</span>
-                <h1 style="font-family:var(--font-display); font-size:2rem; margin: 10px 0;">Bespoke Inquiry</h1>
-                <p class="story-text">For custom commissions, event catering, or white-glove service, please provide the details of your request. Our concierge will receive it directly via WhatsApp.</p>
-                
-                <div id="service-form" style="margin-top:20px;">
-                    <select id="inq-type" class="input-field">
-                        <option>White-Glove Service</option>
-                        <option>Custom Cake Commission</option>
-                        <option>Wedding & Events</option>
-                    </select>
-                    <input type="text" id="inq-date" class="input-field" placeholder="Date of Event">
-                    <input type="number" id="inq-guests" class="input-field" placeholder="Number of Guests">
-                    <textarea id="inq-details" class="input-field" placeholder="Please describe your vision..." rows="4"></textarea>
-                </div>
-            </div>
-        `;
-
-        // --- 2. LOGIC ---
         let cart = [];
-
+        
+        // --- 2. LOGIC (UI & Navigation) ---
         function filterMenu(id, btn) {
+            document.querySelectorAll('.grid-container').forEach(el => el.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            
+            document.querySelectorAll('.tab-pill').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function openModal() {
+            document.getElementById('overlay').classList.add('open');
+            document.getElementById('modal').classList.add('open');
+            document.getElementById('floating-bar').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('overlay').classList.remove('open');
+            document.getElementById('modal').classList.remove('open');
+            document.getElementById('floating-bar').classList.remove('active');
+        }
+
+        function openCarrotCakeModal() {
+            document.getElementById('modal-dynamic-content').innerHTML = carrotCakeHTML;
+            document.getElementById('floating-btn').innerText = "Add Gâteau (1250 EGP)";
+            document.getElementById('floating-btn').onclick = () => addToCart("Sovereign Gâteau", 1250);
+            openModal();
+        }
+
+        function openBunsModal() {
+            document.getElementById('modal-dynamic-content').innerHTML = bunsHTML;
+            document.getElementById('floating-btn').innerText = "Add Buns (850 EGP)";
+            document.getElementById('floating-btn').onclick = () => addToCart("Sticky Buns", 850);
+            openModal();
+        }
+
+        // --- 3. SERVICE INQUIRY LOGIC ---
+        function inquireService() {
+            const name = document.getElementById('service-name').value;
+            const date = document.getElementById('service-date').value;
+            const guests = document.getElementById('service-guests').value;
+            const request = document.getElementById('service-request').value;
+
+            if (!name || !date || !guests || !request) {
+                return alert("The Butler requires all fields to process an inquiry.");
+            }
+
+            const msg = `*ESTATE SERVICE INQUIRY*%0a%0a` +
+                        `**Client:** ${name}%0a` +
+                        `**Event Date:** ${date}%0a` +
+                        `**No. of Guests:** ${guests}%0a%0a` +
+                        `**Request Details:**%0a${request}`;
+
+            window.open(`https://wa.me/201024274466?text=${msg}`);
+        }
+
+        // --- 4. CART & CHECKOUT SYSTEM ---
+        function addToCart(name, price) {
+            cart.push({name, price});
+            const badge = document.getElementById('cart-badge');
+            badge.innerText = cart.length;
+            badge.style.opacity = 1;
+            badge.style.transform = 'scale(1.3)';
+            setTimeout(() => { badge.style.transform = 'scale(1)'; }, 200);
+            closeModal();
+        }
+
+        function openCheckout() {
+            const list = document.getElementById('cart-contents');
+            document.getElementById('checkout').classList.add('open');
+            
+            if (cart.length === 0) {
+                 list.innerHTML = `<p style="color:#999; text-align:center; margin-top:40px;">The trunk is empty.</p>`;
+                 return;
+            }
+
+            let html = "";
+            let total = 0;
+            cart.forEach(item => {
+                html += `<div style="border-bottom:1px solid #eee; padding:10px 0; display:flex; justify-content:space-between;"><b>${item.name}</b> <span>${item.price} EGP</span></div>`;
+                total += item.price;
+            });
+            html += `<br><div style="text-align:right; font-size:1.2rem;"><strong>Total: ${total} EGP</strong></div>`;
+            list.innerHTML = html;
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkout').classList.remove('open');
+        }
+
+        function confirmOrder() {
+            if (cart.length === 0) return alert("Your trunk is empty.");
+            
+            const name = document.getElementById('cust-name').value;
+            const addr = document.getElementById('cust-addr').value;
+            
+            if (!name || !addr) return alert("The Butler requires your name and address.");
+
+            let msg = `*NEW ORDER - POMELLI*%0aName: ${name}%0aAddr: ${addr}%0a%0aITEMS:%0a`;
+            let total = 0;
+            cart.forEach(item => {
+                msg += `- ${item.name} (${item.price} EGP)%0a`;
+                total += item.price;
+            });
+            msg += `%0a*TOTAL: ${total} EGP*`;
+            
+            window.open(`https://wa.me/201024274466?text=${msg}`);
+        }
+    </script>
+</body>
+</html>
