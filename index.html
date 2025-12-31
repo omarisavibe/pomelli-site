@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomelli | Aristocratic Confections</title>
+    <!-- Fonts: Cinzel for the 1920s Header, Cormorant Garamond for Body, Pinyon Script for Romance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- RESET & BASICS --- */
+        :root {
+            --walnut: #3E2723;
+            --cream: #F5F1E6;
+            --gold: #D4AF37;
+            --silver: #C0C0C0;
+            --watercolor-green: #D6E0D0;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--walnut);
+            color: var(--cream);
+            font-family: 'Cormorant Garamond', serif;
+            overflow-x: hidden;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3 {
+            font-family: 'Cinzel', serif;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--gold);
+        }
+
+        .script-font {
+            font-family: 'Pinyon Script', cursive;
+            text-transform: none;
+            font-size: 2rem;
+            color: var(--silver);
+        }
+
+        /* --- LAYOUT --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- HERO SECTION --- */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://i.imgur.com/your_image_5_link_here.jpg'); /* REPLACE WITH IMAGE 5 */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Parallax effect */
+            border-bottom: 4px double var(--gold);
+        }
+
+        .logo {
+            width: 400px; /* Adjust for your logo */
+            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
+            margin-bottom: 2rem;
+        }
+
+        .hero-text p {
+            font-size: 1.5rem;
+            max-width: 600px;
+            line-height: 1.6;
+            margin-top: 20px;
+        }
+
+        /* --- THE MENUS (FETCHED FROM DB) --- */
+        .menu-section {
+            padding: 100px 0;
+            background-color: var(--cream);
+            color: var(--walnut);
+            background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
+        }
+
+        .product-card {
+            display: flex;
+            align-items: center;
+            margin-bottom: 80px;
+            gap: 50px;
+            opacity: 0; /* For animation */
+            transform: translateY(30px);
+            transition: all 1s ease;
+        }
+
+        .product-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .product-card:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .product-image-frame {
+            flex: 1;
+            border: 10px solid white;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .product-image-frame img {
+            width: 100%;
+            display: block;
+        }
+
+        .product-details {
+            flex: 1;
+            padding: 40px;
+            border-left: 1px solid var(--gold); /* Vertical gold line */
+        }
+
+        .product-details h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--walnut);
+        }
+
+        .price {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .description {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .order-btn {
+            background: transparent;
+            border: 1px solid var(--walnut);
+            padding: 15px 40px;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .order-btn:hover {
+            background: var(--walnut);
+            color: var(--gold);
+        }
+
+        /* --- STORYBOOK SECTION --- */
+        .storybook-section {
+            padding: 100px 0;
+            background-color: var(--watercolor-green);
+            text-align: center;
+            /* Use the watercolor image as a soft background blend */
+            background-image: linear-gradient(rgba(214, 224, 208, 0.9), rgba(214, 224, 208, 0.9)), url('https://i.imgur.com/your_image_7_link_here.jpg'); 
+            background-size: cover;
+        }
+
+        .storybook-content {
+            border: 2px solid var(--gold);
+            padding: 60px;
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.7);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 50px;
+            text-align: center;
+            background: #1a1a1a;
+            color: var(--silver);
+            font-size: 0.9rem;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- HERO -->
+    <header>
+        <!-- Replace src with your "Pomelli" script logo image URL -->
+        <img src="https://i.imgur.com/XqQ2M8k.png" alt="Pomelli" class="logo"> 
+        <div class="hero-text">
+            <span class="script-font">The Ritual of Hospitality</span>
+            <h1>Old World Confections</h1>
+            <p>From the hush of white-glove service to the whimsical charm of the woodland. Welcome to the estate.</p>
+        </div>
+    </header>
+
+    <!-- PRODUCTS -->
+    <section class="menu-section">
+        <div class="container" id="menu-container">
+            <!-- Items will be injected here by JavaScript -->
+        </div>
+    </section>
+
+    <!-- STORYBOOK / PACKAGING -->
+    <section class="storybook-section">
+        <div class="storybook-content">
+            <span class="script-font">The Packaging</span>
+            <h2>A Gift from the Garden</h2>
+            <p>While our flavors recall the grandeur of the ballroom, our presentation whispers of the secret garden. Each confection arrives in a box adorned with watercolor scenes of the woodland, reminiscent of a vintage nursery rhyme found in an attic chest.</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>Pomelli &copy; 1922 (Est. 2024). All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // --- DATABASE SIMULATION ---
+        // If using Supabase, you would fetch() this data instead.
+        const databaseData = [
+            {
+                id: 1,
+                name: "The Sovereign Carrot Cake",
+                price: "$125.00",
+                description: "A recipe retrieved from the private journals of the estate. Four layers of spiced heirloon carrot sponge, studded with roasted pecans and sultanas soaked in amber rum. Enrobed in a mascarpone silk frosting and crowned with a drizzle of salted caramel gold.",
+                // USE IMAGE 3 or 6 HERE
+                image: "https://i.imgur.com/your_cake_image.jpg" 
+            },
+            {
+                id: 2,
+                name: "The Gilded Truffle Torte",
+                price: "$140.00",
+                description: "Dark chocolate ganache folded with the precision of a ballet. Dense, rich, and dusted with 24-karat edible gold. Served best on antique silver.",
+                // Placeholder image
+                image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1000&auto=format&fit=crop"
+            }
+        ];
+
+        // --- RENDER FUNCTION ---
+        const container = document.getElementById('menu-container');
+
+        databaseData.forEach(item => {
+            const card = document.createElement('div');
+            card.classList.add('product-card');
+            
+            card.innerHTML = `
+                <div class="product-image-frame">
+                    <img src="${item.image}" alt="${item.name}">
+                </div>
+                <div class="product-details">
+                    <span class="script-font">Signature Collection</span>
+                    <h2>${item.name}</h2>
+                    <span class="price">${item.price}</span>
+                    <p class="description">${item.description}</p>
+                    <button class="order-btn">Inquire for Delivery</button>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+        // --- SCROLL ANIMATION ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.product-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
