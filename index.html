@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#1a1514"> <title>POMELLI | Estate Provisions</title>
+    <meta name="theme-color" content="#1a1514"> <!-- Dark status bar for cinematic feel -->
+    <title>POMELLI | Estate Provisions</title>
     
+    <!-- LUXURY TYPOGRAPHY -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,600&family=Monsieur+La+Doulaise&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -436,21 +438,31 @@
 </head>
 <body>
 
+    <!-- ========================
+         1. THE IRON GATES
+         (Mobile Video Auto-Play Hack)
+         ======================== -->
     <div id="estate-gate" onclick="enterManor()">
         <img src="pomelli-vintage-logo-script.jpg" class="gate-logo" alt="P">
         <button class="enter-btn">Enter The Estate</button>
     </div>
 
 
+    <!-- ========================
+         2. NAVIGATION BAR
+         ======================== -->
     <header class="manor-nav">
+        <!-- Menu Hamburger -->
         <div class="nav-action">
             <i class="fa-solid fa-bars" onclick="alert('The Butler is preparing the full archive.')"></i>
         </div>
         
+        <!-- Logo centered via Flexbox logic in CSS -->
         <div class="logo-wrap">
             <img src="pomelli-vintage-logo-script.jpg" class="nav-logo" alt="Pomelli Estate" onerror="this.style.display='none'">
         </div>
 
+        <!-- Cart/Trunk -->
         <div class="nav-action cart-wrapper" onclick="toggleCart()">
             <i class="fa-solid fa-suitcase"></i>
             <div class="cart-badge" id="cart-count">0</div>
@@ -458,6 +470,9 @@
     </header>
 
 
+    <!-- ========================
+         3. HERO CINEMATIC
+         ======================== -->
     <div class="cinema-frame">
         <video id="bg-video" class="cinema-video" muted loop playsinline webkit-playsinline preload="auto" poster="https://via.placeholder.com/1000x1000?text=Loading+Estate">
             <source src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/asembeling%20carrot%20cake%20video.mp4" type="video/mp4">
@@ -469,16 +484,25 @@
     </div>
 
 
+    <!-- ========================
+         4. CATEGORY TABS
+         ======================== -->
     <div class="tab-scroller">
         <div class="tab-track">
             <button class="tab-btn active" onclick="switchSection('cakes', this)">Grand Gâteaux</button>
             <button class="tab-btn" onclick="switchSection('buns', this)">Morning Goods</button>
+            <!-- NEW TAB FOR SOURDOUGH -->
+            <button class="tab-btn" onclick="switchSection('breads', this)">The Boulangerie</button>
             <button class="tab-btn" onclick="switchSection('concierge', this)">Butler Service</button>
         </div>
     </div>
 
 
+    <!-- ========================
+         SECTION 1: THE GRAND GATEAUX
+         ======================== -->
     <section id="cakes" class="section-view active">
+        <!-- CARROT CAKE -->
         <div class="estate-card">
             <div class="card-img-frame">
                 <div class="price-badge">1250 EGP</div>
@@ -491,6 +515,7 @@
             </div>
         </div>
 
+        <!-- SLICE -->
         <div class="estate-card">
             <div class="card-img-frame">
                 <div class="price-badge">140 EGP</div>
@@ -505,10 +530,14 @@
     </section>
 
 
+    <!-- ========================
+         SECTION 2: MORNING GOODS (The Buns)
+         ======================== -->
     <section id="buns" class="section-view">
         <div class="estate-card">
             <div class="card-img-frame">
                 <div class="price-badge">850 EGP</div>
+                <!-- Note: using the specified image link for the buns card -->
                 <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/Flow%20Dec%2031%202025.jpeg" class="card-img" alt="Sticky Buns">
             </div>
             <div class="card-details">
@@ -518,18 +547,7 @@
             </div>
         </div>
 
-        <div class="estate-card">
-            <div class="card-img-frame">
-                <div class="price-badge">450 EGP</div>
-                <img src="topview.png" class="card-img" alt="Estate Sourdough"> 
-            </div>
-            <div class="card-details">
-                <h2 class="card-title">The Estate Sourdough</h2>
-                <p class="card-preview">Crust of iron, heart of velvet. Wild-fermented with 100% Italian flour and the Butler's starter.</p>
-                <button class="btn-interact" onclick="showSourdoughDetails()">Inspect The Loaf</button>
-            </div>
-        </div>
-
+        <!-- VISUAL STORY BREAK -->
         <div class="story-breaker">
             <div class="story-text-box">
                 <h3>The Folklore</h3>
@@ -539,6 +557,27 @@
     </section>
 
 
+    <!-- ========================
+         SECTION 3: THE BOULANGERIE (Sourdough)
+         ======================== -->
+    <section id="breads" class="section-view">
+        <div class="estate-card">
+            <div class="card-img-frame">
+                <div class="price-badge">380 EGP</div>
+                <img src="topview.png" class="card-img" alt="Estate Sourdough">
+            </div>
+            <div class="card-details">
+                <h2 class="card-title">The Estate Sourdough</h2>
+                <p class="card-preview">A rustic armor protecting a cloud-like interior. Tangy, made with 100% Italian flour.</p>
+                <button class="btn-interact" onclick="showSourdoughDetails()">Inspect the Crumb</button>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========================
+         SECTION 4: CONCIERGE FORM
+         ======================== -->
     <section id="concierge" class="section-view">
         <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/butler-service-caramel-drip.jpg" style="border-radius:12px; margin-bottom:20px; filter:sepia(0.2);">
         
@@ -572,6 +611,9 @@
     </section>
 
 
+    <!-- ========================
+         FOOTER
+         ======================== -->
     <footer class="site-footer">
         <div class="footer-logo">Pomelli</div>
         <p>CAIRO • LONDON • PARIS</p>
@@ -580,25 +622,34 @@
     </footer>
 
 
+    <!-- ==========================================================
+         THE ARCHIVE MODAL (Dynamic Injection Area)
+         ========================================================== -->
     <div class="modal-screen" id="modal-bg" onclick="closeSheet()"></div>
     
     <div class="archive-sheet" id="detail-sheet">
         <div class="close-circle" onclick="closeSheet()"><i class="fa-solid fa-xmark"></i></div>
         
+        <!-- JS WILL INJECT CONTENT HERE -->
         <div id="sheet-inject"></div>
         
-        </div>
+        <!-- Sticky Button injected by JS logic below -->
+    </div>
     
     <div class="add-action-bar" id="sticky-bar">
         <button class="btn-add" id="sticky-btn">Add to Trunk</button>
     </div>
 
 
+    <!-- ==========================================================
+         THE TRUNK (Checkout Drawer)
+         ========================================================== -->
     <div class="drawer" id="cart-drawer">
         <div class="drawer-header">
             <i class="fa-solid fa-arrow-left" onclick="toggleCart()" style="font-size:1.5rem; color:#333; cursor:pointer;"></i>
             <div class="card-title" style="margin:0;">The Trunk</div>
-            <div></div> </div>
+            <div></div> <!-- Spacer -->
+        </div>
         
         <div class="drawer-content" id="cart-items-area">
             <p style="text-align:center; color:#999; margin-top:50px; font-style:italic;">Your trunk is empty, Sir.</p>
@@ -628,6 +679,9 @@
     </div>
 
 
+    <!-- ==========================================================
+         JAVASCRIPT LOGIC
+         ========================================================== -->
     <script>
         
         // --- 1. PRELOADER & VIDEO UNLOCKER ---
@@ -702,6 +756,7 @@
                     <div class="spec-item"><span class="spec-label">Heat</span><span class="spec-val">Warm</span></div>
                 </div>
 
+                <!-- GLOVE INTERACTION -->
                 <p style="font-family:var(--f-script); font-size:2rem; color:#aaa; margin-top:20px;">The Pull Apart...</p>
                 <img src="sticky_glove.jpg" class="interaction-img" style="border-color:#eee;">
 
@@ -724,38 +779,38 @@
             </div>
         `;
 
-        /* CONTENT: THE ESTATE SOURDOUGH (NEW) */
+        /* CONTENT: THE SOURDOUGH */
         const sourdoughContent = `
             <img src="sourdough-outshot.png" class="hero-img-detail">
             
             <div class="module-block">
                 <h2 style="font-family:var(--f-display); font-size:2rem; color:var(--cherry-deep); line-height:1; margin-bottom:5px;">The Estate Sourdough</h2>
-                <p style="font-size:1.2rem; font-style:italic; color:#777;">Presentation Loaf with Gold Basket</p>
+                <p style="font-size:1.2rem; font-style:italic; color:#777;">Artisan Loaf & Gold Basket</p>
                 
                 <div class="spec-grid">
-                    <div class="spec-item"><span class="spec-label">Origin</span><span class="spec-val">Italian</span></div>
                     <div class="spec-item"><span class="spec-label">Ferment</span><span class="spec-val">48 Hrs</span></div>
-                    <div class="spec-item"><span class="spec-label">Crust</span><span class="spec-val">Hard</span></div>
+                    <div class="spec-item"><span class="spec-label">Serves</span><span class="spec-val">8</span></div>
+                    <div class="spec-item"><span class="spec-label">Note</span><span class="spec-val">Tangy</span></div>
                 </div>
-
-                <p style="font-family:var(--f-script); font-size:2rem; color:#aaa; margin-top:20px; text-align:center;">The Crumb...</p>
-                <img src="butler-crossection.png" class="interaction-img" style="border-color:#eee;">
 
                 <div class="story-text" style="font-size:1.1rem; line-height:1.7;">
-                    Milled from 100% Italian wheat and raised on the "Butler's Private Starter"—a tangy wild yeast culture maintained within the estate archives.
-                    <br><br>
-                    It arrives not merely in paper, but accompanied by a <strong>Gold Presentation Basket</strong>, designed specifically to impress any dignitary who arrives at your ball.
+                    A masterpiece of fermentation. This loaf possesses a crusty, burnished armor that shatters upon slicing, revealing a soft, aerated interior with the perfect tang. <br><br>
+                    Presented in a gold basket to impress anyone who comes to your bailiwick.
                 </div>
 
-                <div class="story-breaker" style="margin: 30px -25px; padding:0; height:220px; background-image:url('sourdough-wwaterclolor.png'); background-size:cover; box-shadow:none; border:none;"></div>
+                <!-- WATERCOLOR INSERT -->
+                <img src="sourdough-wwaterclolor.png" class="interaction-img" alt="Watercolor Illustration">
 
                 <div class="notes-paper">
-                    <div class="archive-section-title">TASTING NOTES</div>
+                    <div class="archive-section-title">PROVENANCE</div>
                     <ul class="ingredient-list">
-                        <li><strong>Exterior:</strong> Shattering, caramel-coloured crust.</li>
-                        <li><strong>Interior:</strong> Open crumb, cloud-soft, distinctively tangy.</li>
-                        <li><strong>Service:</strong> Toast heavily. Serve with salted butter.</li>
+                        <li><strong>The Flour:</strong> 100% Italian Flour, milled to Estate specifications.</li>
+                        <li><strong>The Starter:</strong> A proprietary "Butler-made" culture fed daily.</li>
+                        <li><strong>The Presentation:</strong> Arrives warm, nestled in a signature gold basket.</li>
                     </ul>
+                    
+                    <p style="font-family:var(--f-script); font-size:2rem; color:#aaa; margin-top:20px; text-align:center;">The Crumb...</p>
+                    <img src="butler-crossection.png" style="width:100%; margin-top:15px; border-radius:4px;">
                 </div>
             </div>
         `;
@@ -776,7 +831,7 @@
 
         function showSourdoughDetails() {
             document.getElementById('sheet-inject').innerHTML = sourdoughContent;
-            activateStickyBtn("Estate Sourdough", 450);
+            activateStickyBtn("Estate Sourdough", 380);
             openSheet();
         }
 
