@@ -9,8 +9,8 @@
     <title>POMELLI | The Estate Archive</title>
     
     <!-- ======================================================================
-         LUXURY TYPOGRAPHY SUITE
-         ====================================================================== -->
+          LUXURY TYPOGRAPHY SUITE
+          ====================================================================== -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600&family=Monsieur+La+Doulaise&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
     
@@ -81,7 +81,7 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             background: #110d0c; z-index: 9999;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: transform 1.2s var(--ease-luxury);
+            transition: transform 1.5s var(--ease-luxury);
         }
         
         #estate-gate.open { transform: translateY(-100%); pointer-events: none; }
@@ -94,11 +94,11 @@
         .enter-btn {
             background: transparent; border: 1px solid var(--gold-leaf);
             color: var(--gold-leaf); font-family: var(--f-display);
-            padding: 16px 45px; font-size: 0.9rem; letter-spacing: 4px;
+            padding: 18px 50px; font-size: 0.9rem; letter-spacing: 4px;
             text-transform: uppercase; cursor: pointer; position: relative;
             opacity: 0; animation: floatUp 1s 0.8s forwards; transition: 0.3s;
         }
-        .enter-btn:active { background: var(--gold-leaf); color: #000; }
+        .enter-btn:active, .enter-btn:hover { background: var(--gold-leaf); color: #000; box-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
 
         @keyframes floatUp { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
 
@@ -127,6 +127,10 @@
             max-width: 180px; 
             object-fit: contain; 
             mix-blend-mode: multiply; /* Crucial for background blend */
+            font-family: var(--f-script);
+            font-size: 2rem;
+            color: var(--walnut-ink);
+            text-decoration: none;
         }
 
         /* --- NAV ACTIONS --- */
@@ -171,6 +175,7 @@
             width: 100%; height: 100%; object-fit: cover;
             filter: brightness(0.65) contrast(1.15) sepia(0.15); /* Film Look */
             transform: scale(1.05); /* Slight Over-scale */
+            transition: opacity 1s ease;
         }
 
         .cinema-overlay {
@@ -290,10 +295,12 @@
         .story-breaker {
             margin: 50px -20px; /* Full Bleed */
             padding: 60px 30px;
-            background-image: url('packaging-watercolor-woodland-art.jpg');
+            background-color: #2c2826;
+            background-image: url('https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/butler-service-caramel-drip.jpg');
             background-size: cover; background-position: center;
+            background-blend-mode: overlay;
             text-align: center; border-top: 6px solid #fff; border-bottom: 6px solid #fff;
-            box-shadow: inset 0 0 100px rgba(0,0,0,0.15);
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.4);
         }
 
         .story-text-box {
@@ -403,7 +410,7 @@
 
         /* Interaction Visuals */
         .interaction-img {
-            margin: 30px 0; border: 8px solid white; 
+            margin: 30px 0; border: 8px solid white; width: 100%;
             box-shadow: 0 10px 40px rgba(0,0,0,0.12); 
             transform: rotate(-1deg);
         }
@@ -490,9 +497,10 @@
     <!-- ========================
          1. PRELOADER & GATES
          ======================== -->
-    <div id="estate-gate" onclick="enterManor()">
-        <img src="pomelli-vintage-logo-script.jpg" class="gate-logo" alt="P">
-        <button class="enter-btn">Enter The Estate</button>
+    <div id="estate-gate">
+        <h1 class="gate-logo" style="color:var(--gold-leaf); font-family:var(--f-script); font-size:3rem;">Pomelli</h1>
+        <!-- FIXED: Button now has onclick directly and type="button" -->
+        <button class="enter-btn" type="button" onclick="enterManor()">Enter The Estate</button>
     </div>
 
 
@@ -507,7 +515,7 @@
         
         <!-- Logo -->
         <div class="logo-wrap">
-            <img src="pomelli-vintage-logo-script.jpg" class="nav-logo" alt="Pomelli Estate" onerror="this.style.display='none'">
+            <a href="#" class="nav-logo">Pomelli</a>
         </div>
 
         <!-- Fixed Cart Position -->
@@ -523,7 +531,7 @@
          ======================== -->
     <div class="cinema-frame">
         <!-- Video handles logic via JS interaction -->
-        <video id="bg-video" class="cinema-video" muted loop playsinline webkit-playsinline poster="sticky_glove.jpg">
+        <video id="bg-video" class="cinema-video" muted loop playsinline webkit-playsinline poster="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sovereign-carrot-cake-whole.jpg">
             <source src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/asembeling%20carrot%20cake%20video.mp4" type="video/mp4">
         </video>
         <div class="cinema-overlay">
@@ -585,7 +593,7 @@
         <div class="estate-card">
             <div class="card-img-frame">
                 <span class="price-badge">450 EGP</span>
-                <img src="topview.png" class="card-img" alt="Sourdough Loaf">
+                <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/topview.png" class="card-img" alt="Sourdough Loaf" onerror="this.src='https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sovereign-carrot-cake-whole.jpg'">
             </div>
             <div class="card-details">
                 <h2 class="card-title">Estate Hearth Sourdough</h2>
@@ -623,10 +631,10 @@
 
 
     <!-- ========================
-         SECTION: CONCIERGE FORM (Updated Lang)
+         SECTION: CONCIERGE FORM
          ======================== -->
     <section id="concierge" class="section-view">
-        <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/butler-service-caramel-drip.jpg" style="border-radius:12px; margin-bottom:25px; filter:sepia(0.2); width:100%; height:250px; object-fit:cover;">
+        <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/butler-service-caramel-drip.jpg" style="border-radius:12px; margin-bottom:25px; filter:sepia(0.2); width:100%; height:250px; object-fit:cover;" alt="Butler Service">
         
         <div class="form-card">
             <h2 class="card-title" style="margin-bottom:10px;">Commission The Butler</h2>
@@ -660,7 +668,7 @@
          REVISED FOOTER
          ======================== -->
     <footer class="site-footer">
-        <img src="logo_gold.png" class="footer-logo-img" alt="Pomelli Gold">
+        <h2 style="font-family:var(--f-script); color:var(--gold-leaf); font-size:2rem; margin-bottom:20px;">Pomelli</h2>
         
         <div class="social-row">
             <a href="#" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
@@ -741,17 +749,30 @@
 
 
     <!-- ==========================================================
-         JAVASCRIPT LOGIC ENGINE (1000+ Lines implied)
+         JAVASCRIPT LOGIC ENGINE
          ========================================================== -->
     <script>
         
         // --- 1. ENTRY SEQUENCE ---
         function enterManor() {
-            document.getElementById('estate-gate').style.transform = 'translateY(-100%)';
+            // IMMEDIATE ACTION: Lift the gate visually
+            document.getElementById('estate-gate').classList.add('open');
+            
             const v = document.getElementById('bg-video');
             v.muted = true;
-            // Mobile Autoplay Force
-            v.play().then(() => {}).catch(e => { console.log('Audio Context Start required'); });
+            
+            // Try to play video, but don't stop the experience if it fails
+            var playPromise = v.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    // Automatic playback started!
+                })
+                .catch(error => {
+                    // Auto-play was prevented
+                    console.log('Video autoplay prevented by browser policy - this is normal.');
+                });
+            }
         }
 
         // --- 2. TABS SWITCHER ---
@@ -788,7 +809,7 @@
                     Inspired by the Truluck's legend. This is not a sponge; it is an institution. A breathless tower featuring layers of moist carrot sponge with crushed pineapple and toasted coconut, separating tiers of brown-butter cream cheese.
                 </div>
 
-                <img src="watercolored carrot cake.jpg" class="interaction-img" alt="Illustration">
+                <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/watercolored%20carrot%20cake.jpg" class="interaction-img" alt="Illustration" onerror="this.style.display='none'">
 
                 <div class="notes-paper">
                     <div class="lbl" style="text-align:center; border-bottom:1px solid #ddd; padding-bottom:5px; margin-bottom:15px;">Kitchen Archives</div>
@@ -815,7 +836,7 @@
                 </div>
 
                 <p style="font-family:var(--f-script); font-size:2.5rem; text-align:center; color:#aaa; margin:20px 0;">The Pull Apart...</p>
-                <img src="sticky_glove.jpg" class="interaction-img">
+                <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sticky_glove.jpg" class="interaction-img" onerror="this.style.display='none'">
 
                 <div class="story-text">
                     "You can’t have a bad day when it starts with caramel pecan sticky buns." Soft, buttery brioche spirals are filled with cinnamon and baked on top of a bed of boiling caramel. 
@@ -835,7 +856,7 @@
 
         // ESTATE SOURDOUGH (New Listing)
         const sourdoughContent = `
-            <img src="sourdough-outshot.png" class="hero-img-detail">
+            <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/topview.png" class="hero-img-detail" onerror="this.src='https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sovereign-carrot-cake-whole.jpg'">
             <div class="module-block">
                 <h2 style="font-family:var(--f-display); font-size:2rem; line-height:1; margin-bottom:5px; color:var(--cherry-deep);">Estate Hearth Sourdough</h2>
                 <p style="font-size:1.1rem; color:#777; font-style:italic;">Artisan Boule with Gold Basket</p>
@@ -850,10 +871,10 @@
                     A loaf of aggressive crust and pillow-soft crumb. Made with 100% imported Italian flour, stone-milled locally. Our starter is fed daily by the Butler.
                 </div>
 
-                <img src="butler-crossection.png" class="interaction-img" alt="Sourdough Crumb">
+                <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/butler-crossection.png" class="interaction-img" alt="Sourdough Crumb" onerror="this.style.display='none'">
 
                 <div class="notes-paper">
-                    <img src="sourdough-watercolor.png" style="width:100px; margin:0 auto 10px; display:block;">
+                    <img src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/sourdough-watercolor.png" style="width:100px; margin:0 auto 10px; display:block;" onerror="this.style.display='none'">
                     <p style="text-align:center; font-style:italic;">"Includes the signature Gold Presentation Basket for immediate serving at your estate."</p>
                     <hr style="border:0; border-bottom:1px solid #ddd; margin:15px 0;">
                     <ul class="ingredient-list">
@@ -905,6 +926,9 @@
             const suitcase = document.querySelector('.cart-container');
             suitcase.style.transform = 'scale(1.1)';
             setTimeout(()=> suitcase.style.transform='scale(1)', 200);
+            
+            // Auto open cart for feedback
+            setTimeout(toggleCart, 300);
         }
 
         function removeCart(idx) {
@@ -955,3 +979,65 @@
             
             el.innerHTML = html;
         }
+
+        // --- 5. WHATSAPP & SERVICE INTEGRATION ---
+        
+        function checkoutWhatsapp() {
+            if (cart.length === 0) {
+                alert("The trunk is empty, Sir.");
+                return;
+            }
+
+            const name = document.getElementById('order-name').value;
+            const zone = document.getElementById('order-zone').value;
+            const addr = document.getElementById('order-addr').value;
+
+            if(!name || !zone || !addr) {
+                alert("The Butler requires your destination details.");
+                return;
+            }
+
+            let msg = `*POMELLI ESTATE ORDER Request*\n`;
+            msg += `------------------\n`;
+            msg += `Client: ${name}\n`;
+            msg += `District: ${zone}\n`;
+            msg += `Address: ${addr}\n`;
+            msg += `------------------\n`;
+            
+            let total = 0;
+            cart.forEach(i => {
+                msg += `• ${i.name} - ${i.price} EGP\n`;
+                total += i.price;
+            });
+            
+            msg += `------------------\n`;
+            msg += `*TOTAL: ${total} EGP*\n`;
+            msg += `Please confirm availability.`;
+
+            // Encode and Open
+            const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+            window.open(url, '_blank');
+        }
+
+        function submitService() {
+            const name = document.getElementById('req-name').value;
+            const zone = document.getElementById('req-zone').value;
+            const detail = document.getElementById('req-detail').value;
+
+            if(!name || !detail) {
+                alert("Please provide details for your inquiry.");
+                return;
+            }
+
+            let msg = `*BUTLER SERVICE COMMISSION*\n`;
+            msg += `Client: ${name}\n`;
+            msg += `District: ${zone}\n`;
+            msg += `Inquiry: ${detail}`;
+
+            const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+            window.open(url, '_blank');
+        }
+
+    </script>
+</body>
+</html>
