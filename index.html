@@ -172,6 +172,7 @@
             font-size: 2.2rem; letter-spacing: 1px;
             text-transform: uppercase; margin-top: 15px;
             text-shadow: 0 4px 20px rgba(0,0,0,0.9);
+            cursor: help; /* Hint at interaction */
         }
 
 
@@ -478,8 +479,8 @@
             <source src="https://rfwlaucrlfohxrrspxmx.supabase.co/storage/v1/object/public/pomelli-gallery/asembeling%20carrot%20cake%20video.mp4" type="video/mp4">
         </video>
         <div class="cinema-overlay">
-            <span class="cinema-script">High Society</span>
-            <h1 class="cinema-title">Winter Provisions</h1>
+            <span class="cinema-script" onclick="butlerSecret()">High Society</span>
+            <h1 class="cinema-title" onclick="butlerSecret()">Winter Provisions</h1>
         </div>
     </div>
 
@@ -491,8 +492,6 @@
         <div class="tab-track">
             <button class="tab-btn active" onclick="switchSection('cakes', this)">Grand Gâteaux</button>
             <button class="tab-btn" onclick="switchSection('buns', this)">Morning Goods</button>
-            <!-- NEW TAB FOR SOURDOUGH -->
-            <button class="tab-btn" onclick="switchSection('breads', this)">The Boulangerie</button>
             <button class="tab-btn" onclick="switchSection('concierge', this)">Butler Service</button>
         </div>
     </div>
@@ -531,7 +530,7 @@
 
 
     <!-- ========================
-         SECTION 2: MORNING GOODS (The Buns)
+         SECTION 2: MORNING GOODS (The Buns & Bread)
          ======================== -->
     <section id="buns" class="section-view">
         <div class="estate-card">
@@ -547,29 +546,24 @@
             </div>
         </div>
 
+        <!-- SOURDOUGH MOVED HERE -->
+        <div class="estate-card">
+            <div class="card-img-frame">
+                <div class="price-badge">186 EGP</div>
+                <img src="topview.png" class="card-img" alt="Estate Sourdough">
+            </div>
+            <div class="card-details">
+                <h2 class="card-title">The Estate Sourdough</h2>
+                <p class="card-preview">Crusty armor, soft interior. Tangy 100% Italian flour. Arrives in a gold basket to impress anyone in your bailiwick.</p>
+                <button class="btn-interact" onclick="showSourdoughDetails()">Inspect the Crumb</button>
+            </div>
+        </div>
+
         <!-- VISUAL STORY BREAK -->
         <div class="story-breaker">
             <div class="story-text-box">
                 <h3>The Folklore</h3>
                 <p style="font-style: italic; color:#555;">No plastic. Arrives in Beatrix Potter boxes.</p>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- ========================
-         SECTION 3: THE BOULANGERIE (Sourdough)
-         ======================== -->
-    <section id="breads" class="section-view">
-        <div class="estate-card">
-            <div class="card-img-frame">
-                <div class="price-badge">380 EGP</div>
-                <img src="topview.png" class="card-img" alt="Estate Sourdough">
-            </div>
-            <div class="card-details">
-                <h2 class="card-title">The Estate Sourdough</h2>
-                <p class="card-preview">A rustic armor protecting a cloud-like interior. Tangy, made with 100% Italian flour.</p>
-                <button class="btn-interact" onclick="showSourdoughDetails()">Inspect the Crumb</button>
             </div>
         </div>
     </section>
@@ -616,7 +610,12 @@
          ======================== -->
     <footer class="site-footer">
         <div class="footer-logo">Pomelli</div>
-        <p>CAIRO • LONDON • PARIS</p>
+        
+        <div class="social-links" style="margin: 20px 0;">
+            <a href="#" style="color:var(--gold-antique); margin:0 10px; font-size:1.5rem;"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://wa.me/201024274466" style="color:var(--gold-antique); margin:0 10px; font-size:1.5rem;"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+
         <div class="footer-line"></div>
         <p class="legal">&copy; 1922-2025 POMELLI ARCHIVES.</p>
     </footer>
@@ -692,6 +691,16 @@
             // Interaction allows video autoplay on iOS/Android
             gate.classList.add('open');
             vid.play().catch(e => console.log("Autoplay handled via interaction."));
+        }
+
+        // --- EASTER EGG: BUTLER SECRET ---
+        let taps = 0;
+        function butlerSecret() {
+            taps++;
+            if(taps === 3) {
+                alert("THE BUTLER WHISPERS:\n'Excellent choice, Sir. I have added a complimentary brioche to the reserve.'");
+                taps = 0;
+            }
         }
 
         // --- 2. TABS & SCROLLING ---
@@ -831,7 +840,7 @@
 
         function showSourdoughDetails() {
             document.getElementById('sheet-inject').innerHTML = sourdoughContent;
-            activateStickyBtn("Estate Sourdough", 380);
+            activateStickyBtn("Estate Sourdough", 186);
             openSheet();
         }
 
